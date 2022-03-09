@@ -20,7 +20,7 @@ public interface RentService {
 
 	Result add(CreateRentRequest createRentRequest) throws BusinessException;
 	Result update(UpdateRentRequest updateRentRequest);
-	Result delete(DeleteRentRequest deleteRentRequest);
+	Result delete(DeleteRentRequest deleteRentRequest) throws BusinessException;
 	DataResult<List<RentListDto>> getAll() throws BusinessException;
 	DataResult<List<RentListDto>> getByCarId(int id) throws BusinessException;
 	boolean checkIfCarIsRented(int id);

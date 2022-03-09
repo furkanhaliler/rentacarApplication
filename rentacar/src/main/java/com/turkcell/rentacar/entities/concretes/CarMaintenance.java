@@ -27,6 +27,9 @@ public class CarMaintenance {
 	@Column(name = "maintenance_description")
 	private String maintenanceDescription;
 	
+	@Column(name = "maintenance_startDate")
+	private LocalDate startDate;
+	
 	@Column(name = "maintenance_returnDate")
     private LocalDate returnDate;
 	

@@ -37,7 +37,7 @@ public class ColorsController {
     }
    
     @GetMapping("/getAll")
-    public DataResult<List<ColorListDto>> getAll() {
+    public DataResult<List<ColorListDto>> getAll() throws BusinessException {
         return this.colorService.getAll();
     }
 

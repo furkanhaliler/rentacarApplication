@@ -47,7 +47,7 @@ public class RentController {
 	}
 	
 	@DeleteMapping("/delete")
-	Result delete(@RequestBody DeleteRentRequest deleteRentRequest) {
+	Result delete(@RequestBody DeleteRentRequest deleteRentRequest) throws BusinessException {
 		return this.rentService.delete(deleteRentRequest);
 	}
 	@GetMapping("/getall")
@@ -56,8 +56,8 @@ public class RentController {
 		return this.rentService.getAll();
 	}
 	
-	@GetMapping("/getById")
-	DataResult<List<RentListDto>> getById(int id) throws BusinessException{
+	@GetMapping("/getByCarId")
+	DataResult<List<RentListDto>> getByCarId(int id) throws BusinessException{
 		
 		return this.rentService.getByCarId(id);
 	}

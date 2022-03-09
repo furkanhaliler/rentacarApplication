@@ -20,10 +20,10 @@ public class UpdateRentRequest {
 	@NotNull
 	@Min(1)
 	private int rentId;
-	
-	@NotNull	
-	@Min(1)
-	private int carId;
+//	
+//	@NotNull	
+//	@Min(1)
+//	private int carId;
 	
 	@NotNull
 	private LocalDate startDate;

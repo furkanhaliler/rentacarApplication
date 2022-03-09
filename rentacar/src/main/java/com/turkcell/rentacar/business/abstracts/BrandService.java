@@ -12,7 +12,7 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 import java.util.List;
 
 public interface BrandService {
-    DataResult<List<BrandListDto>> getAll();
+    DataResult<List<BrandListDto>> getAll() throws BusinessException;
     Result add(CreateBrandRequest createBrandRequest) throws BusinessException;
     DataResult<GetBrandDto> getByBrandId(Integer id) throws BusinessException;
     Result update(UpdateBrandRequest updateBrandRequest) throws BusinessException;

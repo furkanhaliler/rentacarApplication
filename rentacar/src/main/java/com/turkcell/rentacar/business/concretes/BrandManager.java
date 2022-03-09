@@ -38,8 +38,13 @@ public class BrandManager implements BrandService {
     }
 
     @Override
-    public DataResult<List<BrandListDto>> getAll() {
+    public DataResult<List<BrandListDto>> getAll() throws BusinessException {
         List<Brand> result = this.brandDao.findAll();
+        
+        if(result.isEmpty()) {
+        	throw new BrandNotFoundException("Listede henüz bir marka yok.");
+        }
+        
         List<BrandListDto> response = result.stream()
                 .map(brand -> this.modelMapperService
                         .forDto()
@@ -53,7 +58,6 @@ public class BrandManager implements BrandService {
         if(this.brandDao.existsBrandByBrandName(createBrandRequest.getBrandName())) {
         	
         	throw new BrandAlreadyExistException("Bu isimde marka kayıtlı.");
-           // return new ErrorResult("Bu id'de marka kayıtlı.");
         }else {
             Brand brand = this.modelMapperService
                     .forRequest().map(createBrandRequest,Brand.class);
@@ -71,7 +75,6 @@ public class BrandManager implements BrandService {
             return new SuccessDataResult<GetBrandDto>(response, "Marka getirildi.");
         }else {
         	throw new BrandNotFoundException("Bu id'de kayıtlı marka bulunamadı.");
-            //return new ErrorDataResult<GetBrandDto>("Bu id'de kayıtlı marka bulunamadı.");
         }
     }
 
@@ -84,7 +87,6 @@ public class BrandManager implements BrandService {
             return new SuccessResult("Güncelleme başarılı");
         }else if(this.brandDao.existsBrandByBrandName(updateBrandRequest.getBrandName())){
         	throw new BrandAlreadyExistException("Bu isimde başka bir marka zaten var.");
-            //return new ErrorResult("Güncelleme başarısız");
         }else {
         	throw new BrandNotFoundException("Bu id'de kayıtlı marka bulunamadı.");
         }
@@ -97,7 +99,6 @@ public class BrandManager implements BrandService {
            return new SuccessResult("Marka silindi");
         }else {
             throw new BrandNotFoundException("Bu id'de kayıtlı marka bulunamadı.");
-        	//return new ErrorResult("Bu id'de kayıtlı marka bulunamadı.");
         }
     }
 }

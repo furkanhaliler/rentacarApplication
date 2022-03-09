@@ -37,7 +37,7 @@ public class BrandsController {
     }
 
     @GetMapping("/getAll")
-    public DataResult<List<BrandListDto>> getAll() {
+    public DataResult<List<BrandListDto>> getAll() throws BusinessException {
         return this.brandService.getAll();
     }
 

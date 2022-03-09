@@ -17,6 +17,9 @@ public class CreateCarMaintenanceRequest {
 	@NotNull
 	@Size(min = 2, max = 50)
 	private String maintenanceDescription;
+	
+	@NotNull
+	private LocalDate startDate;
 
 	private LocalDate returnDate;
 	

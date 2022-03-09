@@ -14,7 +14,7 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 import java.util.List;
 
 public interface ColorService {
-    DataResult<List<ColorListDto>> getAll();
+    DataResult<List<ColorListDto>> getAll() throws BusinessException;
     Result add(CreateColorRequest createColorRequest) throws BusinessException;
     DataResult<GetColorDto> getById(Integer id)  throws BusinessException;
     Result update(UpdateColorRequest updateColorRequest)  throws BusinessException;

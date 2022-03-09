@@ -26,6 +26,7 @@ import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.RentDao;
 import com.turkcell.rentacar.entities.concretes.Car;
 import com.turkcell.rentacar.entities.concretes.Rent;
+
 @Service
 public class RentManager implements RentService {
 
@@ -33,8 +34,8 @@ public class RentManager implements RentService {
 	private ModelMapperService modelMapperService;
 	private CarMaintenanceService carMaintenanceService;
 	private CarService carService;
-	
-    @Autowired
+
+	@Autowired
 	public RentManager(RentDao rentDao, ModelMapperService modelMapperService,
 			CarMaintenanceService carMaintenanceService, CarService carService) {
 
@@ -45,72 +46,84 @@ public class RentManager implements RentService {
 	}
 
 	@Override
-	public Result add(CreateRentRequest createRentRequest) throws BusinessException{
-		
-		 	Rent rent = this.modelMapperService.forRequest().map(createRentRequest, Rent.class);
-	        rent.setRentId(0);
-	        
-	        if(carService.getByCarId(createRentRequest.getCarId()).getData().isCarMaintenanceStatus()) {
-	        	throw new BusinessException("Araç bakımda olduğu için kiralanamaz.");
-	        }else {
-	        	this.rentDao.save(rent);
-		        this.carService.updateRentStatus(createRentRequest.getCarId(),true);
-		        return new SuccessResult("Kiralama başarıyla eklendi.");
-	        }
+	public Result add(CreateRentRequest createRentRequest) throws BusinessException {
+
+		Rent rent = this.modelMapperService.forRequest().map(createRentRequest, Rent.class);
+		rent.setRentId(0);
+		this.carService.updateCarMaintenanceStatus(createRentRequest.getCarId(),
+				this.carMaintenanceService.checkIfCarIsInMaintenance(createRentRequest.getCarId()));
+		if (carService.getByCarId(createRentRequest.getCarId()).getData().isCarMaintenanceStatus()) {
+			throw new BusinessException("Araç bakımda olduğu için kiralanamaz.");
+		} else {
+			this.rentDao.save(rent);
+			this.carService.updateRentStatus(createRentRequest.getCarId(), true);
+			return new SuccessResult("Kiralama başarıyla eklendi.");
+		}
 	}
 
 	@Override
 	public Result update(UpdateRentRequest updateRentRequest) {
 
 		Rent rent = this.rentDao.getById(updateRentRequest.getRentId());
-        rent = this.modelMapperService.forRequest().map(updateRentRequest,Rent.class);
-        this.rentDao.save(rent);
-        return new SuccessResult("Kiralama başarıyla güncellendi.");
+		rent = this.modelMapperService.forRequest().map(updateRentRequest, Rent.class);
+		this.rentDao.save(rent);
+		return new SuccessResult("Kiralama başarıyla güncellendi.");
 	}
 
 	@Override
-	public Result delete(DeleteRentRequest deleteRentRequest) {
-		
+	public Result delete(DeleteRentRequest deleteRentRequest) throws BusinessException {
+
 		Rent rent = this.rentDao.getById(deleteRentRequest.getRentId());
-        this.rentDao.delete(rent);
-        return new SuccessResult("Kiralama başarıyla silindi.");
+		
+		if(!rentDao.existsById(deleteRentRequest.getRentId())) {
+			throw new BusinessException("Bu ID'de kiralama bulunamadı.");
+		}
+		
+		this.rentDao.delete(rent);
+		return new SuccessResult("Kiralama başarıyla silindi.");
 	}
 
 	@Override
-	public DataResult<List<RentListDto>> getAll() throws BusinessException{
-		
+	public DataResult<List<RentListDto>> getAll() throws BusinessException {
+
 		List<Rent> rents = this.rentDao.findAll();
-        if(rents.isEmpty())
-        	throw new BusinessException("Liste boş.");
-        List<RentListDto> response = rents.stream().map(rent->this.modelMapperService.forDto().map(rent, RentListDto.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<RentListDto>>(response,"Veriler başarıyla listelendi");
+		if (rents.isEmpty())
+			throw new BusinessException("Listede hiç kiralama yok.");
+		List<RentListDto> response = rents.stream()
+				.map(rent -> this.modelMapperService.forDto().map(rent, RentListDto.class))
+				.collect(Collectors.toList());
+		return new SuccessDataResult<List<RentListDto>>(response, "Veriler başarıyla listelendi");
 	}
 
 	@Override
-	public DataResult<List<RentListDto>> getByCarId(int id) throws BusinessException{
-		
+	public DataResult<List<RentListDto>> getByCarId(int id) throws BusinessException {
+
 		List<Rent> rents = this.rentDao.getAllByCarId(id);
-        if(rents.isEmpty())
-           throw new BusinessException("Liste boş.");
-        List<RentListDto> response = rents.stream().map(rent->this.modelMapperService.forDto().map(rent,RentListDto.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<RentListDto>>(response,"Veriler başarıyla listelendi");
+		if (rents.isEmpty())
+			throw new BusinessException("Bu ID'de kayıtlı kiralama bulunamadı.");
+		List<RentListDto> response = rents.stream()
+				.map(rent -> this.modelMapperService.forDto().map(rent, RentListDto.class))
+				.collect(Collectors.toList());
+		return new SuccessDataResult<List<RentListDto>>(response, "Veriler başarıyla listelendi");
 	}
 
 	@Override
 	public boolean checkIfCarIsRented(int id) {
-		
-		List<Rent> result=this.rentDao.getAllByCarId(id);
-        int flag=0;
-        List<RentListDto> response = result.stream().map(rent-> this.modelMapperService
-				.forDto().map(rent, RentListDto.class)).collect(Collectors.toList());
-        for (RentListDto rent : response) {
-            if(rent.getReturnDate()==null)
-                flag++;
-        }
-        if(flag!=0)
-            return true;
-        else
-            return false;
+
+		List<Rent> result = this.rentDao.getAllByCarId(id);
+		int flag = 0;
+		List<RentListDto> response = result.stream()
+				.map(rent -> this.modelMapperService.forDto().map(rent, RentListDto.class))
+				.collect(Collectors.toList());
+		for (RentListDto rent : response) {
+			if (rent.getReturnDate() == null || LocalDate.now().isBefore(rent.getReturnDate())
+					|| LocalDate.now().isEqual(rent.getReturnDate()))
+				flag++;
+		}
+		if (flag != 0)
+			return true;
+		else
+			return false;
 	}
 
 }

@@ -37,8 +37,12 @@ public class ColorManager implements ColorService {
 	}
 
 	@Override
-	public DataResult<List<ColorListDto>> getAll() {
+	public DataResult<List<ColorListDto>> getAll() throws BusinessException {
 		List<Color> result = this.colorDao.findAll();
+		
+		if(result.isEmpty()) {
+			throw new ColorNotfoundException("Listede henüz hiç renk yok.");
+		}
 
 		List<ColorListDto> response = result.stream()
 				.map(color -> this.modelMapperService.forDto().map(color, ColorListDto.class))
@@ -50,7 +54,6 @@ public class ColorManager implements ColorService {
 	public Result add(CreateColorRequest createColorRequest) throws BusinessException {
 		if (this.colorDao.existsColorByColorName(createColorRequest.getColorName())) {
 			throw new ColorAlreadyExistException("Aynı isimde renk kayıtlı");
-			// return new ErrorResult("Aynı isimde renk kayıtlı");
 		} else {
 			Color color = this.modelMapperService.forRequest().map(createColorRequest, Color.class);
 			this.colorDao.save(color);
@@ -66,7 +69,6 @@ public class ColorManager implements ColorService {
 			return new SuccessDataResult<GetColorDto>(response, "Veri getirildi.");
 		} else {
 			throw new ColorNotfoundException("Bu id'de renk bulunamadı");
-			// return new ErrorDataResult<GetColorDto>("Bu id'de renk bulunamadı");
 		}
 	}
 
@@ -81,7 +83,6 @@ public class ColorManager implements ColorService {
         	
         }else if(this.colorDao.existsColorByColorName(updateColorRequest.getColorName())){
         	throw new ColorAlreadyExistException("Bu isimde başka bir renk zaten var.");
-        	//return new ErrorResult("Güncelleme başarısız");
         }else {
         	throw new ColorNotfoundException("Bu Id'de kayıtlı renk bulunamadı.");
         }
@@ -94,7 +95,6 @@ public class ColorManager implements ColorService {
 			return new SuccessResult("Veri silindi");
 		} else {
 			throw new ColorNotfoundException("Bu Id'de kayıtlı renk bulunamadı.");
-			// return new ErrorResult("Bu id'de kayıtlı renk bulunamadı.");
 		}
 	}
 }
