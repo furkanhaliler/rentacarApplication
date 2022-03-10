@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentacar.business.abstracts.RentService;
-import com.turkcell.rentacar.business.dtos.GetRentDto;
-import com.turkcell.rentacar.business.dtos.RentListDto;
+import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
+import com.turkcell.rentacar.business.dtos.lists.RentListDto;
 import com.turkcell.rentacar.business.requests.create.CreateRentRequest;
 import com.turkcell.rentacar.business.requests.delete.DeleteRentRequest;
 import com.turkcell.rentacar.business.requests.update.UpdateRentRequest;
@@ -28,38 +28,47 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 public class RentController {
 
 	private RentService rentService;
-	
-	
+
 	@Autowired
 	public RentController(RentService rentService) {
-		super();
+
 		this.rentService = rentService;
 	}
-	
+
 	@PostMapping("/add")
-	Result add(@RequestBody  CreateRentRequest createRentRequest) throws BusinessException{
+	Result add(@RequestBody @Valid CreateRentRequest createRentRequest) throws BusinessException {
+
 		return this.rentService.add(createRentRequest);
 	}
-	
+
 	@PutMapping("/update")
-	Result update(@RequestBody UpdateRentRequest updateRentRequest) {
+	Result update(@RequestBody @Valid UpdateRentRequest updateRentRequest) throws BusinessException{
+
 		return this.rentService.update(updateRentRequest);
 	}
-	
+
 	@DeleteMapping("/delete")
-	Result delete(@RequestBody DeleteRentRequest deleteRentRequest) throws BusinessException {
+	Result delete(@RequestBody @Valid DeleteRentRequest deleteRentRequest) throws BusinessException {
+
 		return this.rentService.delete(deleteRentRequest);
 	}
+
 	@GetMapping("/getall")
-	DataResult<List<RentListDto>> getAll() throws BusinessException{
-		
+	DataResult<List<RentListDto>> getAll() throws BusinessException {
+
 		return this.rentService.getAll();
 	}
-	
+
 	@GetMapping("/getByCarId")
-	DataResult<List<RentListDto>> getByCarId(int id) throws BusinessException{
-		
+	DataResult<List<RentListDto>> getByCarId(int id) throws BusinessException {
+
 		return this.rentService.getByCarId(id);
 	}
 	
+	@GetMapping("/getByRentId")
+	DataResult<GetRentDto> getByRentId(int id) throws BusinessException{
+		
+		return this.rentService.getByRentId(id);
+	}
+
 }

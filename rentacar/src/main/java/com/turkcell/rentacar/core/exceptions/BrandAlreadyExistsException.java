@@ -1,10 +1,10 @@
 package com.turkcell.rentacar.core.exceptions;
 
-public class CarNotFoundException extends BusinessException {
+public class BrandAlreadyExistsException extends BusinessException {
 	
 	private static final long serialVersionUID = 1L;
 	
-    public CarNotFoundException(String message) {
+    public BrandAlreadyExistsException(String message) {
     	super(message);
     }
 }

@@ -1,7 +1,6 @@
 package com.turkcell.rentacar.business.requests.update;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

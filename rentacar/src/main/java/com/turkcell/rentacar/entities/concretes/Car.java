@@ -1,7 +1,6 @@
 package com.turkcell.rentacar.entities.concretes;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -19,6 +18,7 @@ import javax.persistence.*;
 @ToString
 @Table(name = "cars")
 public class Car {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "car_id")
@@ -46,11 +46,5 @@ public class Car {
     
     @OneToMany(mappedBy = "car")
     private List<Rent> rents;
-    
-    @Column(name= "rent_status")
-    private Boolean rentStatus;
-
-    @Column(name= "car_maintenance_status")
-    private Boolean carMaintenanceStatus;
     
 }

@@ -1,7 +1,6 @@
 package com.turkcell.rentacar.business.requests.update;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -20,10 +19,6 @@ public class UpdateRentRequest {
 	@NotNull
 	@Min(1)
 	private int rentId;
-//	
-//	@NotNull	
-//	@Min(1)
-//	private int carId;
 	
 	@NotNull
 	private LocalDate startDate;

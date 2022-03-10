@@ -44,12 +44,12 @@ public class RentacarApplication {
 
 	@ExceptionHandler({BusinessException.class})
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	public ErrorDataResult<Object> handleColorValidationException (BusinessException businessException){
+	public ErrorDataResult<Object> handleBusinessException (BusinessException businessException){
 		
 		Map<String, String> validationErrors = new HashMap<String, String>();
-		validationErrors.put(businessException.getMessage(), "Business.Exception");
+		validationErrors.put(businessException.getMessage(), "Business Exception");
 		
-		ErrorDataResult<Object> errorDataResult = new ErrorDataResult<Object>(validationErrors, "Validation Error.");
+		ErrorDataResult<Object> errorDataResult = new ErrorDataResult<Object>(validationErrors, "Business Exception");
 		return errorDataResult;
 		
 	}

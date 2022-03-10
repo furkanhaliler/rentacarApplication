@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
-import com.turkcell.rentacar.business.dtos.*;
-import com.turkcell.rentacar.business.requests.*;
+import com.turkcell.rentacar.business.dtos.gets.GetCarMaintenanceDto;
+import com.turkcell.rentacar.business.dtos.lists.CarMaintenanceListDto;
 import com.turkcell.rentacar.business.requests.create.CreateCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.delete.DeleteCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.update.UpdateCarMaintenanceRequest;
@@ -67,10 +66,10 @@ public class CarMaintenancesController {
 		return this.carMaintenanceService.update(updateCarMaintenanceRequest);
 	}
 	
-	@GetMapping("/getAllOnMaintenanceCars")
-	public DataResult<List<CarMaintenanceListDto>> getAllOnMaintenanceCars(){
+	@GetMapping("/getByCarMaintenanceId")
+	DataResult<GetCarMaintenanceDto> getByCarMaintenanceId (Integer id) throws BusinessException{
 		
-		return this.carMaintenanceService.getOnMaintenanceCars();
+		return this.carMaintenanceService.getByCarMaintenanceId(id);
 	}
 	
 	
