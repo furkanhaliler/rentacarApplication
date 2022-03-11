@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.business.requests.update;
+package com.turkcell.rentacar.business.requests.create;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -9,15 +9,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class UpdateColorRequest {
+@NoArgsConstructor
+public class CreateAdditionalServiceRequest {
+
+	@NotNull
+	@Size(min = 3, max = 50)
+	private String additionalServiceName;
 	
 	@NotNull
 	@Min(1)
-    private int colorId;
+	private double dailyPrice;
 	
-	@NotNull
-	@Size(min = 2, max = 50)
-    private String colorName;
 }

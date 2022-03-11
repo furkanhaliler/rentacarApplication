@@ -43,9 +43,10 @@ public class RentManager implements RentService {
 	public Result add(CreateRentRequest createRentRequest) throws BusinessException {
 
 		Rent rent = this.modelMapperService.forRequest().map(createRentRequest, Rent.class);
-		// rent.setRentId(0);
+		rent.setRentId(0);
 		this.carMaintenanceService.checkIfCarIsInMaintenance(createRentRequest.getCarId());
 
+		calculateTotalPrice(rent);
 		this.rentDao.save(rent);
 		return new SuccessResult("Kiralama başarıyla eklendi.");
 	}
@@ -57,6 +58,7 @@ public class RentManager implements RentService {
 		
 		Rent rent = this.rentDao.getById(updateRentRequest.getRentId());
 		rent = this.modelMapperService.forRequest().map(updateRentRequest, Rent.class);
+		calculateTotalPrice(rent);
 		this.rentDao.save(rent);
 		return new SuccessResult("Kiralama başarıyla güncellendi.");
 	}
@@ -66,8 +68,7 @@ public class RentManager implements RentService {
 
 		checkIfRentIdExists(deleteRentRequest.getRentId());
 		
-		Rent rent = this.rentDao.getById(deleteRentRequest.getRentId());
-		this.rentDao.delete(rent);
+		this.rentDao.deleteById(deleteRentRequest.getRentId());
 		return new SuccessResult("Kiralama başarıyla silindi.");
 	}
 
@@ -131,5 +132,16 @@ public class RentManager implements RentService {
 			
 			throw new BusinessException("Bu ID'de kayıtlı kiralama bulunamadı.");
 		}
+	}
+	
+	public void calculateTotalPrice(Rent rent) {
+		
+		double differentCityPrice = 0;
+		if(rent.getRentCity()!=rent.getReturnCity()) {
+			
+			differentCityPrice =750;
+		}
+		
+		rent.setTotalPrice(differentCityPrice);
 	}
 }

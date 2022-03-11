@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -53,5 +54,20 @@ public class RentacarApplication {
 		return errorDataResult;
 		
 	}
+	
+//sor
+	@ExceptionHandler({DataIntegrityViolationException.class})
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	public ErrorDataResult<Object> handleDataException (DataIntegrityViolationException dataIntegrityViolationException){
+		
+		Map<String, String> validationErrors = new HashMap<String, String>();
+		validationErrors.put(dataIntegrityViolationException.getRootCause().getMessage(), "Data Exception");
+//		dataIntegrityViolationException.getClass().getSimpleName();
+//		dataIntegrityViolationException.getMostSpecificCause().getMessage();
+		ErrorDataResult<Object> errorDataResult = new ErrorDataResult<Object>(validationErrors, "Data Exception");
+		return errorDataResult;
+		
+	}
+	
 
 }

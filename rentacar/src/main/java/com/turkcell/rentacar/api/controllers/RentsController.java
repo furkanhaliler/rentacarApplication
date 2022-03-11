@@ -25,12 +25,12 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/rents")
-public class RentController {
+public class RentsController {
 
 	private RentService rentService;
 
 	@Autowired
-	public RentController(RentService rentService) {
+	public RentsController(RentService rentService) {
 
 		this.rentService = rentService;
 	}

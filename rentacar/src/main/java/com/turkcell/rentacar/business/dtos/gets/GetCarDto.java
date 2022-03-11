@@ -15,4 +15,5 @@ public class GetCarDto {
     private String description;
     private String brandName;
     private String colorName;
+    private String baseCityName;
 }

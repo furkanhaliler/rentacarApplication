@@ -6,14 +6,12 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class UpdateRentRequest {
 
 	@NotNull
@@ -26,4 +24,15 @@ public class UpdateRentRequest {
 	@NotNull
 	private LocalDate returnDate;
 	
+	@NotNull
+	@Min(1)
+	private int carId;
+	
+	@NotNull
+	@Min(1)
+	private int rentCityId;
+	
+	@NotNull
+	@Min(1)
+	private int returnCityId;
 }

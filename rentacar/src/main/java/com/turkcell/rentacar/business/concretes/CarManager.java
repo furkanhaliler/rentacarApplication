@@ -143,8 +143,7 @@ public class CarManager implements CarService {
 	}
 
 	@Override
-	public DataResult<List<CarListDto>> findByDailyPriceBetween(double minValue, double maxValue)
-			throws BusinessException {
+	public DataResult<List<CarListDto>> findByDailyPriceBetween(double minValue, double maxValue) throws BusinessException {
 
 		if (minValue > maxValue) {
 			double a = minValue;

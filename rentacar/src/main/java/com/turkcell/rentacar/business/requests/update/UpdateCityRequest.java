@@ -11,13 +11,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateColorRequest {
+public class UpdateCityRequest {
 	
 	@NotNull
 	@Min(1)
-    private int colorId;
+    private int cityId;
 	
 	@NotNull
 	@Size(min = 2, max = 50)
-    private String colorName;
+    private String cityName;
+
 }

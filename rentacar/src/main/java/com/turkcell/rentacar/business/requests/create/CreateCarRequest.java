@@ -30,4 +30,8 @@ public class CreateCarRequest {
 	@NotNull
 	@Min(1)
     private int colorId;
+	
+	@NotNull
+	@Min(1)
+	private int baseCityId;
 }

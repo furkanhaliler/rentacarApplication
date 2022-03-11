@@ -3,7 +3,6 @@ package com.turkcell.rentacar.entities.concretes;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.List;
 
@@ -15,7 +14,6 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Table(name = "cars")
 public class Car {
 	
@@ -40,6 +38,10 @@ public class Car {
     @ManyToOne
     @JoinColumn(name="color_id")
     private Color color;
+    
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City baseCity;
     
     @OneToMany(mappedBy = "car")
 	private List<CarMaintenance> carMaintenances;

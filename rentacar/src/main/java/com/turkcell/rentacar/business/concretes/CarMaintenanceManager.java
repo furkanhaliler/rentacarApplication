@@ -56,7 +56,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	public Result add(CreateCarMaintenanceRequest createCarMaintenanceRequest) throws BusinessException {
 
 		CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createCarMaintenanceRequest, CarMaintenance.class);
-//		carMaintenance.setMaintenanceId(0);
+		carMaintenance.setMaintenanceId(0);;
 		this.rentService.checkIfCarIsRented(createCarMaintenanceRequest.getCarId());
 		this.carMaintenanceDao.save(carMaintenance);
 
@@ -100,10 +100,8 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	public Result delete(DeleteCarMaintenanceRequest deleteCarMaintenanceRequest) throws BusinessException {
 
 		checkIfCarMaintenanceIdExists(deleteCarMaintenanceRequest.getMaintenanceId());
-		
-		CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(deleteCarMaintenanceRequest,
-				CarMaintenance.class);
-		this.carMaintenanceDao.delete(carMaintenance);
+	
+		this.carMaintenanceDao.deleteById(deleteCarMaintenanceRequest.getMaintenanceId());
 		return new SuccessResult("Bakım silindi.");
 	}
 
