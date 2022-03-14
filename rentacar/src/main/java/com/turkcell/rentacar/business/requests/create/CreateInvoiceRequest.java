@@ -19,10 +19,6 @@ public class CreateInvoiceRequest {
 	
 	@NotNull
 	@Min(1)
-	private int customerUserId;
-	
-	@NotNull
-	@Min(1)
 	private int rentRentId;
 
 }

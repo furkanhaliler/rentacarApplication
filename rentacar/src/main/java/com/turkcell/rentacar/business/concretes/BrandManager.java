@@ -78,7 +78,9 @@ public class BrandManager implements BrandService {
 		checkIfBrandNameExists(updateBrandRequest.getBrandName());
 
 		Brand brand = this.modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
+		
 		this.brandDao.save(brand);
+		
 		return new SuccessResult("Güncelleme başarılı");
 	}
 
@@ -88,6 +90,7 @@ public class BrandManager implements BrandService {
 		checkIfBrandIdExists(deleteBrandRequest.getBrandId());
 		
 		this.brandDao.deleteById(deleteBrandRequest.getBrandId());
+		
 		return new SuccessResult("Marka silindi");
 	}
 

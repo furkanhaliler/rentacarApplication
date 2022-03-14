@@ -32,6 +32,6 @@ public interface RentService {
 	
 	double calculateRentPrice(int rentId);
 	
-	Rent bringRentForDates(int rentId);
+	Rent bringRentForAnything(int rentId);
 	
 }

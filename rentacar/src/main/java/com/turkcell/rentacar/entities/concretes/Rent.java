@@ -14,8 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +25,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Table(name = "rents")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Rent {
 
 	@Id

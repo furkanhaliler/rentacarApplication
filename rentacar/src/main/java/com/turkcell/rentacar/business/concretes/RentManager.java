@@ -44,9 +44,12 @@ public class RentManager implements RentService {
 	public Result add(CreateRentRequest createRentRequest) throws BusinessException {
 
 		Rent rent = this.modelMapperService.forRequest().map(createRentRequest, Rent.class);
+		
 		rent.setRentId(0);
+		
 		this.carMaintenanceService.checkIfCarIsInMaintenance(createRentRequest.getCarId());
-
+		checkIfCarIsRented(createRentRequest.getCarId());
+		
 		this.rentDao.save(rent);
 		
 		return new SuccessResult("Kiralama başarıyla eklendi.");
@@ -57,8 +60,7 @@ public class RentManager implements RentService {
 
 		checkIfRentIdExists(updateRentRequest.getRentId());
 		
-		Rent rent = this.rentDao.getById(updateRentRequest.getRentId());
-		rent = this.modelMapperService.forRequest().map(updateRentRequest, Rent.class);
+		Rent rent = this.modelMapperService.forRequest().map(updateRentRequest, Rent.class);
 
 		this.rentDao.save(rent);
 		
@@ -71,6 +73,7 @@ public class RentManager implements RentService {
 		checkIfRentIdExists(deleteRentRequest.getRentId());
 		
 		this.rentDao.deleteById(deleteRentRequest.getRentId());
+		
 		return new SuccessResult("Kiralama başarıyla silindi.");
 	}
 
@@ -79,9 +82,8 @@ public class RentManager implements RentService {
 
 		List<Rent> rents = this.rentDao.findAll();
 
-		List<RentListDto> response = rents.stream()
-				.map(rent -> this.modelMapperService.forDto().map(rent, RentListDto.class))
-				.collect(Collectors.toList());
+		List<RentListDto> response = rents.stream().map(rent -> this.modelMapperService
+				.forDto().map(rent, RentListDto.class)).collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<RentListDto>>(response, "Veriler başarıyla listelendi");
 	}
@@ -91,9 +93,8 @@ public class RentManager implements RentService {
 
 		List<Rent> rents = this.rentDao.getAllByCarId(id);
 
-		List<RentListDto> response = rents.stream()
-				.map(rent -> this.modelMapperService.forDto().map(rent, RentListDto.class))
-				.collect(Collectors.toList());
+		List<RentListDto> response = rents.stream().map(rent -> this.modelMapperService
+				.forDto().map(rent, RentListDto.class)).collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<RentListDto>>(response, "ID'ye göre listelendi.");
 	}
@@ -136,15 +137,18 @@ public class RentManager implements RentService {
 		}
 	}
 	
+	@Override
 	public double calculateRentPrice(int rentId) {
 		
 		double differentCityPrice = 0;
+		
 		if(!(this.rentDao.getById(rentId).getRentCity()==this.rentDao.getById(rentId).getReturnCity())) {
 			
 			differentCityPrice =750;
 		}
 		
-		long daysBetween = ChronoUnit.DAYS.between(this.rentDao.getById(rentId).getRentStartDate(), this.rentDao.getById(rentId).getRentReturnDate());
+		long daysBetween = (ChronoUnit.DAYS.between(
+				this.rentDao.getById(rentId).getRentStartDate(), this.rentDao.getById(rentId).getRentReturnDate()) + 1);
 			
 		double dailyPrice = this.rentDao.getById(rentId).getCar().getDailyPrice();
 		
@@ -154,7 +158,7 @@ public class RentManager implements RentService {
 	}
 
 	@Override
-	public Rent bringRentForDates(int rentId) {
+	public Rent bringRentForAnything(int rentId) {
 		
 		return this.rentDao.getById(rentId);
 	}

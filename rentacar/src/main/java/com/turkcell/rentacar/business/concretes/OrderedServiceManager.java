@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.concretes;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
+import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.dtos.gets.GetOrderedServiceDto;
 import com.turkcell.rentacar.business.dtos.lists.OrderedServiceListDto;
 import com.turkcell.rentacar.business.requests.create.CreateOrderedServiceRequest;
@@ -20,18 +22,21 @@ import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.OrderedServiceDao;
 import com.turkcell.rentacar.entities.concretes.OrderedService;
+import com.turkcell.rentacar.entities.concretes.Rent;
 
 @Service
 public class OrderedServiceManager implements OrderedServiceService {
 	
-	OrderedServiceDao orderedServiceDao;
-	ModelMapperService modelMapperService;
+	private OrderedServiceDao orderedServiceDao;
+	private ModelMapperService modelMapperService;
+	private RentService rentService;
 	
 	@Autowired
-	public OrderedServiceManager(OrderedServiceDao orderedServiceDao, ModelMapperService modelMapperService) {
+	public OrderedServiceManager(OrderedServiceDao orderedServiceDao, ModelMapperService modelMapperService, RentService rentService) {
 	
 		this.orderedServiceDao = orderedServiceDao;
 		this.modelMapperService = modelMapperService;
+		this.rentService = rentService;
 	}
 
 	@Override
@@ -49,7 +54,9 @@ public class OrderedServiceManager implements OrderedServiceService {
 	public Result add(CreateOrderedServiceRequest createOrderedServiceRequest) throws BusinessException {
 		
 		OrderedService orderedService = this.modelMapperService.forRequest().map(createOrderedServiceRequest, OrderedService.class);
+		
 		orderedService.setId(0);
+		
 		this.orderedServiceDao.save(orderedService);
 		
 		return new SuccessResult("Başarıyla eklendi.");
@@ -61,6 +68,7 @@ public class OrderedServiceManager implements OrderedServiceService {
 		checkIfOrderedServiceIdExists(id);
 		
 		OrderedService orderedService = this.orderedServiceDao.getById(id);
+		
 		GetOrderedServiceDto response = this.modelMapperService.forDto().map(orderedService, GetOrderedServiceDto.class);
 		
 		return new SuccessDataResult<GetOrderedServiceDto>(response, "Veri başarıyla getirildi.");
@@ -72,6 +80,7 @@ public class OrderedServiceManager implements OrderedServiceService {
 		checkIfOrderedServiceIdExists(updateOrderedServiceRequest.getId());
 		
 		OrderedService orderedService = this.modelMapperService.forRequest().map(updateOrderedServiceRequest, OrderedService.class);
+		
 		this.orderedServiceDao.save(orderedService);
 	
 		return new SuccessResult("Başarıyla güncellendi.");
@@ -86,7 +95,6 @@ public class OrderedServiceManager implements OrderedServiceService {
 		
 		return new SuccessResult("Başarıyla silindi.");
 	}
-
 
 	@Override
 	public DataResult<List<OrderedServiceListDto>> getByRentId(Integer id) {
@@ -106,9 +114,9 @@ public class OrderedServiceManager implements OrderedServiceService {
 			
 			throw new BusinessException("Bu ID'de kayıtlı sipariş bulunamadı.");
 		}
-
 	}
 	
+	@Override
 	public double calculateOrderedServicePrice(int rentId) {
 		
 		List<OrderedService> result = this.orderedServiceDao.findOrderedServicesByRent_RentId(rentId);
@@ -120,7 +128,11 @@ public class OrderedServiceManager implements OrderedServiceService {
 			totalPrice += orderedService.getOrderedServiceAmount() * orderedService.getAdditionalService().getDailyPrice();
 		}
 		
-		return totalPrice;
+		Rent rent = this.rentService.bringRentForAnything(rentId);
+		
+		long daysBetween = (ChronoUnit.DAYS.between(rent.getRentStartDate(), rent.getRentReturnDate()) +1);
+		
+		return totalPrice * daysBetween;
 	}
 
 

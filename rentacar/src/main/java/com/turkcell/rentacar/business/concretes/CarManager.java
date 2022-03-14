@@ -43,7 +43,9 @@ public class CarManager implements CarService {
 	public Result add(CreateCarRequest createCarRequest) {
 
 		Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
+		
 		this.carDao.save(car);
+		
 		return new SuccessResult("Araba eklendi.");
 	}
 
@@ -53,6 +55,7 @@ public class CarManager implements CarService {
 		checkIfCarIdExists(id);
 
 		Car car = carDao.getById(id);
+		
 		GetCarDto response = this.modelMapperService.forDto().map(car, GetCarDto.class);
 
 		return new SuccessDataResult<GetCarDto>(response, "Id'ye göre listelendi");
@@ -75,6 +78,7 @@ public class CarManager implements CarService {
 		checkIfCarIdExists(updateCarRequest.getId());
 
 		Car car = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
+		
 		this.carDao.save(car);
 
 		return new SuccessResult("Araba güncellendi.");
@@ -86,6 +90,7 @@ public class CarManager implements CarService {
 		checkIfCarIdExists(deleteCarRequest.getId());
 
 		this.carDao.deleteById(deleteCarRequest.getId());
+		
 		return new SuccessResult("Araba silindi.");
 	}
 
@@ -98,6 +103,7 @@ public class CarManager implements CarService {
 		
 		List<CarListDto> response = result.stream()
 				.map(car -> this.modelMapperService.forDto().map(car, CarListDto.class)).collect(Collectors.toList());
+		
 		return new SuccessDataResult<List<CarListDto>>(response, "Başarıyla sayfalandı");
 	}
 
@@ -118,6 +124,7 @@ public class CarManager implements CarService {
 
 		List<CarListDto> response = result.stream()
 				.map(car -> this.modelMapperService.forDto().map(car, CarListDto.class)).collect(Collectors.toList());
+		
 		return new SuccessDataResult<List<CarListDto>>(response, "Veriler başarıyla sıralandı.");
 	}
 
@@ -128,6 +135,7 @@ public class CarManager implements CarService {
 
 		List<CarListDto> response = result.stream()
 				.map(car -> this.modelMapperService.forDto().map(car, CarListDto.class)).collect(Collectors.toList());
+		
 		return new SuccessDataResult<List<CarListDto>>(response, "Başarıyla listelendi.");
 	}
 
@@ -138,6 +146,7 @@ public class CarManager implements CarService {
 
 		List<CarListDto> response = result.stream()
 				.map(car -> this.modelMapperService.forDto().map(car, CarListDto.class)).collect(Collectors.toList());
+		
 		return new SuccessDataResult<List<CarListDto>>(response, "Başarıyla listelendi.");
 	}
 
@@ -154,6 +163,7 @@ public class CarManager implements CarService {
 
 		List<CarListDto> response = result.stream()
 				.map(car -> this.modelMapperService.forDto().map(car, CarListDto.class)).collect(Collectors.toList());
+		
 		return new SuccessDataResult<List<CarListDto>>(response, "Başarıyla listelendi.");
 	}
 
@@ -164,7 +174,6 @@ public class CarManager implements CarService {
 
 			throw new CarNotFoundException("Bu ID'de kayıtlı araba bulunamadı.");
 		}
-		
 	}
 
 }

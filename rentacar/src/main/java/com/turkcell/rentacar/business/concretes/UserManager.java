@@ -22,7 +22,6 @@ public class UserManager implements UserService {
 	private UserDao<User> userDao;
 	private ModelMapperService modelMapperService;
 
-
 	@Autowired
 	public UserManager(UserDao<User> userDao, ModelMapperService modelMapperService) {
 		
@@ -38,8 +37,7 @@ public class UserManager implements UserService {
 		List<UserListDto> response = result.stream().map(user -> this.modelMapperService
 				.forDto().map(user, UserListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<UserListDto>>(response, "Veriler başarıyla sıralandı.");
-		
+		return new SuccessDataResult<List<UserListDto>>(response, "Veriler başarıyla sıralandı.");	
 	}
 
 	@Override
@@ -61,7 +59,6 @@ public class UserManager implements UserService {
 			
 			throw new BusinessException("Bu ID'de kayıtlı kullanıcı bulunamadı.");
 		}
-
 	}
 
 }

@@ -40,9 +40,8 @@ public class ColorManager implements ColorService {
 
 		List<Color> result = this.colorDao.findAll();
 
-		List<ColorListDto> response = result.stream()
-				.map(color -> this.modelMapperService.forDto().map(color, ColorListDto.class))
-				.collect(Collectors.toList());
+		List<ColorListDto> response = result.stream().map(color -> this.modelMapperService
+				.forDto().map(color, ColorListDto.class)).collect(Collectors.toList());
 
 		return new SuccessDataResult<List<ColorListDto>>(response, "Veriler listelendi");
 	}
@@ -53,7 +52,9 @@ public class ColorManager implements ColorService {
 		checkIfColorNameExists(createColorRequest.getColorName());
 
 		Color color = this.modelMapperService.forRequest().map(createColorRequest, Color.class);
+		
 		this.colorDao.save(color);
+		
 		return new SuccessResult("Renk eklendi.");
 	}
 
@@ -63,7 +64,9 @@ public class ColorManager implements ColorService {
 		checkIfColorIdExists(id);
 
 		Color foundColor = colorDao.getById(id);
+		
 		GetColorDto response = this.modelMapperService.forDto().map(foundColor, GetColorDto.class);
+		
 		return new SuccessDataResult<GetColorDto>(response, "Veri getirildi.");
 	}
 
@@ -74,7 +77,9 @@ public class ColorManager implements ColorService {
 		checkIfColorNameExists(updateColorRequest.getColorName());
 
 		Color color = this.modelMapperService.forRequest().map(updateColorRequest, Color.class);
+		
 		this.colorDao.save(color);
+		
 		return new SuccessResult("Veri güncellendi");
 	}
 
@@ -84,6 +89,7 @@ public class ColorManager implements ColorService {
 		checkIfColorIdExists(deleteColorRequest.getColorId());
 
 		this.colorDao.deleteById(deleteColorRequest.getColorId());
+		
 		return new SuccessResult("Veri silindi");
 	}
 

@@ -51,11 +51,12 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		checkIfAdditionalServiceNameExists(createAdditionalServiceRequest.getAdditionalServiceName());
 		
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(createAdditionalServiceRequest, AdditionalService.class);
+		
 		additionalService.setId(0);
+		
 		this.additionalServiceDao.save(additionalService);
 		
-		return new SuccessResult("Başarıyla eklendi.");
-		
+		return new SuccessResult("Başarıyla eklendi.");	
 	}
 
 	@Override
@@ -64,6 +65,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		checkIfAdditionalServiceIdExists(id);
 		
 		AdditionalService additionalService = additionalServiceDao.getById(id);
+		
 		GetAdditionalServiceDto response = this.modelMapperService.forDto().map(additionalService, GetAdditionalServiceDto.class);
 		
 		return new SuccessDataResult<GetAdditionalServiceDto>(response, "Veri başarıyla getirildi.");
@@ -75,6 +77,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		checkIfAdditionalServiceIdExists(updateAdditionalServiceRequest.getAdditionalServiceId());
 		
 		AdditionalService additionalService = this.modelMapperService.forRequest().map(updateAdditionalServiceRequest, AdditionalService.class);
+		
 		this.additionalServiceDao.save(additionalService);
 		
 		return new SuccessResult("Başarıyla güncellendi.");
@@ -97,7 +100,6 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 			
 			throw new BusinessException("Bu isimde ek hizmet zaten mevcut.");
 		}
-
 	}
 
 	@Override
@@ -107,7 +109,6 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 			
 			throw new BusinessException("Bu ID'de kayıtlı ek hizmet bulunamadı.");
 		}
-
 	}
 
 }

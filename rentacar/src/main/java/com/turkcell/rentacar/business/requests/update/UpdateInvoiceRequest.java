@@ -20,11 +20,7 @@ public class UpdateInvoiceRequest {
 	@NotNull
 	@Size(min = 2, max = 20)
 	private String invoiceNumber;
-	
-	@NotNull
-	@Min(1)
-	private int customerUserId;
-	
+
 	@NotNull
 	@Min(1)
 	private int rentRentId;

@@ -24,14 +24,17 @@ public interface InvoiceService {
 	Result update(UpdateInvoiceRequest updateInvoiceRequest) throws BusinessException;
 
 	Result delete(DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException;
-	
-	void checkIfInvoiceIdExists (Integer id) throws BusinessException;
-	
+		
 	DataResult<List<InvoiceListDto>> getByCustomerUserId(Integer id);
 	
 	DataResult<List<InvoiceListDto>> findByCreationDateBetween(LocalDate startDate, LocalDate endDate);
 	
+	void checkIfInvoiceIdExists (Integer id) throws BusinessException;
+	
 	void calculateAndSetTotalPrice (int rentId, Invoice invoice);
 	
-	void setRentDates (int rentId, Invoice invoice);
+	void setRentDatesAndCustomerId (int rentId, Invoice invoice);
+	
+	void checkIfRentIdAlreadyExists(int rentId) throws BusinessException;
+	
 }

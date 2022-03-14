@@ -94,7 +94,6 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 			
 			throw new BusinessException("Bu ID'de kayıtlı kişisel müşteri bulunamadı.");
 		}
-
 	}
 
 }

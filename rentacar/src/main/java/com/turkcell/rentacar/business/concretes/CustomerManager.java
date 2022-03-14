@@ -34,8 +34,8 @@ public class CustomerManager implements CustomerService {
 	
 		List<Customer> result = this.customerDao.findAll();
 		
-		List<CustomerListDto> response = result.stream().map(customer -> this.modelMapperService.forDto().map(customer, CustomerListDto.class
-				)).collect(Collectors.toList());
+		List<CustomerListDto> response = result.stream().map(customer -> this.modelMapperService
+				.forDto().map(customer, CustomerListDto.class)).collect(Collectors.toList());
 		
 		return new SuccessDataResult<List<CustomerListDto>>(response, "Veriler başarıyla listelendi");
 	}

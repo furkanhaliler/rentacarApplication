@@ -96,7 +96,6 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 			
 			throw new BusinessException("Bu ID'de kayıtlı kurumsal müşteri bulunamadı.");
 		}
-
 	}
 
 }

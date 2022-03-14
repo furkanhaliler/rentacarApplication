@@ -51,6 +51,7 @@ public class CityManager implements CityService {
 		checkIfCityNameExists(createCityRequest.getCityName());
 		
 		City city = this.modelMapperService.forRequest().map(createCityRequest, City.class);
+		
 		this.cityDao.save(city);
 		
 		return new SuccessResult("Başarıyla eklendi.");
@@ -62,10 +63,10 @@ public class CityManager implements CityService {
 		checkIfCityIdExists(id);
 		
 		City city = this.cityDao.getById(id);
+		
 		GetCityDto response = this.modelMapperService.forDto().map(city, GetCityDto.class);
 		
 		return new SuccessDataResult<GetCityDto>(response, "Veri başarıyla getirildi.");
-		
 	}
 
 	@Override
@@ -75,6 +76,7 @@ public class CityManager implements CityService {
 		checkIfCityNameExists(updateCityRequest.getCityName());
 	
 		City city = this.modelMapperService.forRequest().map(updateCityRequest, City.class);
+		
 		this.cityDao.save(city);
 		
 		return new SuccessResult("Başarıyla güncellendi.");
@@ -97,7 +99,6 @@ public class CityManager implements CityService {
 			
 			throw new BusinessException("Bu isimde şehir zaten mevcut.");
 		}
-
 	}
 
 	@Override
@@ -107,7 +108,6 @@ public class CityManager implements CityService {
 			
 			throw new BusinessException("Bu ID'de kayıtlı şehir bulunamadı.");
 		}
-
 	}
 
 }

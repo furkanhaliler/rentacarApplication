@@ -45,9 +45,8 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 		List<CarMaintenance> result = this.carMaintenanceDao.findAll();
 
-		List<CarMaintenanceListDto> response = result.stream().map(
-				carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceListDto.class))
-				.collect(Collectors.toList());
+		List<CarMaintenanceListDto> response = result.stream().map(carMaintenance -> this.modelMapperService
+				.forDto().map(carMaintenance, CarMaintenanceListDto.class)).collect(Collectors.toList());
 
 		return new SuccessDataResult<List<CarMaintenanceListDto>>(response, "Veriler başarıyla listelendi.");
 	}
@@ -56,8 +55,13 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	public Result add(CreateCarMaintenanceRequest createCarMaintenanceRequest) throws BusinessException {
 
 		CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createCarMaintenanceRequest, CarMaintenance.class);
-		carMaintenance.setMaintenanceId(0);;
+		
+		carMaintenance.setMaintenanceId(0);
+		
 		this.rentService.checkIfCarIsRented(createCarMaintenanceRequest.getCarId());
+		
+		checkIfCarIsInMaintenance(createCarMaintenanceRequest.getCarId());
+		
 		this.carMaintenanceDao.save(carMaintenance);
 
 		return new SuccessResult("Araba bakımı eklendi");
@@ -68,9 +72,9 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 		List<CarMaintenance> carMaintenanceList = carMaintenanceDao.getAllByCarId(id);
 
-		List<CarMaintenanceListDto> response = carMaintenanceList.stream().map(
-				carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceListDto.class))
-				.collect(Collectors.toList());
+		List<CarMaintenanceListDto> response = carMaintenanceList.stream().map(carMaintenance -> this.modelMapperService
+				.forDto().map(carMaintenance, CarMaintenanceListDto.class)).collect(Collectors.toList());
+		
 		return new SuccessDataResult<List<CarMaintenanceListDto>>(response, "Id'ye göre listelendi.");
 	}
 
@@ -82,6 +86,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		CarMaintenance carMaintenance = this.carMaintenanceDao.getById(id);
 		
 		GetCarMaintenanceDto response = this.modelMapperService.forDto().map(carMaintenance, GetCarMaintenanceDto.class);
+		
 		return new SuccessDataResult<GetCarMaintenanceDto>(response, "ID'ye göre listelendi.");
 	}
 	
@@ -90,9 +95,10 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 		checkIfCarMaintenanceIdExists(updateCarMaintenanceRequest.getMaintenanceId());
 
-		CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateCarMaintenanceRequest,
-				CarMaintenance.class);
+		CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateCarMaintenanceRequest, CarMaintenance.class);
+		
 		this.carMaintenanceDao.save(carMaintenance);
+		
 		return new SuccessResult("Bakım güncellendi.");
 	}
 
@@ -102,6 +108,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		checkIfCarMaintenanceIdExists(deleteCarMaintenanceRequest.getMaintenanceId());
 	
 		this.carMaintenanceDao.deleteById(deleteCarMaintenanceRequest.getMaintenanceId());
+		
 		return new SuccessResult("Bakım silindi.");
 	}
 
