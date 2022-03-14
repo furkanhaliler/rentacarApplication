@@ -87,6 +87,18 @@ public class OrderedServiceManager implements OrderedServiceService {
 		return new SuccessResult("Başarıyla silindi.");
 	}
 
+
+	@Override
+	public DataResult<List<OrderedServiceListDto>> getByRentId(Integer id) {
+		
+		List<OrderedService> result = this.orderedServiceDao.findOrderedServicesByRent_RentId(id);
+		
+		List<OrderedServiceListDto> response = result.stream().map(orderedService -> this.modelMapperService
+				.forDto().map(orderedService, OrderedServiceListDto.class)).collect(Collectors.toList());
+		
+		return new SuccessDataResult<List<OrderedServiceListDto>>(response, "Kiralama numarasına göre başarıyla sıralandı.");
+	}
+	
 	@Override
 	public void checkIfOrderedServiceIdExists(Integer id) throws BusinessException {
 		
@@ -96,5 +108,20 @@ public class OrderedServiceManager implements OrderedServiceService {
 		}
 
 	}
+	
+	public double calculateOrderedServicePrice(int rentId) {
+		
+		List<OrderedService> result = this.orderedServiceDao.findOrderedServicesByRent_RentId(rentId);
+		
+		double totalPrice = 0;
+		
+		for (OrderedService orderedService : result) {
+			
+			totalPrice += orderedService.getOrderedServiceAmount() * orderedService.getAdditionalService().getDailyPrice();
+		}
+		
+		return totalPrice;
+	}
+
 
 }

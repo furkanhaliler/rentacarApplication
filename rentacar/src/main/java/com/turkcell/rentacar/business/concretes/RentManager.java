@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.business.concretes;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,8 +47,8 @@ public class RentManager implements RentService {
 		rent.setRentId(0);
 		this.carMaintenanceService.checkIfCarIsInMaintenance(createRentRequest.getCarId());
 
-		calculateTotalPrice(rent);
 		this.rentDao.save(rent);
+		
 		return new SuccessResult("Kiralama başarıyla eklendi.");
 	}
 
@@ -58,8 +59,9 @@ public class RentManager implements RentService {
 		
 		Rent rent = this.rentDao.getById(updateRentRequest.getRentId());
 		rent = this.modelMapperService.forRequest().map(updateRentRequest, Rent.class);
-		calculateTotalPrice(rent);
+
 		this.rentDao.save(rent);
+		
 		return new SuccessResult("Kiralama başarıyla güncellendi.");
 	}
 
@@ -118,8 +120,8 @@ public class RentManager implements RentService {
 				.collect(Collectors.toList());
 
 		for (RentListDto rent : response) {
-			if (rent.getReturnDate() == null || LocalDate.now().isBefore(rent.getReturnDate())
-					|| LocalDate.now().isEqual(rent.getReturnDate())) {
+			if (rent.getRentReturnDate() == null || LocalDate.now().isBefore(rent.getRentReturnDate())
+					|| LocalDate.now().isEqual(rent.getRentReturnDate())) {
 				throw new BusinessException("Araç şu anda kiradadır.");
 			}
 		}
@@ -134,14 +136,26 @@ public class RentManager implements RentService {
 		}
 	}
 	
-	public void calculateTotalPrice(Rent rent) {
+	public double calculateRentPrice(int rentId) {
 		
 		double differentCityPrice = 0;
-		if(rent.getRentCity()!=rent.getReturnCity()) {
+		if(!(this.rentDao.getById(rentId).getRentCity()==this.rentDao.getById(rentId).getReturnCity())) {
 			
 			differentCityPrice =750;
 		}
 		
-		rent.setTotalPrice(differentCityPrice);
+		long daysBetween = ChronoUnit.DAYS.between(this.rentDao.getById(rentId).getRentStartDate(), this.rentDao.getById(rentId).getRentReturnDate());
+			
+		double dailyPrice = this.rentDao.getById(rentId).getCar().getDailyPrice();
+		
+		double totalRentPrice = (daysBetween * dailyPrice) + differentCityPrice;
+		
+		return totalRentPrice;
+	}
+
+	@Override
+	public Rent bringRentForDates(int rentId) {
+		
+		return this.rentDao.getById(rentId);
 	}
 }

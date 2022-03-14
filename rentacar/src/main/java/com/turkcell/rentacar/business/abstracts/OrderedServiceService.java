@@ -24,4 +24,8 @@ public interface OrderedServiceService {
 	Result delete(DeleteOrderedServiceRequest deleteOrderedServiceRequest) throws BusinessException;
 	 
 	void checkIfOrderedServiceIdExists (Integer id) throws BusinessException;
+	
+	DataResult<List<OrderedServiceListDto>> getByRentId(Integer id);
+	
+	double calculateOrderedServicePrice(int rentId);
 }

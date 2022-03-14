@@ -10,6 +10,7 @@ import com.turkcell.rentacar.business.requests.update.UpdateRentRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
+import com.turkcell.rentacar.entities.concretes.Rent;
 
 public interface RentService {
 
@@ -28,5 +29,9 @@ public interface RentService {
 	void checkIfCarIsRented(int id) throws BusinessException;
 	
 	void checkIfRentIdExists (Integer id) throws BusinessException;
+	
+	double calculateRentPrice(int rentId);
+	
+	Rent bringRentForDates(int rentId);
 	
 }

@@ -8,8 +8,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-
-
 @Entity
 @Data
 @AllArgsConstructor
@@ -48,5 +46,5 @@ public class Car {
     
     @OneToMany(mappedBy = "car")
     private List<Rent> rents;
-    
+   
 }

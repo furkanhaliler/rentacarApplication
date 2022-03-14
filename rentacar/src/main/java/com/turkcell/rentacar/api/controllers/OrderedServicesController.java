@@ -66,6 +66,12 @@ public class OrderedServicesController {
 		return this.orderedServiceService.delete(deleteOrderedServiceRequest);
 	}
 	
+	@GetMapping("/getByRentId/{rentId}")
+	DataResult<List<OrderedServiceListDto>> getByRentId(@RequestParam("rentId") Integer id){
+		
+		return this.orderedServiceService.getByRentId(id);
+	}
+	
 	
 }
 

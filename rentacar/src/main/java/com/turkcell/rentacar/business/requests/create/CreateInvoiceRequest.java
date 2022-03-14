@@ -1,43 +1,28 @@
 package com.turkcell.rentacar.business.requests.create;
 
-import java.time.LocalDate;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class CreateRentRequest {
-	
-	@NotNull	
-	@Min(1)
-	private int carId;
-	
+public class CreateInvoiceRequest {
+
 	@NotNull
-	private LocalDate rentStartDate;
-	
-	@NotNull
-	private LocalDate rentReturnDate;
-	
-	@NotNull
-	@Min(1)
-	private int rentCityId;
-	
-	@NotNull
-	@Min(1)
-	private int returnCityId;
+	@Size(min = 2, max = 20)
+	private String invoiceNumber;
 	
 	@NotNull
 	@Min(1)
 	private int customerUserId;
 	
-
-	
-	
+	@NotNull
+	@Min(1)
+	private int rentRentId;
 
 }

@@ -1,7 +1,6 @@
 package com.turkcell.rentacar.business.dtos.gets;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,15 +9,23 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetRentDto {
-	
-	private int rentId;
-	private LocalDate rentStartDate;
-	private LocalDate rentReturnDate;
-	private int carId;
-	private String rentCityName;
-	private String returnCityName;
-	private List<GetOrderedServiceDto> orderedServices;
-	private int customerUserId;
+public class GetInvoiceDto {
 	private int invoiceId;
+
+	private String invoiceNumber;
+
+	private LocalDate creationDate;
+
+	private LocalDate rentStartDate;
+
+	private LocalDate rentReturnDate;
+
+	private int totalRentDay;
+
+	private double totalPrice;
+
+	private int customerUserId;
+
+	private int rentRentId;
+
 }

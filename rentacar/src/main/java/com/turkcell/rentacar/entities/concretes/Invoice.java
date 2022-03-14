@@ -1,7 +1,6 @@
 package com.turkcell.rentacar.entities.concretes;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,47 +17,46 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@Table(name = "rents")
+@Table(name = "invoices")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-public class Rent {
-
+public class Invoice {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "rent_id")
-	private int rentId;
-
-	@Column(name = "start_date")
+	@Column(name = "invoice_id")
+	private int invoiceId;
+	
+	@Column(name = "invoice_number")
+	private String invoiceNumber;
+	
+	@Column(name = "creation_date")
+	private LocalDate creationDate;
+	
+	@Column(name = "rent_start_date")
 	private LocalDate rentStartDate;
-
-	@Column(name = "return_date")
+	
+	@Column(name = "rent_return_date")
 	private LocalDate rentReturnDate;
 	
-	@ManyToOne
-	@JoinColumn(name = "rent_city_id")
-	private City rentCity;
+	@Column(name = "total_rent_day")
+	private int totalRentDay;
 	
-	@ManyToOne
-	@JoinColumn(name ="return_city_id")
-	private City returnCity;
-	
-	@ManyToOne
-	@JoinColumn(name = "car_id")
-	private Car car;
-	
-	@OneToMany(mappedBy = "rent")
-	private List<OrderedService> orderedServices;
+	@Column(name = "total_price")
+	private double totalPrice;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private Customer customer;
 	
-	@OneToOne(mappedBy = "rent")
-	private Invoice invoice;
+	@OneToOne
+	@JoinColumn(name = "rent_id")
+	private Rent rent;
+	
+	
+	
 }
