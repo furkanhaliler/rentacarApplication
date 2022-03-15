@@ -3,6 +3,7 @@ package com.turkcell.rentacar.entities.concretes;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,6 +58,6 @@ public class Rent {
 	@JoinColumn(name = "user_id")
 	private Customer customer;
 	
-	@OneToOne(mappedBy = "rent")
+	@OneToOne(mappedBy = "rent" , cascade = CascadeType.REFRESH)
 	private Invoice invoice;
 }

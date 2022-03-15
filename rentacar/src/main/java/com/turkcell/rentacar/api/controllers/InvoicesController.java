@@ -44,10 +44,16 @@ public class InvoicesController {
 		return this.invoiceService.getAll();
 	}
 	
-	@PostMapping("/add")
-	Result add(@RequestBody @Valid CreateInvoiceRequest createInvoiceRequest) throws BusinessException{
+	@PostMapping("/addForIndividualCustomers")
+	Result addForIndividualCustomers(@RequestBody @Valid CreateInvoiceRequest createInvoiceRequest) throws BusinessException{
 		
-		return this.invoiceService.add(createInvoiceRequest);
+		return this.invoiceService.addForIndividualCustomers(createInvoiceRequest);
+	}
+	
+	@PostMapping("/addForCorporateCustomers")
+	Result addForCorporateCustomers(@RequestBody @Valid CreateInvoiceRequest createInvoiceRequest) throws BusinessException{
+		
+		return this.invoiceService.addForCorporateCustomers(createInvoiceRequest);
 	}
 
 	@GetMapping("/getById/{invoiceId}")

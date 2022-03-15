@@ -48,6 +48,7 @@ public class RentManager implements RentService {
 		rent.setRentId(0);
 		
 		this.carMaintenanceService.checkIfCarIsInMaintenance(createRentRequest.getCarId());
+		
 		checkIfCarIsRented(createRentRequest.getCarId());
 		
 		this.rentDao.save(rent);

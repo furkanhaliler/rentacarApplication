@@ -56,13 +56,28 @@ public class InvoiceManager implements InvoiceService {
 	}
 
 	@Override
-	public Result add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException {
+	public Result addForIndividualCustomers(CreateInvoiceRequest createInvoiceRequest) throws BusinessException {
 
 		Invoice invoice = this.modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);
 		
 		checkIfRentIdAlreadyExists(createInvoiceRequest.getRentRentId());
 				
-		calculateAndSetTotalPrice(createInvoiceRequest.getRentRentId(), invoice);
+		calculateAndSetTotalPriceForIndividualCustomers(createInvoiceRequest.getRentRentId(), invoice);
+		setRentDatesAndCustomerId(createInvoiceRequest.getRentRentId(), invoice);
+		
+		this.invoiceDao.save(invoice);
+		
+		return new SuccessResult("Başarıyla eklendi.");
+	}
+	
+	@Override
+	public Result addForCorporateCustomers(CreateInvoiceRequest createInvoiceRequest) throws BusinessException {
+
+		Invoice invoice = this.modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);
+		
+		checkIfRentIdAlreadyExists(createInvoiceRequest.getRentRentId());
+				
+		calculateAndSetTotalPriceForCorporateCustomers(createInvoiceRequest.getRentRentId(), invoice);
 		setRentDatesAndCustomerId(createInvoiceRequest.getRentRentId(), invoice);
 		
 		this.invoiceDao.save(invoice);
@@ -89,7 +104,7 @@ public class InvoiceManager implements InvoiceService {
 
 		Invoice invoice = this.modelMapperService.forRequest().map(updateInvoiceRequest, Invoice.class);
 		
-		calculateAndSetTotalPrice(updateInvoiceRequest.getRentRentId() , invoice);
+//		calculateAndSetTotalPrice(updateInvoiceRequest.getRentRentId() , invoice);
 		setRentDatesAndCustomerId(updateInvoiceRequest.getRentRentId(), invoice);
 
 		this.invoiceDao.save(invoice);
@@ -148,7 +163,19 @@ public class InvoiceManager implements InvoiceService {
 	}
 	
 	@Override
-	public void calculateAndSetTotalPrice (int rentId, Invoice invoice) {
+	public void calculateAndSetTotalPriceForIndividualCustomers (int rentId, Invoice invoice) {
+		
+		double rentPrice = this.rentService.calculateRentPrice(rentId);
+		
+		double orderedServicePrice = this.orderedServiceService.calculateOrderedServicePrice(rentId);
+		
+		double totalInvoicePrice = rentPrice + orderedServicePrice;
+		
+		invoice.setTotalPrice(totalInvoicePrice);
+	}
+	
+	@Override
+	public void calculateAndSetTotalPriceForCorporateCustomers (int rentId, Invoice invoice) {
 		
 		double rentPrice = this.rentService.calculateRentPrice(rentId);
 		

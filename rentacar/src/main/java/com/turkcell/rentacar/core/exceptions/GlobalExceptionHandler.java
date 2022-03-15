@@ -52,6 +52,5 @@ public class GlobalExceptionHandler {
 //		dataIntegrityViolationException.getMostSpecificCause().getMessage();
 		ErrorDataResult<Object> errorDataResult = new ErrorDataResult<Object>(validationErrors, "Data Exception");
 		return errorDataResult;
-		
 	}
 }

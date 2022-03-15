@@ -1,5 +1,7 @@
 package com.turkcell.rentacar.business.dtos.lists;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,4 +13,6 @@ public class CityListDto {
 
 	private int id;
 	private String cityName;
+	private List<CarListDto> cars;
+	
 }

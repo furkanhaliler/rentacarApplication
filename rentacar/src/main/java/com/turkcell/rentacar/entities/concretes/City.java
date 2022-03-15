@@ -30,7 +30,7 @@ public class City {
 	private String cityName;
 	
 	@OneToMany(mappedBy = "baseCity")
-	private List<Car> baseCity;
+	private List<Car> cars;
 	
 	@OneToMany(mappedBy = "rentCity")
 	private List<Rent> rentCity;

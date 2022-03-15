@@ -23,7 +23,7 @@ public class IndividualCustomer extends Customer{
 	@Column(name = "last_name")
 	private String lastName;
 	
-	@Column(name = "national_identity" , length = 11)
+	@Column(name = "national_identity", length = 11)
 	private String nationalIdentity;
 	
 	
