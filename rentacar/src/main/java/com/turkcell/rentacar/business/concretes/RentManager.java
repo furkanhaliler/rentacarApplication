@@ -6,12 +6,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
+import com.turkcell.rentacar.business.abstracts.CarService;
+import com.turkcell.rentacar.business.abstracts.InvoiceService;
+import com.turkcell.rentacar.business.abstracts.PaymentService;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
 import com.turkcell.rentacar.business.dtos.lists.RentListDto;
+import com.turkcell.rentacar.business.requests.EndRentRequest;
 import com.turkcell.rentacar.business.requests.create.CreateRentRequest;
 import com.turkcell.rentacar.business.requests.delete.DeleteRentRequest;
 import com.turkcell.rentacar.business.requests.update.UpdateRentRequest;
@@ -22,6 +27,7 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.RentDao;
+import com.turkcell.rentacar.entities.concretes.Car;
 import com.turkcell.rentacar.entities.concretes.Rent;
 
 @Service
@@ -30,30 +36,37 @@ public class RentManager implements RentService {
 	private RentDao rentDao;
 	private ModelMapperService modelMapperService;
 	private CarMaintenanceService carMaintenanceService;
+	private CarService carService;
+
 
 	@Autowired
 	public RentManager(RentDao rentDao, ModelMapperService modelMapperService,
-			CarMaintenanceService carMaintenanceService) {
+			CarMaintenanceService carMaintenanceService, CarService carService) {
 
 		this.rentDao = rentDao;
 		this.modelMapperService = modelMapperService;
 		this.carMaintenanceService = carMaintenanceService;
+		this.carService = carService;
+
 	}
 
+	
 	@Override
-	public Result add(CreateRentRequest createRentRequest) throws BusinessException {
+	public DataResult<Rent> add(CreateRentRequest createRentRequest) throws BusinessException {
+		
+		this.carMaintenanceService.checkIfCarIsInMaintenance(createRentRequest.getCarId());
+		
+		checkIfCarIsRented(createRentRequest.getCarId());
 
 		Rent rent = this.modelMapperService.forRequest().map(createRentRequest, Rent.class);
 		
 		rent.setRentId(0);
 		
-		this.carMaintenanceService.checkIfCarIsInMaintenance(createRentRequest.getCarId());
+		rent.setStartKilometer(carService.getByCarId(createRentRequest.getCarId()).getData().getKilometer());	
 		
-		checkIfCarIsRented(createRentRequest.getCarId());
+		Rent savedRent = this.rentDao.save(rent);
 		
-		this.rentDao.save(rent);
-		
-		return new SuccessResult("Kiralama başarıyla eklendi.");
+		return new SuccessDataResult<Rent>(savedRent);
 	}
 
 	@Override
@@ -111,17 +124,31 @@ public class RentManager implements RentService {
 		
 		return new SuccessDataResult<GetRentDto>(response, "ID'ye göre listelendi.");
 	}
+	
+	@Override
+	public Result endRent(EndRentRequest endRentRequest) throws BusinessException {
+		
+		checkIfRentIdExists(endRentRequest.getRentId());
+		
+		Rent rent = this.rentDao.getById(endRentRequest.getRentId());
+		
+		rent.setRentReturnDate(LocalDate.now());
+		rent.setEndKilometer(endRentRequest.getEndKilometer());
+		
+		this.rentDao.save(rent);
+		
+		carService.setCarKilometer(rent.getCar().getId(), endRentRequest.getEndKilometer());
+		
+		return new SuccessResult("Kiralama başarıyla sonlandırıldı.");
+		
+	}
 
 	@Override
 	public void checkIfCarIsRented(int id) throws BusinessException {
 
 		List<Rent> result = this.rentDao.getAllByCarId(id);
 
-		List<RentListDto> response = result.stream()
-				.map(rent -> this.modelMapperService.forDto().map(rent, RentListDto.class))
-				.collect(Collectors.toList());
-
-		for (RentListDto rent : response) {
+		for (Rent rent : result) {
 			if (rent.getRentReturnDate() == null || LocalDate.now().isBefore(rent.getRentReturnDate())
 					|| LocalDate.now().isEqual(rent.getRentReturnDate())) {
 				throw new BusinessException("Araç şu anda kiradadır.");
@@ -143,15 +170,17 @@ public class RentManager implements RentService {
 		
 		double differentCityPrice = 0;
 		
-		if(!(this.rentDao.getById(rentId).getRentCity()==this.rentDao.getById(rentId).getReturnCity())) {
+		if(!(this.rentDao.getById(rentId).getRentCity().equals(this.rentDao.getById(rentId).getReturnCity()))) {
 			
-			differentCityPrice =750;
+			differentCityPrice = 750;
 		}
 		
 		long daysBetween = (ChronoUnit.DAYS.between(
 				this.rentDao.getById(rentId).getRentStartDate(), this.rentDao.getById(rentId).getRentReturnDate()) + 1);
-			
-		double dailyPrice = this.rentDao.getById(rentId).getCar().getDailyPrice();
+		
+		Car car = this.carService.getCarByCarId(this.rentDao.getById(rentId).getCar().getId());
+		
+		double dailyPrice = car.getDailyPrice();
 		
 		double totalRentPrice = (daysBetween * dailyPrice) + differentCityPrice;
 		
@@ -159,8 +188,9 @@ public class RentManager implements RentService {
 	}
 
 	@Override
-	public Rent bringRentForAnything(int rentId) {
+	public Rent bringRentById(int rentId) {
 		
 		return this.rentDao.getById(rentId);
 	}
+
 }

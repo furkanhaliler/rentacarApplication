@@ -17,7 +17,5 @@ public class RentacarApplication {
 		return new ModelMapper();
 	}
 	
-	
-	
 
 }

@@ -1,5 +1,7 @@
 package com.turkcell.rentacar.business.dtos.gets;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,9 @@ public class GetCarDto {
     private double dailyPrice;
     private int modelYear;
     private String description;
+    private Double kilometer;
     private String brandName;
     private String colorName;
     private String baseCityName;
+    private List<GetDamageDto> damages;
 }

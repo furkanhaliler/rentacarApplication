@@ -10,6 +10,7 @@ import com.turkcell.rentacar.business.requests.update.UpdateAdditionalServiceReq
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
+import com.turkcell.rentacar.entities.concretes.AdditionalService;
 
 public interface AdditionalServiceService {
 
@@ -26,4 +27,6 @@ public interface AdditionalServiceService {
 	void checkIfAdditionalServiceNameExists (String additionalServiceName) throws BusinessException;
 	 
 	void checkIfAdditionalServiceIdExists (Integer id) throws BusinessException;
+	
+	AdditionalService getById(int id);
 }

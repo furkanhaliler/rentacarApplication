@@ -111,4 +111,10 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		}
 	}
 
+	@Override
+	public AdditionalService getById(int id) {
+
+		return this.additionalServiceDao.getById(id);
+	}
+
 }

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.dtos.gets.GetOrderedServiceDto;
@@ -21,6 +22,7 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.OrderedServiceDao;
+import com.turkcell.rentacar.entities.concretes.AdditionalService;
 import com.turkcell.rentacar.entities.concretes.OrderedService;
 import com.turkcell.rentacar.entities.concretes.Rent;
 
@@ -30,13 +32,16 @@ public class OrderedServiceManager implements OrderedServiceService {
 	private OrderedServiceDao orderedServiceDao;
 	private ModelMapperService modelMapperService;
 	private RentService rentService;
+	private AdditionalServiceService additionalServiceService;
 	
 	@Autowired
-	public OrderedServiceManager(OrderedServiceDao orderedServiceDao, ModelMapperService modelMapperService, RentService rentService) {
+	public OrderedServiceManager(OrderedServiceDao orderedServiceDao, ModelMapperService modelMapperService, RentService rentService
+			,AdditionalServiceService additionalServiceService) {
 	
 		this.orderedServiceDao = orderedServiceDao;
 		this.modelMapperService = modelMapperService;
 		this.rentService = rentService;
+		this.additionalServiceService = additionalServiceService;
 	}
 
 	@Override
@@ -125,10 +130,12 @@ public class OrderedServiceManager implements OrderedServiceService {
 		
 		for (OrderedService orderedService : result) {
 			
-			totalPrice += orderedService.getOrderedServiceAmount() * orderedService.getAdditionalService().getDailyPrice();
+			AdditionalService additionalService = this.additionalServiceService.getById(orderedService.getAdditionalService().getId());
+			
+			totalPrice += orderedService.getOrderedServiceAmount() * additionalService.getDailyPrice();
 		}
 		
-		Rent rent = this.rentService.bringRentForAnything(rentId);
+		Rent rent = this.rentService.bringRentById(rentId);
 		
 		long daysBetween = (ChronoUnit.DAYS.between(rent.getRentStartDate(), rent.getRentReturnDate()) +1);
 		

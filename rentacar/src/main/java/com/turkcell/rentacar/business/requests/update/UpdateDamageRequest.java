@@ -11,18 +11,18 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateInvoiceRequest {
-
+public class UpdateDamageRequest {
+	
 	@NotNull
 	@Min(1)
-	private int invoiceId;
-
+	private int damageId;
+	
 	@NotNull
-	@Size(min = 2, max = 50)
-	private String invoiceNumber;
-
+	@Size(min = 4)
+	private String description;
+	
 	@NotNull
 	@Min(1)
-	private int rentRentId;
+	private int carCarId;
 
 }

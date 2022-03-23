@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
 import com.turkcell.rentacar.business.dtos.lists.RentListDto;
+import com.turkcell.rentacar.business.requests.EndRentRequest;
 import com.turkcell.rentacar.business.requests.create.CreateRentRequest;
 import com.turkcell.rentacar.business.requests.delete.DeleteRentRequest;
 import com.turkcell.rentacar.business.requests.update.UpdateRentRequest;
@@ -14,7 +15,7 @@ import com.turkcell.rentacar.entities.concretes.Rent;
 
 public interface RentService {
 
-	Result add(CreateRentRequest createRentRequest) throws BusinessException;
+	DataResult<Rent> add(CreateRentRequest createRentRequest) throws BusinessException;
 
 	Result update(UpdateRentRequest updateRentRequest) throws BusinessException;
 
@@ -25,6 +26,8 @@ public interface RentService {
 	DataResult<List<RentListDto>> getByCarId(int id) throws BusinessException;
 	
 	DataResult<GetRentDto> getByRentId(int id) throws BusinessException;
+	
+	Result endRent(EndRentRequest endRentRequest) throws BusinessException;
 
 	void checkIfCarIsRented(int id) throws BusinessException;
 	
@@ -32,6 +35,6 @@ public interface RentService {
 	
 	double calculateRentPrice(int rentId);
 	
-	Rent bringRentForAnything(int rentId);
+	Rent bringRentById(int rentId);
 	
 }

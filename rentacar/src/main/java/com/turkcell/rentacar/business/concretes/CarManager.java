@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCarDto;
 import com.turkcell.rentacar.business.dtos.lists.CarListDto;
 import com.turkcell.rentacar.business.requests.create.CreateCarRequest;
@@ -172,8 +173,26 @@ public class CarManager implements CarService {
 
 		if (!this.carDao.existsById(id)) {
 
-			throw new CarNotFoundException("Bu ID'de kayıtlı araba bulunamadı.");
+			throw new CarNotFoundException(BusinessMessages.CAR_NOT_FOUND);
 		}
+	}
+
+	@Override
+	public void setCarKilometer(Integer id, double kilometer) {
+		
+		Car car = this.carDao.getById(id);
+		
+		car.setKilometer(kilometer);
+		
+		this.carDao.save(car);
+	}
+
+	@Override
+	public Car getCarByCarId(int carId) {
+		
+		Car car = this.carDao.getById(carId);
+		
+		return car;
 	}
 
 }

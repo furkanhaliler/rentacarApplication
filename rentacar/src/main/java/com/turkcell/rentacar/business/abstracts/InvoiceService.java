@@ -17,9 +17,7 @@ public interface InvoiceService {
 
 	DataResult<List<InvoiceListDto>> getAll() throws BusinessException;
 
-	Result addForIndividualCustomers(CreateInvoiceRequest createInvoiceRequest) throws BusinessException;
-	
-	Result addForCorporateCustomers(CreateInvoiceRequest createInvoiceRequest) throws BusinessException;
+	Result add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException;
 
 	DataResult<GetInvoiceDto> getById(Integer id) throws BusinessException;
 
@@ -33,11 +31,9 @@ public interface InvoiceService {
 	
 	void checkIfInvoiceIdExists (Integer id) throws BusinessException;
 	
-	void calculateAndSetTotalPriceForIndividualCustomers (int rentId, Invoice invoice);
+	double calculateAndSetTotalPrice (int rentId);
 	
-	void calculateAndSetTotalPriceForCorporateCustomers (int rentId, Invoice invoice);
-	
-	void setRentDatesAndCustomerId (int rentId, Invoice invoice);
+	void setInvoiceFields (int rentId, Invoice invoice);
 	
 	void checkIfRentIdAlreadyExists(int rentId) throws BusinessException;
 	

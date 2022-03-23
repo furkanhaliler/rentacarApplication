@@ -8,6 +8,7 @@ import com.turkcell.rentacar.business.requests.update.UpdateCarRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
+import com.turkcell.rentacar.entities.concretes.Car;
 
 import java.util.List;
 
@@ -35,4 +36,7 @@ public interface CarService {
 
 	void checkIfCarIdExists (Integer id) throws BusinessException;
 
+	void setCarKilometer(Integer id, double kilometer);
+	
+	Car getCarByCarId(int carId);
 }

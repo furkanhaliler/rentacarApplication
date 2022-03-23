@@ -39,6 +39,12 @@ public class Rent {
 	@Column(name = "return_date")
 	private LocalDate rentReturnDate;
 	
+	@Column(name = "start_kilometer")
+	private Double startKilometer;
+	
+	@Column(name = "end_kilometer")
+	private Double endKilometer;
+	
 	@ManyToOne
 	@JoinColumn(name = "rent_city_id")
 	private City rentCity;
@@ -58,6 +64,6 @@ public class Rent {
 	@JoinColumn(name = "user_id")
 	private Customer customer;
 	
-	@OneToOne(mappedBy = "rent" , cascade = CascadeType.REFRESH)
+	@OneToOne(mappedBy = "rent" , cascade = CascadeType.ALL)
 	private Invoice invoice;
 }
