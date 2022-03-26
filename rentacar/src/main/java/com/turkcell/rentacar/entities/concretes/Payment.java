@@ -30,9 +30,13 @@ public class Payment {
 	@JoinColumn(name = "rent_id")
 	private Rent rent;
 	
-//	@OneToOne
-//	@JoinColumn(name = "invoice_id")
-//	private Invoice invoice;
+	@OneToOne
+	@JoinColumn(name = "invoice_id")
+	private Invoice invoice;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private Customer customer;
 	
 	
 	

@@ -2,6 +2,8 @@ package com.turkcell.rentacar.business.dtos.lists;
 
 import java.util.List;
 
+import com.turkcell.rentacar.business.dtos.gets.GetInvoiceDto;
+import com.turkcell.rentacar.business.dtos.gets.GetPaymentDto;
 import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
 
 import lombok.AllArgsConstructor;
@@ -20,4 +22,6 @@ public class IndividualCustomerListDto {
 	private String lastName;
 	private String nationalIdentity;
 	private List<GetRentDto> rents;
+	private List<GetInvoiceDto> invoices;
+	private List<GetPaymentDto> payments;
 }

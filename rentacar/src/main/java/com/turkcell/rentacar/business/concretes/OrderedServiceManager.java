@@ -10,11 +10,12 @@ import org.springframework.stereotype.Service;
 import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
 import com.turkcell.rentacar.business.abstracts.RentService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetOrderedServiceDto;
 import com.turkcell.rentacar.business.dtos.lists.OrderedServiceListDto;
-import com.turkcell.rentacar.business.requests.create.CreateOrderedServiceRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteOrderedServiceRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateOrderedServiceRequest;
+import com.turkcell.rentacar.business.requests.OrderedService.CreateOrderedServiceRequest;
+import com.turkcell.rentacar.business.requests.OrderedService.DeleteOrderedServiceRequest;
+import com.turkcell.rentacar.business.requests.OrderedService.UpdateOrderedServiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -52,7 +53,7 @@ public class OrderedServiceManager implements OrderedServiceService {
 		List<OrderedServiceListDto> response = result.stream().map(orderedService -> this.modelMapperService
 				.forDto().map(orderedService, OrderedServiceListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<OrderedServiceListDto>>(response, "Veriler başarıyla listelendi.");
+		return new SuccessDataResult<List<OrderedServiceListDto>>(response, BusinessMessages.ORDERED_SERVICES_LISTED);
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class OrderedServiceManager implements OrderedServiceService {
 		
 		this.orderedServiceDao.save(orderedService);
 		
-		return new SuccessResult("Başarıyla eklendi.");
+		return new SuccessResult(BusinessMessages.ORDERED_SERVICE_ADDED);
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class OrderedServiceManager implements OrderedServiceService {
 		
 		GetOrderedServiceDto response = this.modelMapperService.forDto().map(orderedService, GetOrderedServiceDto.class);
 		
-		return new SuccessDataResult<GetOrderedServiceDto>(response, "Veri başarıyla getirildi.");
+		return new SuccessDataResult<GetOrderedServiceDto>(response, BusinessMessages.ORDERED_SERVICE_FOUND_BY_ID);
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class OrderedServiceManager implements OrderedServiceService {
 		
 		this.orderedServiceDao.save(orderedService);
 	
-		return new SuccessResult("Başarıyla güncellendi.");
+		return new SuccessResult(BusinessMessages.ORDERED_SERVICE_UPDATED);
 	}
 
 	@Override
@@ -98,7 +99,7 @@ public class OrderedServiceManager implements OrderedServiceService {
 		
 		this.orderedServiceDao.deleteById(deleteOrderedServiceRequest.getOrderedServiceId());
 		
-		return new SuccessResult("Başarıyla silindi.");
+		return new SuccessResult(BusinessMessages.ORDERED_SERVICE_DELETED);
 	}
 
 	@Override
@@ -109,7 +110,7 @@ public class OrderedServiceManager implements OrderedServiceService {
 		List<OrderedServiceListDto> response = result.stream().map(orderedService -> this.modelMapperService
 				.forDto().map(orderedService, OrderedServiceListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<OrderedServiceListDto>>(response, "Kiralama numarasına göre başarıyla sıralandı.");
+		return new SuccessDataResult<List<OrderedServiceListDto>>(response, BusinessMessages.ORDERED_SERVICES_LISTED_BY_RENT_ID);
 	}
 	
 	@Override
@@ -117,7 +118,7 @@ public class OrderedServiceManager implements OrderedServiceService {
 		
 		if(!this.orderedServiceDao.existsById(id)) {
 			
-			throw new BusinessException("Bu ID'de kayıtlı sipariş bulunamadı.");
+			throw new BusinessException(BusinessMessages.ORDERED_SERVICE_NOT_FOUND);
 		}
 	}
 	

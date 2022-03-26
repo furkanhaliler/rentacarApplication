@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetAdditionalServiceDto;
 import com.turkcell.rentacar.business.dtos.lists.AdditionalServiceListDto;
-import com.turkcell.rentacar.business.requests.create.CreateAdditionalServiceRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteAdditionalServiceRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.AdditionalService.CreateAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.AdditionalService.DeleteAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.AdditionalService.UpdateAdditionalServiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -42,7 +43,8 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		List<AdditionalServiceListDto> response = result.stream().map(additionalService -> this.modelMapperService
 				.forDto().map(additionalService, AdditionalServiceListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<AdditionalServiceListDto>>(response, "Veriler başarıyla sıralandı.");
+		return new SuccessDataResult<List<AdditionalServiceListDto>>
+		(response, BusinessMessages.ADDITIONAL_SERVICES_LISTED);
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		this.additionalServiceDao.save(additionalService);
 		
-		return new SuccessResult("Başarıyla eklendi.");	
+		return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE_ADDED);	
 	}
 
 	@Override
@@ -68,7 +70,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		GetAdditionalServiceDto response = this.modelMapperService.forDto().map(additionalService, GetAdditionalServiceDto.class);
 		
-		return new SuccessDataResult<GetAdditionalServiceDto>(response, "Veri başarıyla getirildi.");
+		return new SuccessDataResult<GetAdditionalServiceDto>(response, BusinessMessages.ADDITIONAL_SERVICE_FOUND_BY_ID);
 	}
 
 	@Override
@@ -80,7 +82,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		this.additionalServiceDao.save(additionalService);
 		
-		return new SuccessResult("Başarıyla güncellendi.");
+		return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE_UPDATED);
 	}
 
 	@Override
@@ -90,7 +92,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		this.additionalServiceDao.deleteById(deleteAdditionalServiceRequest.getAdditionalServiceId());
 		
-		return new SuccessResult("Başarıyla silindi.");
+		return new SuccessResult(BusinessMessages.ADDITIONAL_SERVICE_DELETED);
 	}
 
 	@Override
@@ -98,7 +100,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		if(this.additionalServiceDao.existsAdditionalServiceByAdditionalServiceName(additionalServiceName)) {
 			
-			throw new BusinessException("Bu isimde ek hizmet zaten mevcut.");
+			throw new BusinessException(BusinessMessages.ADDITIONAL_SERVICE_NAME_EXISTS);
 		}
 	}
 
@@ -107,7 +109,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		if(!this.additionalServiceDao.existsById(id)) {
 			
-			throw new BusinessException("Bu ID'de kayıtlı ek hizmet bulunamadı.");
+			throw new BusinessException(BusinessMessages.ADDITIONAL_SERVICE_NOT_FOUND);
 		}
 	}
 

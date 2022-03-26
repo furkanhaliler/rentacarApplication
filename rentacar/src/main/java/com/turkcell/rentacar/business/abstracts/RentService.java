@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
 import com.turkcell.rentacar.business.dtos.lists.RentListDto;
-import com.turkcell.rentacar.business.requests.EndRentRequest;
-import com.turkcell.rentacar.business.requests.create.CreateRentRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteRentRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateRentRequest;
+import com.turkcell.rentacar.business.requests.Rent.CreateRentRequest;
+import com.turkcell.rentacar.business.requests.Rent.DeleteRentRequest;
+import com.turkcell.rentacar.business.requests.Rent.EndRentRequest;
+import com.turkcell.rentacar.business.requests.Rent.UpdateRentRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;

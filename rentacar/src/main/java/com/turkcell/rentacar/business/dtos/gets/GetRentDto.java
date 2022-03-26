@@ -22,5 +22,5 @@ public class GetRentDto {
 	private String returnCityName;
 	private List<GetOrderedServiceDto> orderedServices;
 	private int customerUserId;
-	private int invoiceId;
+
 }

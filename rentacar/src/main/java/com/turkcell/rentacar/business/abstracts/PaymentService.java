@@ -2,16 +2,27 @@ package com.turkcell.rentacar.business.abstracts;
 
 import java.util.List;
 
+import com.turkcell.rentacar.business.dtos.gets.GetPaymentDto;
 import com.turkcell.rentacar.business.dtos.lists.PaymentListDto;
-import com.turkcell.rentacar.business.requests.create.CreatePaymentRequest;
+import com.turkcell.rentacar.business.requests.Payment.CreatePaymentRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
-import com.turkcell.rentacar.entities.concretes.Rent;
 
 public interface PaymentService {
 
-	Result add(CreatePaymentRequest createPaymentRequest, Rent rent) throws BusinessException;
+	Result add(CreatePaymentRequest createPaymentRequest) throws BusinessException;
 	
 	DataResult<List<PaymentListDto>> getAll() throws BusinessException;
+	
+	DataResult<GetPaymentDto> getByPaymentId (int paymentId) throws BusinessException;
+	
+	DataResult<List<PaymentListDto>> getByCustomerUserId(int userId) throws BusinessException;
+	
+	DataResult<GetPaymentDto> getByInvoiceId (int invoiceId) throws BusinessException;
+	
+	DataResult<List<PaymentListDto>> getByRentId(int rentId) throws BusinessException;
+	
+	void checkIfPaymentIdExists(int paymentId) throws BusinessException;
+			
 }

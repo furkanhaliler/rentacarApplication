@@ -12,11 +12,12 @@ import org.springframework.stereotype.Service;
 import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
 import com.turkcell.rentacar.business.abstracts.RentService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetInvoiceDto;
 import com.turkcell.rentacar.business.dtos.lists.InvoiceListDto;
-import com.turkcell.rentacar.business.requests.create.CreateInvoiceRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteInvoiceRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateInvoiceRequest;
+import com.turkcell.rentacar.business.requests.Invoice.CreateInvoiceRequest;
+import com.turkcell.rentacar.business.requests.Invoice.DeleteInvoiceRequest;
+import com.turkcell.rentacar.business.requests.Invoice.UpdateInvoiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -54,27 +55,21 @@ public class InvoiceManager implements InvoiceService {
 				.map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceListDto.class))
 				.collect(Collectors.toList());
 
-		return new SuccessDataResult<List<InvoiceListDto>>(response, "Veriler başarıyla getirildi.");
+		return new SuccessDataResult<List<InvoiceListDto>>(response, BusinessMessages.INVOICES_LISTED);
 	}
 
 	@Override
-	public Result add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException {
+	public DataResult<Invoice> add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException {
 
 		Invoice invoice = this.modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);
-
-		checkIfRentIdAlreadyExists(createInvoiceRequest.getRentRentId());
+		
+		invoice.setInvoiceId(0);
 
 		setInvoiceFields(createInvoiceRequest.getRentRentId(), invoice);
 
-		double totalPrice = calculateAndSetTotalPrice(createInvoiceRequest.getRentRentId());
-
-		invoice.setTotalPrice(totalPrice);
-
-		invoice.getRent().setRentId(createInvoiceRequest.getRentRentId());
-
 		this.invoiceDao.save(invoice);
 
-		return new SuccessResult("Başarıyla eklendi.");
+		return new SuccessDataResult<Invoice>(invoice, BusinessMessages.INVOICE_ADDED);
 	}
 
 	@Override
@@ -86,7 +81,7 @@ public class InvoiceManager implements InvoiceService {
 
 		GetInvoiceDto response = this.modelMapperService.forDto().map(invoice, GetInvoiceDto.class);
 
-		return new SuccessDataResult<GetInvoiceDto>(response, "Veri başarıyla getirildi.");
+		return new SuccessDataResult<GetInvoiceDto>(response, BusinessMessages.INVOICE_FOUND_BY_ID);
 	}
 
 	@Override
@@ -96,15 +91,11 @@ public class InvoiceManager implements InvoiceService {
 
 		Invoice invoice = this.modelMapperService.forRequest().map(updateInvoiceRequest, Invoice.class);
 
-		double totalPrice = calculateAndSetTotalPrice(updateInvoiceRequest.getRentRentId());
-
-		invoice.setTotalPrice(totalPrice);
-
 		setInvoiceFields(updateInvoiceRequest.getRentRentId(), invoice);
 
 		this.invoiceDao.save(invoice);
 
-		return new SuccessResult("Başarıyla güncellendi.");
+		return new SuccessResult(BusinessMessages.INVOICE_UPDATED);
 	}
 
 	@Override
@@ -114,7 +105,7 @@ public class InvoiceManager implements InvoiceService {
 
 		this.invoiceDao.deleteById(deleteInvoiceRequest.getInvoiceId());
 
-		return new SuccessResult("Başarıyla silindi.");
+		return new SuccessResult(BusinessMessages.INVOICE_DELETED);
 	}
 
 	@Override
@@ -126,8 +117,7 @@ public class InvoiceManager implements InvoiceService {
 				.map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceListDto.class))
 				.collect(Collectors.toList());
 
-		return new SuccessDataResult<List<InvoiceListDto>>(response,
-				"Müşteri kullanıcı numarasına göre faturalar listelendi.");
+		return new SuccessDataResult<List<InvoiceListDto>>(response, BusinessMessages.INVOICES_LISTED_BY_CUSTOMER_ID);
 	}
 
 	@Override
@@ -139,7 +129,7 @@ public class InvoiceManager implements InvoiceService {
 				.map(invoice -> this.modelMapperService.forDto().map(invoice, InvoiceListDto.class))
 				.collect(Collectors.toList());
 
-		return new SuccessDataResult<List<InvoiceListDto>>(response, "Veriler başarıyla sıralandı.");
+		return new SuccessDataResult<List<InvoiceListDto>>(response, BusinessMessages.INVOICES_LISTED_BY_DATES);
 	}
 
 	@Override
@@ -147,21 +137,13 @@ public class InvoiceManager implements InvoiceService {
 
 		if (!this.invoiceDao.existsById(id)) {
 
-			throw new BusinessException("Bu ID'de kayıtlı fatura bulunamadı.");
+			throw new BusinessException(BusinessMessages.INVOICE_NOT_FOUND);
 		}
 	}
 
-	@Override
-	public void checkIfRentIdAlreadyExists(int rentId) throws BusinessException {
-
-		if (this.invoiceDao.existsByRentRentId(rentId)) {
-
-			throw new BusinessException("Bu ID'de kayıtlı kiralamanın zaten bir faturası mevcuttur!");
-		}
-	}
 
 	@Override
-	public double calculateAndSetTotalPrice(int rentId) {
+	public double calculateTotalPrice(int rentId) {
 
 		double rentPrice = this.rentService.calculateRentPrice(rentId);
 
@@ -175,9 +157,13 @@ public class InvoiceManager implements InvoiceService {
 	@Override
 	public void setInvoiceFields(int rentId, Invoice invoice) {
 
-		invoice.setCreationDate(LocalDate.now());
-
 		Rent rent = this.rentService.bringRentById(rentId);
+		
+		double totalPrice = calculateTotalPrice(rentId);
+		
+		invoice.setTotalPrice(totalPrice);
+		
+		invoice.setCreationDate(LocalDate.now());	
 
 		invoice.setRentStartDate(rent.getRentStartDate());
 
@@ -187,8 +173,9 @@ public class InvoiceManager implements InvoiceService {
 
 		invoice.setCustomer(rent.getCustomer());
 
-		invoice.setInvoiceNumber(UUID.randomUUID().toString());
-
+		invoice.setInvoiceNumber(UUID.randomUUID().toString());	
 	}
+
+
 
 }

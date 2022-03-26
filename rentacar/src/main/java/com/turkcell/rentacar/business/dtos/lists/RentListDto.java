@@ -3,7 +3,9 @@ package com.turkcell.rentacar.business.dtos.lists;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.turkcell.rentacar.business.dtos.gets.GetInvoiceDto;
 import com.turkcell.rentacar.business.dtos.gets.GetOrderedServiceDto;
+import com.turkcell.rentacar.entities.concretes.Invoice;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,5 +26,5 @@ public class RentListDto {
 	private String returnCityName;
 	private List<GetOrderedServiceDto> orderedServices;
 	private int customerUserId;
-	private int invoiceId;
+	
 }

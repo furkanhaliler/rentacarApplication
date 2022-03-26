@@ -4,11 +4,14 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import com.turkcell.rentacar.business.requests.create.CreateAdditionalServiceRequest;
-import com.turkcell.rentacar.business.requests.create.CreateInvoiceRequest;
-import com.turkcell.rentacar.business.requests.create.CreateOrderedServiceRequest;
-import com.turkcell.rentacar.business.requests.create.CreatePaymentRequest;
-import com.turkcell.rentacar.business.requests.create.CreateRentRequest;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.turkcell.rentacar.business.requests.AdditionalService.CreateAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.Invoice.CreateInvoiceRequest;
+import com.turkcell.rentacar.business.requests.OrderedService.CreateOrderedServiceRequest;
+import com.turkcell.rentacar.business.requests.Payment.CreatePaymentRequest;
+import com.turkcell.rentacar.business.requests.Pos.CreatePosRequest;
+import com.turkcell.rentacar.business.requests.Rent.CreateRentRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,10 +23,14 @@ import lombok.NoArgsConstructor;
 public class CreateRentModel {
 
 	@NotNull
-	CreateRentRequest createRentRequest;
-	List<CreateOrderedServiceRequest> createOrderedServiceRequests;
-	CreateInvoiceRequest createInvoiceRequest;
+	private CreateRentRequest createRentRequest;
+	
 	@NotNull
-	CreatePaymentRequest createPaymentRequest;
+	private List<CreateOrderedServiceRequest> createOrderedServiceRequests;
+	
+	private CreateInvoiceRequest createInvoiceRequest;
+	
+	@NotNull
+	private CreatePaymentRequest createPaymentRequest;
 	
 }

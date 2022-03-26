@@ -17,4 +17,6 @@ public class GetCorporateCustomerDto {
 	private String companyName;
 	private String taxNumber;
 	private List<GetRentDto> rents;
+	private List<GetInvoiceDto> invoices;
+	private List<GetPaymentDto> payments;
 }

@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.gets.GetInvoiceDto;
 import com.turkcell.rentacar.business.dtos.lists.InvoiceListDto;
-import com.turkcell.rentacar.business.requests.create.CreateInvoiceRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteInvoiceRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateInvoiceRequest;
+import com.turkcell.rentacar.business.requests.Invoice.CreateInvoiceRequest;
+import com.turkcell.rentacar.business.requests.Invoice.DeleteInvoiceRequest;
+import com.turkcell.rentacar.business.requests.Invoice.UpdateInvoiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -17,7 +17,7 @@ public interface InvoiceService {
 
 	DataResult<List<InvoiceListDto>> getAll() throws BusinessException;
 
-	Result add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException;
+	DataResult<Invoice> add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException;
 
 	DataResult<GetInvoiceDto> getById(Integer id) throws BusinessException;
 
@@ -31,10 +31,9 @@ public interface InvoiceService {
 	
 	void checkIfInvoiceIdExists (Integer id) throws BusinessException;
 	
-	double calculateAndSetTotalPrice (int rentId);
+	double calculateTotalPrice (int rentId);
 	
 	void setInvoiceFields (int rentId, Invoice invoice);
-	
-	void checkIfRentIdAlreadyExists(int rentId) throws BusinessException;
+
 	
 }

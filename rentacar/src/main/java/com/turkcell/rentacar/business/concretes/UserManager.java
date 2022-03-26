@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.UserService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetUserDto;
 import com.turkcell.rentacar.business.dtos.lists.UserListDto;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
@@ -37,7 +38,7 @@ public class UserManager implements UserService {
 		List<UserListDto> response = result.stream().map(user -> this.modelMapperService
 				.forDto().map(user, UserListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<UserListDto>>(response, "Veriler başarıyla sıralandı.");	
+		return new SuccessDataResult<List<UserListDto>>(response, BusinessMessages.USERS_LISTED);	
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class UserManager implements UserService {
 		
 		GetUserDto response = this.modelMapperService.forDto().map(user, GetUserDto.class);
 		
-		return new SuccessDataResult<GetUserDto>(response, "Veri başarıyla getirildi.");
+		return new SuccessDataResult<GetUserDto>(response, BusinessMessages.USER_FOUND_BY_ID);
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class UserManager implements UserService {
 		
 		if(!this.userDao.existsById(id)) {
 			
-			throw new BusinessException("Bu ID'de kayıtlı kullanıcı bulunamadı.");
+			throw new BusinessException(BusinessMessages.USER_NOT_FOUND);
 		}
 	}
 

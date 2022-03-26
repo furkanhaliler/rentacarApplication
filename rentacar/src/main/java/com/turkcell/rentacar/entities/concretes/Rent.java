@@ -64,6 +64,9 @@ public class Rent {
 	@JoinColumn(name = "user_id")
 	private Customer customer;
 	
-	@OneToOne(mappedBy = "rent" , cascade = CascadeType.ALL)
-	private Invoice invoice;
+	@OneToMany(mappedBy = "rent")
+	private List<Invoice> invoice;
+	
+	@OneToMany(mappedBy = "rent")
+	private List<Payment> payments;
 }

@@ -2,9 +2,9 @@ package com.turkcell.rentacar.business.abstracts;
 
 import com.turkcell.rentacar.business.dtos.gets.GetCarDto;
 import com.turkcell.rentacar.business.dtos.lists.CarListDto;
-import com.turkcell.rentacar.business.requests.create.CreateCarRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteCarRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateCarRequest;
+import com.turkcell.rentacar.business.requests.Car.CreateCarRequest;
+import com.turkcell.rentacar.business.requests.Car.DeleteCarRequest;
+import com.turkcell.rentacar.business.requests.Car.UpdateCarRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;

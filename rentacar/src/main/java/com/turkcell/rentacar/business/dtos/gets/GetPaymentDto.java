@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class GetPaymentDto {
 
 	private int paymentId;
-	private int rentId;
-//	private int invoiceId;
+	private int rentRentId;
+	private int invoiceInvoiceId;
+	private int customerUserId;
 }

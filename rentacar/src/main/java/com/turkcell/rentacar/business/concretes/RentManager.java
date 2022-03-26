@@ -14,12 +14,13 @@ import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.PaymentService;
 import com.turkcell.rentacar.business.abstracts.RentService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
 import com.turkcell.rentacar.business.dtos.lists.RentListDto;
-import com.turkcell.rentacar.business.requests.EndRentRequest;
-import com.turkcell.rentacar.business.requests.create.CreateRentRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteRentRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateRentRequest;
+import com.turkcell.rentacar.business.requests.Rent.CreateRentRequest;
+import com.turkcell.rentacar.business.requests.Rent.DeleteRentRequest;
+import com.turkcell.rentacar.business.requests.Rent.EndRentRequest;
+import com.turkcell.rentacar.business.requests.Rent.UpdateRentRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -50,6 +51,16 @@ public class RentManager implements RentService {
 
 	}
 
+	@Override
+	public DataResult<List<RentListDto>> getAll() throws BusinessException {
+
+		List<Rent> rents = this.rentDao.findAll();
+
+		List<RentListDto> response = rents.stream().map(rent -> this.modelMapperService
+				.forDto().map(rent, RentListDto.class)).collect(Collectors.toList());
+		
+		return new SuccessDataResult<List<RentListDto>>(response, BusinessMessages.RENTS_LISTED);
+	}
 	
 	@Override
 	public DataResult<Rent> add(CreateRentRequest createRentRequest) throws BusinessException {
@@ -66,53 +77,10 @@ public class RentManager implements RentService {
 		
 		Rent savedRent = this.rentDao.save(rent);
 		
-		return new SuccessDataResult<Rent>(savedRent);
+		return new SuccessDataResult<Rent>(savedRent, BusinessMessages.RENT_ADDED);
 	}
 
-	@Override
-	public Result update(UpdateRentRequest updateRentRequest) throws BusinessException {
-
-		checkIfRentIdExists(updateRentRequest.getRentId());
-		
-		Rent rent = this.modelMapperService.forRequest().map(updateRentRequest, Rent.class);
-
-		this.rentDao.save(rent);
-		
-		return new SuccessResult("Kiralama başarıyla güncellendi.");
-	}
-
-	@Override
-	public Result delete(DeleteRentRequest deleteRentRequest) throws BusinessException {
-
-		checkIfRentIdExists(deleteRentRequest.getRentId());
-		
-		this.rentDao.deleteById(deleteRentRequest.getRentId());
-		
-		return new SuccessResult("Kiralama başarıyla silindi.");
-	}
-
-	@Override
-	public DataResult<List<RentListDto>> getAll() throws BusinessException {
-
-		List<Rent> rents = this.rentDao.findAll();
-
-		List<RentListDto> response = rents.stream().map(rent -> this.modelMapperService
-				.forDto().map(rent, RentListDto.class)).collect(Collectors.toList());
-		
-		return new SuccessDataResult<List<RentListDto>>(response, "Veriler başarıyla listelendi");
-	}
-
-	@Override
-	public DataResult<List<RentListDto>> getByCarId(int id) throws BusinessException {
-
-		List<Rent> rents = this.rentDao.getAllByCarId(id);
-
-		List<RentListDto> response = rents.stream().map(rent -> this.modelMapperService
-				.forDto().map(rent, RentListDto.class)).collect(Collectors.toList());
-		
-		return new SuccessDataResult<List<RentListDto>>(response, "ID'ye göre listelendi.");
-	}
-
+	
 	@Override
 	public DataResult<GetRentDto> getByRentId(int id) throws BusinessException {
 		
@@ -122,8 +90,44 @@ public class RentManager implements RentService {
 		
 		GetRentDto response = this.modelMapperService.forDto().map(rent, GetRentDto.class);
 		
-		return new SuccessDataResult<GetRentDto>(response, "ID'ye göre listelendi.");
+		return new SuccessDataResult<GetRentDto>(response, BusinessMessages.RENT_FOUND_BY_ID);
 	}
+	
+	
+	@Override
+	public Result update(UpdateRentRequest updateRentRequest) throws BusinessException {
+
+		checkIfRentIdExists(updateRentRequest.getRentId());
+		
+		Rent rent = this.modelMapperService.forRequest().map(updateRentRequest, Rent.class);
+
+		this.rentDao.save(rent);
+		
+		return new SuccessResult(BusinessMessages.RENT_UPDATED);
+	}
+
+	@Override
+	public Result delete(DeleteRentRequest deleteRentRequest) throws BusinessException {
+
+		checkIfRentIdExists(deleteRentRequest.getRentId());
+		
+		this.rentDao.deleteById(deleteRentRequest.getRentId());
+		
+		return new SuccessResult(BusinessMessages.RENT_DELETED);
+	}
+	
+
+	@Override
+	public DataResult<List<RentListDto>> getByCarId(int id) throws BusinessException {
+
+		List<Rent> rents = this.rentDao.getAllByCarId(id);
+
+		List<RentListDto> response = rents.stream().map(rent -> this.modelMapperService
+				.forDto().map(rent, RentListDto.class)).collect(Collectors.toList());
+		
+		return new SuccessDataResult<List<RentListDto>>(response, BusinessMessages.RENTS_LISTED_BY_CAR_ID);
+	}
+
 	
 	@Override
 	public Result endRent(EndRentRequest endRentRequest) throws BusinessException {
@@ -132,6 +136,8 @@ public class RentManager implements RentService {
 		
 		Rent rent = this.rentDao.getById(endRentRequest.getRentId());
 		
+		if(LocalDate.now().isAfter(rent.getRentReturnDate()))
+		
 		rent.setRentReturnDate(LocalDate.now());
 		rent.setEndKilometer(endRentRequest.getEndKilometer());
 		
@@ -139,7 +145,7 @@ public class RentManager implements RentService {
 		
 		carService.setCarKilometer(rent.getCar().getId(), endRentRequest.getEndKilometer());
 		
-		return new SuccessResult("Kiralama başarıyla sonlandırıldı.");
+		return new SuccessResult(BusinessMessages.RENT_ENDED);
 		
 	}
 
@@ -151,7 +157,8 @@ public class RentManager implements RentService {
 		for (Rent rent : result) {
 			if (rent.getRentReturnDate() == null || LocalDate.now().isBefore(rent.getRentReturnDate())
 					|| LocalDate.now().isEqual(rent.getRentReturnDate())) {
-				throw new BusinessException("Araç şu anda kiradadır.");
+				
+				throw new BusinessException(BusinessMessages.CAR_IS_CURRENTLY_RENTED);
 			}
 		}
 	}
@@ -161,7 +168,7 @@ public class RentManager implements RentService {
 		
 		if(!this.rentDao.existsById(id)) {
 			
-			throw new BusinessException("Bu ID'de kayıtlı kiralama bulunamadı.");
+			throw new BusinessException(BusinessMessages.RENT_NOT_FOUND);
 		}
 	}
 	
@@ -193,4 +200,22 @@ public class RentManager implements RentService {
 		return this.rentDao.getById(rentId);
 	}
 
+//	public void checkIfReturnDateDelayed (Rent rent) {
+//		
+//		if(LocalDate.now().isAfter(rent.getRentReturnDate())){
+//			
+//			long daysBetween = (ChronoUnit.DAYS.between(rent.getRentReturnDate(), LocalDate.now()));
+//			
+//			Car car = this.carService.getCarByCarId(rent.getCar().getId());
+//			
+//			double dailyPrice = car.getDailyPrice();
+//			
+//			double extraPrice = daysBetween * dailyPrice;
+//			
+//			throw new BusinessException("Dönüş tarihi geciktiğinden dolayı ödeme yapılmak zorundadır. )
+//		}
+//	}
+	
+	
+	
 }

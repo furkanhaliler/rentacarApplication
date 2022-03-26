@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CustomerService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCustomerDto;
 import com.turkcell.rentacar.business.dtos.lists.CustomerListDto;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
@@ -37,7 +38,7 @@ public class CustomerManager implements CustomerService {
 		List<CustomerListDto> response = result.stream().map(customer -> this.modelMapperService
 				.forDto().map(customer, CustomerListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CustomerListDto>>(response, "Veriler başarıyla listelendi");
+		return new SuccessDataResult<List<CustomerListDto>>(response, BusinessMessages.CUSTOMERS_LISTED);
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class CustomerManager implements CustomerService {
 		
 		GetCustomerDto response = this.modelMapperService.forDto().map(customer, GetCustomerDto.class);
 		
-		return new SuccessDataResult<GetCustomerDto>(response, "Veri başarıyla getirildi.");
+		return new SuccessDataResult<GetCustomerDto>(response, BusinessMessages.CUSTOMER_FOUND_BY_ID);
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class CustomerManager implements CustomerService {
 		
 		if(!this.customerDao.existsById(id)) {
 			
-			throw new BusinessException("Bu ID'de kayıtlı müşteri bulunamadı.");
+			throw new BusinessException(BusinessMessages.CUSTOMER_NOT_FOUND);
 		}
 	}
 

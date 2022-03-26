@@ -15,4 +15,6 @@ public class GetCustomerDto {
 	private String email;
 	private String password;
 	private List<GetRentDto> rents;
+	private List<GetInvoiceDto> invoices;
+	private List<GetPaymentDto> payments;
 }

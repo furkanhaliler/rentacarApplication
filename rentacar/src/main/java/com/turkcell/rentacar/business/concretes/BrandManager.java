@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.BrandService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetBrandDto;
 import com.turkcell.rentacar.business.dtos.lists.BrandListDto;
-import com.turkcell.rentacar.business.requests.create.CreateBrandRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteBrandRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateBrandRequest;
+import com.turkcell.rentacar.business.requests.Brand.CreateBrandRequest;
+import com.turkcell.rentacar.business.requests.Brand.DeleteBrandRequest;
+import com.turkcell.rentacar.business.requests.Brand.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BrandAlreadyExistsException;
 import com.turkcell.rentacar.core.exceptions.BrandNotFoundException;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
@@ -44,7 +45,7 @@ public class BrandManager implements BrandService {
 		List<BrandListDto> response = result.stream().map(brand -> this.modelMapperService
 		.forDto().map(brand, BrandListDto.class)).collect(Collectors.toList());
 
-		return new SuccessDataResult<List<BrandListDto>>(response, "Veriler Listelendi");
+		return new SuccessDataResult<List<BrandListDto>>(response, BusinessMessages.BRANDS_LISTED);
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class BrandManager implements BrandService {
 		
 		this.brandDao.save(brand);
 		
-		return new SuccessResult("Marka eklendi");
+		return new SuccessResult(BusinessMessages.BRAND_ADDED);
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class BrandManager implements BrandService {
 		
 		GetBrandDto response = this.modelMapperService.forDto().map(foundBrand, GetBrandDto.class);
 		
-		return new SuccessDataResult<GetBrandDto>(response, "Marka getirildi.");
+		return new SuccessDataResult<GetBrandDto>(response, BusinessMessages.BRAND_FOUND_BY_ID);
 	}
 
 	@Override
@@ -81,7 +82,7 @@ public class BrandManager implements BrandService {
 		
 		this.brandDao.save(brand);
 		
-		return new SuccessResult("Güncelleme başarılı");
+		return new SuccessResult(BusinessMessages.BRAND_UPDATED);
 	}
 
 	@Override
@@ -91,7 +92,7 @@ public class BrandManager implements BrandService {
 		
 		this.brandDao.deleteById(deleteBrandRequest.getBrandId());
 		
-		return new SuccessResult("Marka silindi");
+		return new SuccessResult(BusinessMessages.BRAND_DELETED);
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class BrandManager implements BrandService {
 
 		if (this.brandDao.existsBrandByBrandName(brandName)) {
 
-			throw new BrandAlreadyExistsException("Bu isimde marka zaten mevcut.");
+			throw new BrandAlreadyExistsException(BusinessMessages.BRAND_NAME_EXISTS);
 		}
 	}
 
@@ -108,7 +109,7 @@ public class BrandManager implements BrandService {
 
 		if (!this.brandDao.existsById(id)) {
 
-			throw new BrandNotFoundException("Bu ID'de kayıtlı marka bulunamadı.");
+			throw new BrandNotFoundException(BusinessMessages.BRAND_NOT_FOUND);
 		}
 	}
 

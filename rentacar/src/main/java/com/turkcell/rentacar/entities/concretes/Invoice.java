@@ -51,11 +51,11 @@ public class Invoice {
 	@JoinColumn(name = "user_id")
 	private Customer customer;
 	
-	@OneToOne(cascade = CascadeType.REFRESH)
+	@ManyToOne
 	@JoinColumn(name = "rent_id")
 	private Rent rent;
 	
-//	@OneToOne(mappedBy = "invoice")
-//	private Payment payment;
-//	
+	@OneToOne(mappedBy = "invoice")
+	private Payment payment;
+	
 }

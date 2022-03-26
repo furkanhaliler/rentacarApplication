@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.DamageService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetDamageDto;
 import com.turkcell.rentacar.business.dtos.lists.DamageListDto;
-import com.turkcell.rentacar.business.requests.create.CreateDamageRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteDamageRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateDamageRequest;
+import com.turkcell.rentacar.business.requests.Damage.CreateDamageRequest;
+import com.turkcell.rentacar.business.requests.Damage.DeleteDamageRequest;
+import com.turkcell.rentacar.business.requests.Damage.UpdateDamageRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -42,7 +43,7 @@ public class DamageManager implements DamageService {
 		
 		this.damageDao.save(damage);
 		
-		return new SuccessResult("Hasar kaydı başarıyla eklendi.");
+		return new SuccessResult(BusinessMessages.DAMAGE_ADDED);
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class DamageManager implements DamageService {
 		List<DamageListDto> response = result.stream().map(damage -> this.modelMapperService
 				.forDto().map(damage, DamageListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<DamageListDto>>(response, "Veriler başarıyla listelendi.");
+		return new SuccessDataResult<List<DamageListDto>>(response, BusinessMessages.DAMAGES_LISTED);
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class DamageManager implements DamageService {
 		
 		GetDamageDto response = this.modelMapperService.forDto().map(damage, GetDamageDto.class);
 		
-		return new SuccessDataResult<GetDamageDto>(response, "ID'ye göre başarıyla getirildi.");
+		return new SuccessDataResult<GetDamageDto>(response, BusinessMessages.DAMAGE_FOUND_BY_ID);
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class DamageManager implements DamageService {
 		
 		this.damageDao.save(damage);
 		
-		return new SuccessResult("Başarıyla güncellendi.");
+		return new SuccessResult(BusinessMessages.DAMAGE_UPDATED);
 	}
 
 	@Override
@@ -87,7 +88,7 @@ public class DamageManager implements DamageService {
 		
 		this.damageDao.deleteById(deleteDamageRequest.getDamageId());
 		
-		return new SuccessResult("Başarıyla silindi.");
+		return new SuccessResult(BusinessMessages.DAMAGE_DELETED);
 	}
 
 	@Override
@@ -98,7 +99,7 @@ public class DamageManager implements DamageService {
 		List<DamageListDto> response = result.stream().map(damage-> this.modelMapperService
 				.forDto().map(damage, DamageListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<DamageListDto>>(response, "Car ID'ye göre başarıyla sıralandı.");	
+		return new SuccessDataResult<List<DamageListDto>>(response, BusinessMessages.DAMAGES_LISTED_BY_CAR_ID);	
 	}
 
 	@Override
@@ -106,7 +107,7 @@ public class DamageManager implements DamageService {
 		
 		if(!this.damageDao.existsById(id)) {
 			
-			throw new BusinessException("Bu ID'de kayıtlı hasar kaydı bulunamadı.");
+			throw new BusinessException(BusinessMessages.DAMAGE_NOT_FOUND);
 		}
 
 	}

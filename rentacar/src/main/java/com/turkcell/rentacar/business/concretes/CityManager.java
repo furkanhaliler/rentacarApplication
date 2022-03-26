@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CityService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCityDto;
 import com.turkcell.rentacar.business.dtos.lists.CityListDto;
-import com.turkcell.rentacar.business.requests.create.CreateCityRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteCityRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateCityRequest;
+import com.turkcell.rentacar.business.requests.City.CreateCityRequest;
+import com.turkcell.rentacar.business.requests.City.DeleteCityRequest;
+import com.turkcell.rentacar.business.requests.City.UpdateCityRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -42,7 +43,7 @@ public class CityManager implements CityService {
 		List<CityListDto> response = result.stream().map(city -> this.modelMapperService
 				.forDto().map(city, CityListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CityListDto>>(response, "Veriler başarıyla listelendi.");
+		return new SuccessDataResult<List<CityListDto>>(response, BusinessMessages.CITIES_LISTED);
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class CityManager implements CityService {
 		
 		this.cityDao.save(city);
 		
-		return new SuccessResult("Başarıyla eklendi.");
+		return new SuccessResult(BusinessMessages.CITY_ADDED);
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class CityManager implements CityService {
 		
 		GetCityDto response = this.modelMapperService.forDto().map(city, GetCityDto.class);
 		
-		return new SuccessDataResult<GetCityDto>(response, "Veri başarıyla getirildi.");
+		return new SuccessDataResult<GetCityDto>(response, BusinessMessages.CITY_FOUND_BY_ID);
 	}
 
 	@Override
@@ -79,7 +80,7 @@ public class CityManager implements CityService {
 		
 		this.cityDao.save(city);
 		
-		return new SuccessResult("Başarıyla güncellendi.");
+		return new SuccessResult(BusinessMessages.CITY_UPDATED);
 	}
 
 	@Override
@@ -89,7 +90,7 @@ public class CityManager implements CityService {
 		
 		this.cityDao.deleteById(deleteCityRequest.getCityId());
 		
-		return new SuccessResult("Başarıyla silindi.");
+		return new SuccessResult(BusinessMessages.CITY_DELETED);
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class CityManager implements CityService {
 		
 		if(this.cityDao.existsCityByCityName(cityName)) {
 			
-			throw new BusinessException("Bu isimde şehir zaten mevcut.");
+			throw new BusinessException(BusinessMessages.CITY_NAME_EXISTS);
 		}
 	}
 
@@ -106,7 +107,7 @@ public class CityManager implements CityService {
 	
 		if(!this.cityDao.existsById(id)) {
 			
-			throw new BusinessException("Bu ID'de kayıtlı şehir bulunamadı.");
+			throw new BusinessException(BusinessMessages.CITY_NOT_FOUND);
 		}
 	}
 

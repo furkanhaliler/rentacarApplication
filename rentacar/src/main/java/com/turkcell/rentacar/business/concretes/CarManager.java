@@ -13,9 +13,9 @@ import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCarDto;
 import com.turkcell.rentacar.business.dtos.lists.CarListDto;
-import com.turkcell.rentacar.business.requests.create.CreateCarRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteCarRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateCarRequest;
+import com.turkcell.rentacar.business.requests.Car.CreateCarRequest;
+import com.turkcell.rentacar.business.requests.Car.DeleteCarRequest;
+import com.turkcell.rentacar.business.requests.Car.UpdateCarRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.exceptions.CarNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
@@ -47,20 +47,9 @@ public class CarManager implements CarService {
 		
 		this.carDao.save(car);
 		
-		return new SuccessResult("Araba eklendi.");
+		return new SuccessResult(BusinessMessages.CAR_ADDED);
 	}
 
-	@Override
-	public DataResult<GetCarDto> getByCarId(int id) throws BusinessException {
-
-		checkIfCarIdExists(id);
-
-		Car car = carDao.getById(id);
-		
-		GetCarDto response = this.modelMapperService.forDto().map(car, GetCarDto.class);
-
-		return new SuccessDataResult<GetCarDto>(response, "Id'ye göre listelendi");
-	}
 
 	@Override
 	public DataResult<List<CarListDto>> getAll() throws BusinessException {
@@ -70,7 +59,19 @@ public class CarManager implements CarService {
 		List<CarListDto> response = result.stream()
 				.map(car -> this.modelMapperService.forDto().map(car, CarListDto.class)).collect(Collectors.toList());
 
-		return new SuccessDataResult<List<CarListDto>>(response, "Veriler listelendi.");
+		return new SuccessDataResult<List<CarListDto>>(response, BusinessMessages.CARS_LISTED);
+	}
+	
+	@Override
+	public DataResult<GetCarDto> getByCarId(int id) throws BusinessException {
+
+		checkIfCarIdExists(id);
+
+		Car car = carDao.getById(id);
+		
+		GetCarDto response = this.modelMapperService.forDto().map(car, GetCarDto.class);
+
+		return new SuccessDataResult<GetCarDto>(response, BusinessMessages.CAR_FOUND_BY_ID);
 	}
 
 	@Override
@@ -82,7 +83,7 @@ public class CarManager implements CarService {
 		
 		this.carDao.save(car);
 
-		return new SuccessResult("Araba güncellendi.");
+		return new SuccessResult(BusinessMessages.CAR_UPDATED);
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class CarManager implements CarService {
 
 		this.carDao.deleteById(deleteCarRequest.getId());
 		
-		return new SuccessResult("Araba silindi.");
+		return new SuccessResult(BusinessMessages.CAR_DELETED);
 	}
 
 	@Override
@@ -105,7 +106,7 @@ public class CarManager implements CarService {
 		List<CarListDto> response = result.stream()
 				.map(car -> this.modelMapperService.forDto().map(car, CarListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CarListDto>>(response, "Başarıyla sayfalandı");
+		return new SuccessDataResult<List<CarListDto>>(response, BusinessMessages.CARS_PAGED);
 	}
 
 	@Override
@@ -118,7 +119,7 @@ public class CarManager implements CarService {
 		} else if (param.toUpperCase().equals("DESC")) {
 			sort = Sort.by(Sort.Direction.DESC, "dailyPrice");
 		} else {
-			throw new BusinessException("Sıralama başarısız, lütfen geçerli bir parametre yazın. (asc, desc)");
+			throw new BusinessException(BusinessMessages.INVALID_SORT_PARAM);
 		}
 
 		List<Car> result = this.carDao.findAll(sort);
@@ -126,7 +127,7 @@ public class CarManager implements CarService {
 		List<CarListDto> response = result.stream()
 				.map(car -> this.modelMapperService.forDto().map(car, CarListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CarListDto>>(response, "Veriler başarıyla sıralandı.");
+		return new SuccessDataResult<List<CarListDto>>(response, BusinessMessages.CARS_SORTED);
 	}
 
 	@Override
@@ -137,7 +138,7 @@ public class CarManager implements CarService {
 		List<CarListDto> response = result.stream()
 				.map(car -> this.modelMapperService.forDto().map(car, CarListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CarListDto>>(response, "Başarıyla listelendi.");
+		return new SuccessDataResult<List<CarListDto>>(response, BusinessMessages.CARS_LISTED);
 	}
 
 	@Override
@@ -148,7 +149,7 @@ public class CarManager implements CarService {
 		List<CarListDto> response = result.stream()
 				.map(car -> this.modelMapperService.forDto().map(car, CarListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CarListDto>>(response, "Başarıyla listelendi.");
+		return new SuccessDataResult<List<CarListDto>>(response, BusinessMessages.CARS_LISTED);
 	}
 
 	@Override
@@ -165,7 +166,7 @@ public class CarManager implements CarService {
 		List<CarListDto> response = result.stream()
 				.map(car -> this.modelMapperService.forDto().map(car, CarListDto.class)).collect(Collectors.toList());
 		
-		return new SuccessDataResult<List<CarListDto>>(response, "Başarıyla listelendi.");
+		return new SuccessDataResult<List<CarListDto>>(response, BusinessMessages.CARS_LISTED);
 	}
 
 	@Override

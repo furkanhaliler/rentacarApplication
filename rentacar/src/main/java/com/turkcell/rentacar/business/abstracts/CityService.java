@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.gets.GetCityDto;
 import com.turkcell.rentacar.business.dtos.lists.CityListDto;
-import com.turkcell.rentacar.business.requests.create.CreateCityRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteCityRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateCityRequest;
+import com.turkcell.rentacar.business.requests.City.CreateCityRequest;
+import com.turkcell.rentacar.business.requests.City.DeleteCityRequest;
+import com.turkcell.rentacar.business.requests.City.UpdateCityRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;

@@ -18,4 +18,6 @@ public class GetIndividualCustomerDto {
 	private String lastName;
 	private String nationalIdentity;
 	private List<GetRentDto> rents;
+	private List<GetInvoiceDto> invoices;
+	private List<GetPaymentDto> payments;
 }

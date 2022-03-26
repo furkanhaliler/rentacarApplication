@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CorporateCustomerService;
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCorporateCustomerDto;
 import com.turkcell.rentacar.business.dtos.lists.CorporateCustomerListDto;
-import com.turkcell.rentacar.business.requests.create.CreateCorporateCustomerRequest;
-import com.turkcell.rentacar.business.requests.delete.DeleteCorporateCustomerRequest;
-import com.turkcell.rentacar.business.requests.update.UpdateCorporateCustomerRequest;
+import com.turkcell.rentacar.business.requests.CorporateCustomer.CreateCorporateCustomerRequest;
+import com.turkcell.rentacar.business.requests.CorporateCustomer.DeleteCorporateCustomerRequest;
+import com.turkcell.rentacar.business.requests.CorporateCustomer.UpdateCorporateCustomerRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
@@ -42,7 +43,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		List<CorporateCustomerListDto> response = result.stream().map(corporateCustomer -> this.modelMapperService
 				.forDto().map(corporateCustomer, CorporateCustomerListDto.class)).collect(Collectors.toList());
 				
-		return new SuccessDataResult<List<CorporateCustomerListDto>>(response, "Veriler başarıyla sıralandı.");
+		return new SuccessDataResult<List<CorporateCustomerListDto>>(response, BusinessMessages.CORPORATE_CUSTOMERS_LISTED);
 	}
 
 	@Override
@@ -52,7 +53,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		
 		this.corporateCustomerDao.save(corporateCustomer);
 		
-		return new SuccessResult("Başarıyla eklendi.");
+		return new SuccessResult(BusinessMessages.CORPORATE_CUSTOMER_ADDED);
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		
 		GetCorporateCustomerDto response = this.modelMapperService.forDto().map(corporateCustomer, GetCorporateCustomerDto.class);
 		
-		return new SuccessDataResult<GetCorporateCustomerDto>(response, "Veri başarıyla getirildi.");
+		return new SuccessDataResult<GetCorporateCustomerDto>(response, BusinessMessages.CORPORATE_CUSTOMER_FOUND_BY_ID);
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		
 		this.corporateCustomerDao.save(corporateCustomer);
 		
-		return new SuccessResult("Başarıyla güncellendi.");
+		return new SuccessResult(BusinessMessages.CORPORATE_CUSTOMER_UPDATED);
 	}
 
 	@Override
@@ -86,7 +87,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 		
 		this.corporateCustomerDao.deleteById(deleteCorporateCustomerRequest.getUserId());
 		
-		return new SuccessResult("Başarıyla silindi.");
+		return new SuccessResult(BusinessMessages.CORPORATE_CUSTOMER_DELETED);
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 	
 		if(!this.corporateCustomerDao.existsById(id)) {
 			
-			throw new BusinessException("Bu ID'de kayıtlı kurumsal müşteri bulunamadı.");
+			throw new BusinessException(BusinessMessages.CORPORATE_CUSTOMER_NOT_FOUND);
 		}
 	}
 
