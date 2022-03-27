@@ -14,19 +14,25 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 
 @RestController
 @RequestMapping("/api/rentModels")
-public class RentModelController {
+public class RentModelTransactionController {
 
-	private RentModelService rentModelService;
+	private RentModelTransactionService rentModelTransactionService;
 		
 	@Autowired
-	public RentModelController(RentModelService rentModelService) {
+	public RentModelTransactionController(RentModelTransactionService rentModelTransactionService) {
 		super();
-		this.rentModelService = rentModelService;
+		this.rentModelTransactionService = rentModelTransactionService;
 	}
 
 	@PostMapping("/add")
 	Result add(@RequestBody @Valid CreateRentModel createRentModel) throws BusinessException{
 		
-		return this.rentModelService.add(createRentModel);
+		return this.rentModelTransactionService.add(createRentModel);
+	}
+	
+	@PostMapping("/endRentWithExtraPayment")
+	Result endRentWithExtraPayment(@RequestBody @Valid EndRentWithExtraPaymentModel endRentWithExtraPaymentModel) throws BusinessException{
+		
+		return this.rentModelTransactionService.endRentWithExtraPayment(endRentWithExtraPaymentModel);
 	}
 }

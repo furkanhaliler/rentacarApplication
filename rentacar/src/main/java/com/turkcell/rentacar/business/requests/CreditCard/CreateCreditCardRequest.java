@@ -26,7 +26,7 @@ public class CreateCreditCardRequest {
 	
 	@NotNull
 	@CreditCardNumber
-	private String creditCarNo;
+	private String creditCardNo;
 	
 	@NotNull
 	@Size(min = 5)

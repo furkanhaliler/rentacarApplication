@@ -2,6 +2,7 @@ package com.turkcell.rentacar.api.model;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -28,9 +29,8 @@ public class CreateRentModel {
 	@NotNull
 	private List<CreateOrderedServiceRequest> createOrderedServiceRequests;
 	
-	private CreateInvoiceRequest createInvoiceRequest;
-	
 	@NotNull
+	@Valid
 	private CreatePaymentRequest createPaymentRequest;
 	
 }

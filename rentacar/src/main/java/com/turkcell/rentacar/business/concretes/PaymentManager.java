@@ -54,8 +54,6 @@ public class PaymentManager implements PaymentService {
 		this.customerService = customerService;
 		this.invoiceService = invoiceService;
 	}
-
-	
 	
 	@Override
 	public Result add(CreatePaymentRequest createPaymentRequest) throws BusinessException {

@@ -13,7 +13,7 @@ public interface InvoiceDao extends JpaRepository<Invoice, Integer> {
 
 	List<Invoice> findByCustomerUserId(int customerUserId);
 	
-	List<Invoice> findByRentId(int rentId);
+	List<Invoice> findByRentRentId(int rentId);
 	
 	List<Invoice> findAllByCreationDateBetween(LocalDate startDate, LocalDate endDate);
 	

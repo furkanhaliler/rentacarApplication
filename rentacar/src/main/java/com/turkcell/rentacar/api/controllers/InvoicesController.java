@@ -73,6 +73,12 @@ public class InvoicesController {
 		
 		return this.invoiceService.getByCustomerUserId(id);
 	}
+	
+	@GetMapping("/getByRentId/{rentId}")
+	DataResult<List<InvoiceListDto>> getByRentId(@RequestParam("rentId") Integer id){
+		
+		return this.invoiceService.getByRentId(id);
+	}
 
 	@GetMapping(value = "/findByCreationDateBetween/{startDate}/{endDate}")
 	DataResult<List<InvoiceListDto>> findByCreationDateBetween(

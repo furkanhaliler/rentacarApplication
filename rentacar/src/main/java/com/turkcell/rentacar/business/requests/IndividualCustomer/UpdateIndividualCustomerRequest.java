@@ -5,6 +5,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +22,7 @@ public class UpdateIndividualCustomerRequest {
 	private int userId;
 	
 	@NotNull
-	@Email
+	@Email(message = BusinessMessages.WRONG_EMAIL_FORMAT)
 	private String email;
 	
 	@NotNull

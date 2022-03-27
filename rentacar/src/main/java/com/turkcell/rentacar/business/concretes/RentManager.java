@@ -136,7 +136,7 @@ public class RentManager implements RentService {
 		
 		Rent rent = this.rentDao.getById(endRentRequest.getRentId());
 		
-		if(LocalDate.now().isAfter(rent.getRentReturnDate()))
+		checkIfReturnDateDelayed(rent);
 		
 		rent.setRentReturnDate(LocalDate.now());
 		rent.setEndKilometer(endRentRequest.getEndKilometer());
@@ -200,21 +200,32 @@ public class RentManager implements RentService {
 		return this.rentDao.getById(rentId);
 	}
 
-//	public void checkIfReturnDateDelayed (Rent rent) {
-//		
-//		if(LocalDate.now().isAfter(rent.getRentReturnDate())){
-//			
-//			long daysBetween = (ChronoUnit.DAYS.between(rent.getRentReturnDate(), LocalDate.now()));
-//			
-//			Car car = this.carService.getCarByCarId(rent.getCar().getId());
-//			
-//			double dailyPrice = car.getDailyPrice();
-//			
-//			double extraPrice = daysBetween * dailyPrice;
-//			
-//			throw new BusinessException("Dönüş tarihi geciktiğinden dolayı ödeme yapılmak zorundadır. )
-//		}
-//	}
+	@Override
+	public void checkIfReturnDateDelayed (Rent rent) throws BusinessException {
+		
+		if(LocalDate.now().isAfter(rent.getRentReturnDate())){
+			
+			double extraPrice = calculateExtraDaysPrice(rent.getRentId());
+			
+			throw new BusinessException(BusinessMessages.NEED_EXTRA_PAYMENT + extraPrice);
+		}
+	}
+	
+	@Override
+	public double calculateExtraDaysPrice (int rentId) {
+		
+		Rent rent = this.rentDao.getById(rentId);
+		
+		long daysBetween = (ChronoUnit.DAYS.between(rent.getRentReturnDate(), LocalDate.now()));
+		
+		Car car = this.carService.getCarByCarId(rent.getCar().getId());
+		
+		double dailyPrice = car.getDailyPrice();
+		
+		double extraPrice = daysBetween * dailyPrice;
+		
+		return extraPrice;
+	}
 	
 	
 	

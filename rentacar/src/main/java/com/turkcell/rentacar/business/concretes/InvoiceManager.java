@@ -71,6 +71,26 @@ public class InvoiceManager implements InvoiceService {
 
 		return new SuccessDataResult<Invoice>(invoice, BusinessMessages.INVOICE_ADDED);
 	}
+	
+	@Override
+	public DataResult<Invoice> addExtraInvoice(int rentId, double totalPrice) throws BusinessException {
+
+		CreateInvoiceRequest createInvoiceRequest = new CreateInvoiceRequest();
+		
+		createInvoiceRequest.setRentRentId(rentId);
+		
+		Invoice invoice = this.modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);
+		
+		invoice.setInvoiceId(0);
+
+		setInvoiceFields(rentId, invoice);
+		
+		invoice.setTotalPrice(totalPrice);
+
+		this.invoiceDao.save(invoice);
+
+		return new SuccessDataResult<Invoice>(invoice, BusinessMessages.INVOICE_ADDED);
+	}
 
 	@Override
 	public DataResult<GetInvoiceDto> getById(Integer id) throws BusinessException {
@@ -119,6 +139,18 @@ public class InvoiceManager implements InvoiceService {
 
 		return new SuccessDataResult<List<InvoiceListDto>>(response, BusinessMessages.INVOICES_LISTED_BY_CUSTOMER_ID);
 	}
+	
+	@Override
+	public DataResult<List<InvoiceListDto>> getByRentId(Integer id) {
+		
+		List<Invoice> result = this.invoiceDao.findByRentRentId(id);
+		
+		List<InvoiceListDto> response = result.stream().map(invoice -> this.modelMapperService.forDto()
+				.map(invoice, InvoiceListDto.class)).collect(Collectors.toList());
+		
+		return new SuccessDataResult<List<InvoiceListDto>>(response, BusinessMessages.INVOICES_LISTED_BY_RENT_ID);
+	}
+
 
 	@Override
 	public DataResult<List<InvoiceListDto>> findByCreationDateBetween(LocalDate startDate, LocalDate endDate) {
@@ -175,6 +207,7 @@ public class InvoiceManager implements InvoiceService {
 
 		invoice.setInvoiceNumber(UUID.randomUUID().toString());	
 	}
+
 
 
 

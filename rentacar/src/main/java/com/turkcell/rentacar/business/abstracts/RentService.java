@@ -37,4 +37,8 @@ public interface RentService {
 	
 	Rent bringRentById(int rentId);
 	
+	public void checkIfReturnDateDelayed (Rent rent) throws BusinessException;
+
+	double calculateExtraDaysPrice(int rentId) throws BusinessException;
+	
 }

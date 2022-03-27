@@ -196,6 +196,8 @@ public class BusinessMessages {
 	
 	public static final String INVOICES_LISTED_BY_CUSTOMER_ID = "Invoices are listed by customer ID.";
 	
+	public static final String INVOICES_LISTED_BY_RENT_ID = "Invoices are listed by rent ID.";
+	
 	public static final String INVOICES_LISTED_BY_DATES = "Invoices that have been created between those dates are listed.";
 	
 	public static final String INVOICE_NOT_FOUND = "No invoice registered with this ID were found.";
@@ -257,6 +259,8 @@ public class BusinessMessages {
 	
 	public static final String RENT_NOT_FOUND = "No rent registered with this ID were found.";
 	
+	public static final String NEED_EXTRA_PAYMENT = "Since the return date is delayed, the following payment has to be made: ";
+	
 	
 	/******** USER ********/
 	
@@ -265,9 +269,11 @@ public class BusinessMessages {
 	public static final String USER_FOUND_BY_ID = "User is found by ID.";
 
 	public static final String USER_NOT_FOUND = "No user registered with this ID were found.";
+	
+	public static final String WRONG_EMAIL_FORMAT = "Please make sure you enter a correct email address.";
 
 	
-	/******** RENT MODEL ********/
+	/******** RENT MODEL TRANSACTİON ********/
 	
 	public static final String RENT_MODEL_SUCCESSFULL = "Rent model created successfully.";
 	

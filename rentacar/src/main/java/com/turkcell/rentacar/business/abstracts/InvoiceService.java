@@ -18,6 +18,8 @@ public interface InvoiceService {
 	DataResult<List<InvoiceListDto>> getAll() throws BusinessException;
 
 	DataResult<Invoice> add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException;
+	
+	DataResult<Invoice> addExtraInvoice(int rentId, double totalPrice) throws BusinessException;
 
 	DataResult<GetInvoiceDto> getById(Integer id) throws BusinessException;
 
@@ -26,6 +28,8 @@ public interface InvoiceService {
 	Result delete(DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException;
 		
 	DataResult<List<InvoiceListDto>> getByCustomerUserId(Integer id);
+	
+	DataResult<List<InvoiceListDto>> getByRentId(Integer id);
 	
 	DataResult<List<InvoiceListDto>> findByCreationDateBetween(LocalDate startDate, LocalDate endDate);
 	

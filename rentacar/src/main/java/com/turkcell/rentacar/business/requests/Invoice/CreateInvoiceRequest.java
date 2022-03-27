@@ -14,9 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateInvoiceRequest {
 	
-//	@NotNull
-//	@Min(1)
-	@JsonIgnore
+	@NotNull
+	@Min(1)
 	private int rentRentId;
 
 }
