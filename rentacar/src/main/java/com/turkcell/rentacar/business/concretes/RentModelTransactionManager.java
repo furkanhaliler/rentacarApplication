@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.api.model;
+package com.turkcell.rentacar.business.concretes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.turkcell.rentacar.api.model.CreateRentModel;
+import com.turkcell.rentacar.api.model.EndRentWithExtraPaymentModel;
 import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
 import com.turkcell.rentacar.business.abstracts.PaymentService;
+import com.turkcell.rentacar.business.abstracts.RentModelTransactionService;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.requests.Invoice.CreateInvoiceRequest;

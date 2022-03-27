@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.api.model;
+package com.turkcell.rentacar.api.controllers;
 
 import javax.validation.Valid;
 
@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.turkcell.rentacar.api.model.CreateRentModel;
+import com.turkcell.rentacar.api.model.EndRentWithExtraPaymentModel;
+import com.turkcell.rentacar.business.abstracts.RentModelTransactionService;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
