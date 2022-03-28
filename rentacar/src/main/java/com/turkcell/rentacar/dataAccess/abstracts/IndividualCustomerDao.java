@@ -7,4 +7,5 @@ import com.turkcell.rentacar.entities.concretes.IndividualCustomer;
 @Repository
 public interface IndividualCustomerDao extends UserDao<IndividualCustomer>{
 
+	boolean existsIndividualCustomerByNationalIdentity(String nationalIdentity);
 }

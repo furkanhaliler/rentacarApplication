@@ -3,9 +3,9 @@ package com.turkcell.rentacar.api.controllers;
 import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.dtos.gets.GetCarDto;
 import com.turkcell.rentacar.business.dtos.lists.CarListDto;
-import com.turkcell.rentacar.business.requests.Car.CreateCarRequest;
-import com.turkcell.rentacar.business.requests.Car.DeleteCarRequest;
-import com.turkcell.rentacar.business.requests.Car.UpdateCarRequest;
+import com.turkcell.rentacar.business.requests.car.CreateCarRequest;
+import com.turkcell.rentacar.business.requests.car.DeleteCarRequest;
+import com.turkcell.rentacar.business.requests.car.UpdateCarRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -30,13 +30,13 @@ public class CarsController {
 	}
 
 	@PostMapping("/add")
-	public Result add(@RequestBody @Valid CreateCarRequest createCarRequest) throws BusinessException {
+	public Result add(@RequestBody @Valid CreateCarRequest createCarRequest){
 
 		return this.carService.add(createCarRequest);
 	}
 
 	@GetMapping("/getall")
-	public DataResult<List<CarListDto>> getAll() throws BusinessException {
+	public DataResult<List<CarListDto>> getAll(){
 
 		return this.carService.getAll();
 	}
@@ -85,7 +85,7 @@ public class CarsController {
 
 	@GetMapping("/findByDailyPriceBetween/{minValue}/{maxValue}")
 	public DataResult<List<CarListDto>> findByDailyPriceBetween(@PathVariable("minValue") double minValue,
-			@PathVariable("maxValue") double maxValue) throws BusinessException {
+			@PathVariable("maxValue") double maxValue){
 
 		return this.carService.findByDailyPriceBetween(minValue, maxValue);
 	}

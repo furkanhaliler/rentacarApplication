@@ -9,14 +9,17 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
+import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCarMaintenanceDto;
 import com.turkcell.rentacar.business.dtos.lists.CarMaintenanceListDto;
-import com.turkcell.rentacar.business.requests.CarMaintenance.CreateCarMaintenanceRequest;
-import com.turkcell.rentacar.business.requests.CarMaintenance.DeleteCarMaintenanceRequest;
-import com.turkcell.rentacar.business.requests.CarMaintenance.UpdateCarMaintenanceRequest;
+import com.turkcell.rentacar.business.requests.carMaintenance.CreateCarMaintenanceRequest;
+import com.turkcell.rentacar.business.requests.carMaintenance.DeleteCarMaintenanceRequest;
+import com.turkcell.rentacar.business.requests.carMaintenance.UpdateCarMaintenanceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.carMaintenance.CarIsUnderMaintenanceException;
+import com.turkcell.rentacar.core.exceptions.carMaintenance.CarMaintenanceNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -31,18 +34,20 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	private CarMaintenanceDao carMaintenanceDao;
 	private ModelMapperService modelMapperService;
 	private RentService rentService;
+	private CarService carService;
 
 	@Autowired
 	public CarMaintenanceManager(CarMaintenanceDao carMaintenanceDao, ModelMapperService modelMapperService,
-			@Lazy RentService rentService) {
+			@Lazy RentService rentService, CarService carService) {
 
 		this.carMaintenanceDao = carMaintenanceDao;
 		this.modelMapperService = modelMapperService;
 		this.rentService = rentService;
+		this.carService = carService;
 	}
 
 	@Override
-	public DataResult<List<CarMaintenanceListDto>> getAll() throws BusinessException {
+	public DataResult<List<CarMaintenanceListDto>> getAll(){
 
 		List<CarMaintenance> result = this.carMaintenanceDao.findAll();
 
@@ -70,6 +75,8 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 	@Override
 	public DataResult<List<CarMaintenanceListDto>> getByCarId(Integer id) throws BusinessException {
+		
+		this.carService.checkIfCarIdExists(id);
 
 		List<CarMaintenance> carMaintenanceList = carMaintenanceDao.getAllByCarId(id);
 
@@ -126,7 +133,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 			if ((carMaintenance.getReturnDate() == null) || LocalDate.now().isBefore(carMaintenance.getReturnDate())
 					|| LocalDate.now().isEqual(carMaintenance.getReturnDate())) {
 
-				throw new BusinessException(BusinessMessages.CAR_IS_UNDER_MAINTENANCE);
+				throw new CarIsUnderMaintenanceException(BusinessMessages.CAR_IS_UNDER_MAINTENANCE);
 			}
 		}
 	}
@@ -136,7 +143,7 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 		if (!this.carMaintenanceDao.existsById(id)) {
 
-			throw new BusinessException(BusinessMessages.CAR_MAINTENANCE_NOT_FOUND);
+			throw new CarMaintenanceNotFoundException(BusinessMessages.CAR_MAINTENANCE_NOT_FOUND);
 		}
 	}
 

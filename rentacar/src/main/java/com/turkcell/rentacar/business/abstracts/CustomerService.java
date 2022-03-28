@@ -9,7 +9,7 @@ import com.turkcell.rentacar.core.utilities.results.DataResult;
 
 public interface CustomerService {
 
-	DataResult<List<CustomerListDto>> getAll() throws BusinessException;
+	DataResult<List<CustomerListDto>> getAll();
 
 	DataResult<GetCustomerDto> getByUserId(Integer id) throws BusinessException;
 	 

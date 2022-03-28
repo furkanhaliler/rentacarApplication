@@ -3,10 +3,8 @@ package com.turkcell.rentacar.api.model;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.turkcell.rentacar.business.requests.Payment.CreatePaymentRequest;
-import com.turkcell.rentacar.business.requests.Pos.CreatePosRequest;
-import com.turkcell.rentacar.business.requests.Rent.EndRentRequest;
+import com.turkcell.rentacar.business.requests.payment.CreatePaymentRequest;
+import com.turkcell.rentacar.business.requests.rent.EndRentRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class EndRentWithExtraPaymentModel {
 
 	@NotNull
+	@Valid
 	private EndRentRequest endRentRequest;
 	
 	@NotNull

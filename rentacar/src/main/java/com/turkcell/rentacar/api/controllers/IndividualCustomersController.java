@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.turkcell.rentacar.business.abstracts.IndividualCustomerService;
 import com.turkcell.rentacar.business.dtos.gets.GetIndividualCustomerDto;
 import com.turkcell.rentacar.business.dtos.lists.IndividualCustomerListDto;
-import com.turkcell.rentacar.business.requests.IndividualCustomer.CreateIndividualCustomerRequest;
-import com.turkcell.rentacar.business.requests.IndividualCustomer.DeleteIndividualCustomerRequest;
-import com.turkcell.rentacar.business.requests.IndividualCustomer.UpdateIndividualCustomerRequest;
+import com.turkcell.rentacar.business.requests.individualCustomer.CreateIndividualCustomerRequest;
+import com.turkcell.rentacar.business.requests.individualCustomer.DeleteIndividualCustomerRequest;
+import com.turkcell.rentacar.business.requests.individualCustomer.UpdateIndividualCustomerRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -28,11 +28,16 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 @RequestMapping("/api/individualCustomers")
 public class IndividualCustomersController {
 
-	@Autowired
 	private IndividualCustomerService individualCustomerService;
 	
+	@Autowired
+	public IndividualCustomersController(IndividualCustomerService individualCustomerService) {
+		
+		this.individualCustomerService = individualCustomerService;
+	}
+
 	@GetMapping("/getAll")
-	DataResult<List<IndividualCustomerListDto>> getAll() throws BusinessException{
+	DataResult<List<IndividualCustomerListDto>> getAll(){
 		
 		return this.individualCustomerService.getAll();
 	}

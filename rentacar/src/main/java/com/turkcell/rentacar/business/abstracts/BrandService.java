@@ -2,9 +2,9 @@ package com.turkcell.rentacar.business.abstracts;
 
 import com.turkcell.rentacar.business.dtos.gets.GetBrandDto;
 import com.turkcell.rentacar.business.dtos.lists.BrandListDto;
-import com.turkcell.rentacar.business.requests.Brand.CreateBrandRequest;
-import com.turkcell.rentacar.business.requests.Brand.DeleteBrandRequest;
-import com.turkcell.rentacar.business.requests.Brand.UpdateBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.CreateBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.DeleteBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface BrandService {
 
-	DataResult<List<BrandListDto>> getAll() throws BusinessException;
+	DataResult<List<BrandListDto>> getAll();
 
 	Result add(CreateBrandRequest createBrandRequest) throws BusinessException;
 

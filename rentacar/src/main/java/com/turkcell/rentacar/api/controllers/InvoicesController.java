@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.dtos.gets.GetInvoiceDto;
 import com.turkcell.rentacar.business.dtos.lists.InvoiceListDto;
-import com.turkcell.rentacar.business.requests.Invoice.CreateInvoiceRequest;
 import com.turkcell.rentacar.business.requests.Invoice.DeleteInvoiceRequest;
 import com.turkcell.rentacar.business.requests.Invoice.UpdateInvoiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
@@ -38,16 +36,11 @@ public class InvoicesController {
 		
 		this.invoiceService = invoiceService;
 	}
+	
 	@GetMapping("/getAll")
-	DataResult<List<InvoiceListDto>> getAll() throws BusinessException{
+	DataResult<List<InvoiceListDto>> getAll(){
 		
 		return this.invoiceService.getAll();
-	}
-	
-	@PostMapping("/add")
-	Result addForIndividualCustomers(@RequestBody @Valid CreateInvoiceRequest createInvoiceRequest) throws BusinessException{
-		
-		return this.invoiceService.add(createInvoiceRequest);
 	}
 
 	@GetMapping("/getById/{invoiceId}")
@@ -69,13 +62,13 @@ public class InvoicesController {
 	}
 	
 	@GetMapping("/getByCustomerUserId/{customerUserId}")
-	DataResult<List<InvoiceListDto>> getByCustomerUserId(@RequestParam("customerUserId") Integer id){
+	DataResult<List<InvoiceListDto>> getByCustomerUserId(@RequestParam("customerUserId") Integer id) throws BusinessException{
 		
 		return this.invoiceService.getByCustomerUserId(id);
 	}
 	
 	@GetMapping("/getByRentId/{rentId}")
-	DataResult<List<InvoiceListDto>> getByRentId(@RequestParam("rentId") Integer id){
+	DataResult<List<InvoiceListDto>> getByRentId(@RequestParam("rentId") Integer id) throws BusinessException{
 		
 		return this.invoiceService.getByRentId(id);
 	}

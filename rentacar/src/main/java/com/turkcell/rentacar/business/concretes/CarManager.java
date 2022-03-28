@@ -13,11 +13,11 @@ import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCarDto;
 import com.turkcell.rentacar.business.dtos.lists.CarListDto;
-import com.turkcell.rentacar.business.requests.Car.CreateCarRequest;
-import com.turkcell.rentacar.business.requests.Car.DeleteCarRequest;
-import com.turkcell.rentacar.business.requests.Car.UpdateCarRequest;
+import com.turkcell.rentacar.business.requests.car.CreateCarRequest;
+import com.turkcell.rentacar.business.requests.car.DeleteCarRequest;
+import com.turkcell.rentacar.business.requests.car.UpdateCarRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
-import com.turkcell.rentacar.core.exceptions.CarNotFoundException;
+import com.turkcell.rentacar.core.exceptions.car.CarNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -52,7 +52,7 @@ public class CarManager implements CarService {
 
 
 	@Override
-	public DataResult<List<CarListDto>> getAll() throws BusinessException {
+	public DataResult<List<CarListDto>> getAll(){
 
 		List<Car> result = this.carDao.findAll();
 
@@ -153,7 +153,7 @@ public class CarManager implements CarService {
 	}
 
 	@Override
-	public DataResult<List<CarListDto>> findByDailyPriceBetween(double minValue, double maxValue) throws BusinessException {
+	public DataResult<List<CarListDto>> findByDailyPriceBetween(double minValue, double maxValue){
 
 		if (minValue > maxValue) {
 			double a = minValue;

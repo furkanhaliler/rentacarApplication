@@ -4,12 +4,12 @@ import com.turkcell.rentacar.business.abstracts.ColorService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetColorDto;
 import com.turkcell.rentacar.business.dtos.lists.ColorListDto;
-import com.turkcell.rentacar.business.requests.Color.CreateColorRequest;
-import com.turkcell.rentacar.business.requests.Color.DeleteColorRequest;
-import com.turkcell.rentacar.business.requests.Color.UpdateColorRequest;
+import com.turkcell.rentacar.business.requests.color.CreateColorRequest;
+import com.turkcell.rentacar.business.requests.color.DeleteColorRequest;
+import com.turkcell.rentacar.business.requests.color.UpdateColorRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
-import com.turkcell.rentacar.core.exceptions.ColorAlreadyExistsException;
-import com.turkcell.rentacar.core.exceptions.ColorNotfoundException;
+import com.turkcell.rentacar.core.exceptions.color.ColorAlreadyExistsException;
+import com.turkcell.rentacar.core.exceptions.color.ColorNotfoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -37,7 +37,7 @@ public class ColorManager implements ColorService {
 	}
 
 	@Override
-	public DataResult<List<ColorListDto>> getAll() throws BusinessException {
+	public DataResult<List<ColorListDto>> getAll(){
 
 		List<Color> result = this.colorDao.findAll();
 

@@ -1,6 +1,6 @@
 package com.turkcell.rentacar.business.abstracts;
 
-import com.turkcell.rentacar.business.requests.Pos.CreatePosRequest;
+import com.turkcell.rentacar.business.requests.pos.CreatePosRequest;
 
 public interface PosService {
 

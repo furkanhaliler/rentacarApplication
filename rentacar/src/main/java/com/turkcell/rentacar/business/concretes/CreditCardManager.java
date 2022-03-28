@@ -11,9 +11,10 @@ import com.turkcell.rentacar.business.abstracts.CustomerService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCreditCardDto;
 import com.turkcell.rentacar.business.dtos.lists.CreditCardListDto;
-import com.turkcell.rentacar.business.requests.CreditCard.CreateCreditCardRequest;
-import com.turkcell.rentacar.business.requests.CreditCard.DeleteCreditCardRequest;
+import com.turkcell.rentacar.business.requests.creditCard.CreateCreditCardRequest;
+import com.turkcell.rentacar.business.requests.creditCard.DeleteCreditCardRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.creditCard.CreditCardNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -38,9 +39,11 @@ public class CreditCardManager implements CreditCardService {
 	}
 
 	@Override
-	public Result add(CreateCreditCardRequest createCreditCardRequest) throws BusinessException {
+	public Result add(CreateCreditCardRequest createCreditCardRequest) {
 		
 		CreditCard creditCard = this.modelMapperService.forRequest().map(createCreditCardRequest, CreditCard.class);
+		
+		creditCard.setCreditCardId(0);
 		
 		this.creditCardDao.save(creditCard);
 		
@@ -48,7 +51,7 @@ public class CreditCardManager implements CreditCardService {
 	}
 
 	@Override
-	public DataResult<List<CreditCardListDto>> getAll() throws BusinessException {
+	public DataResult<List<CreditCardListDto>> getAll(){
 		
 		List<CreditCard> result = this.creditCardDao.findAll();
 		
@@ -99,7 +102,7 @@ public class CreditCardManager implements CreditCardService {
 		
 		if(!this.creditCardDao.existsById(creditCardId)) {
 			
-			throw new BusinessException(BusinessMessages.CREDIT_CARD_NOT_FOUND);
+			throw new CreditCardNotFoundException(BusinessMessages.CREDIT_CARD_NOT_FOUND);
 		}
 	}
 

@@ -10,10 +10,12 @@ import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetAdditionalServiceDto;
 import com.turkcell.rentacar.business.dtos.lists.AdditionalServiceListDto;
-import com.turkcell.rentacar.business.requests.AdditionalService.CreateAdditionalServiceRequest;
-import com.turkcell.rentacar.business.requests.AdditionalService.DeleteAdditionalServiceRequest;
-import com.turkcell.rentacar.business.requests.AdditionalService.UpdateAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.additionalService.CreateAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.additionalService.DeleteAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.additionalService.UpdateAdditionalServiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.additionalService.AdditionalServiceNameAlreadyExistsException;
+import com.turkcell.rentacar.core.exceptions.additionalService.AdditionalServiceNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -36,7 +38,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	}
 
 	@Override
-	public DataResult<List<AdditionalServiceListDto>> getAll() throws BusinessException {
+	public DataResult<List<AdditionalServiceListDto>> getAll() {
 		
 		List<AdditionalService> result = this.additionalServiceDao.findAll();
 		
@@ -100,7 +102,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		if(this.additionalServiceDao.existsAdditionalServiceByAdditionalServiceName(additionalServiceName)) {
 			
-			throw new BusinessException(BusinessMessages.ADDITIONAL_SERVICE_NAME_EXISTS);
+			throw new AdditionalServiceNameAlreadyExistsException(BusinessMessages.ADDITIONAL_SERVICE_NAME_EXISTS);
 		}
 	}
 
@@ -109,7 +111,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		
 		if(!this.additionalServiceDao.existsById(id)) {
 			
-			throw new BusinessException(BusinessMessages.ADDITIONAL_SERVICE_NOT_FOUND);
+			throw new AdditionalServiceNotFoundException(BusinessMessages.ADDITIONAL_SERVICE_NOT_FOUND);
 		}
 	}
 

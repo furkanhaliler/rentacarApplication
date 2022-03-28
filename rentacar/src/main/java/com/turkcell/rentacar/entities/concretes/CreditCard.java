@@ -25,15 +25,12 @@ public class CreditCard {
 	@Column(name = "credit_card_id")
 	private int creditCardId;
 	
-	@Column(name = "credit_card_description")
-	private String creditCardDescription;
-	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private Customer customer;
 	
 	@Column(name = "credit_card_no")
-	private String creditCarNo;
+	private String creditCardNo;
 	
 	@Column(name = "credit_card_holder")
 	private String creditCardHolder;

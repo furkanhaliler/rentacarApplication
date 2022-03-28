@@ -3,9 +3,9 @@ package com.turkcell.rentacar.api.controllers;
 import com.turkcell.rentacar.business.abstracts.BrandService;
 import com.turkcell.rentacar.business.dtos.gets.GetBrandDto;
 import com.turkcell.rentacar.business.dtos.lists.BrandListDto;
-import com.turkcell.rentacar.business.requests.Brand.CreateBrandRequest;
-import com.turkcell.rentacar.business.requests.Brand.DeleteBrandRequest;
-import com.turkcell.rentacar.business.requests.Brand.UpdateBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.CreateBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.DeleteBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -36,7 +36,7 @@ public class BrandsController {
 	}
 
 	@GetMapping("/getAll")
-	public DataResult<List<BrandListDto>> getAll() throws BusinessException {
+	public DataResult<List<BrandListDto>> getAll(){
 		
 		return this.brandService.getAll();
 	}

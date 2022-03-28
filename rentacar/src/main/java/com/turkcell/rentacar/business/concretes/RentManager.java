@@ -6,22 +6,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
 import com.turkcell.rentacar.business.abstracts.CarService;
-import com.turkcell.rentacar.business.abstracts.InvoiceService;
-import com.turkcell.rentacar.business.abstracts.PaymentService;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
 import com.turkcell.rentacar.business.dtos.lists.RentListDto;
-import com.turkcell.rentacar.business.requests.Rent.CreateRentRequest;
-import com.turkcell.rentacar.business.requests.Rent.DeleteRentRequest;
-import com.turkcell.rentacar.business.requests.Rent.EndRentRequest;
-import com.turkcell.rentacar.business.requests.Rent.UpdateRentRequest;
+import com.turkcell.rentacar.business.requests.rent.CreateRentRequest;
+import com.turkcell.rentacar.business.requests.rent.DeleteRentRequest;
+import com.turkcell.rentacar.business.requests.rent.EndRentRequest;
+import com.turkcell.rentacar.business.requests.rent.UpdateRentRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.rent.CarIsCurrentlyRentedException;
+import com.turkcell.rentacar.core.exceptions.rent.RentNotFoundException;
+import com.turkcell.rentacar.core.exceptions.rent.RentReturnDateDelayedException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -52,7 +52,7 @@ public class RentManager implements RentService {
 	}
 
 	@Override
-	public DataResult<List<RentListDto>> getAll() throws BusinessException {
+	public DataResult<List<RentListDto>> getAll(){
 
 		List<Rent> rents = this.rentDao.findAll();
 
@@ -119,6 +119,8 @@ public class RentManager implements RentService {
 
 	@Override
 	public DataResult<List<RentListDto>> getByCarId(int id) throws BusinessException {
+		
+		this.carService.checkIfCarIdExists(id);
 
 		List<Rent> rents = this.rentDao.getAllByCarId(id);
 
@@ -158,7 +160,7 @@ public class RentManager implements RentService {
 			if (rent.getRentReturnDate() == null || LocalDate.now().isBefore(rent.getRentReturnDate())
 					|| LocalDate.now().isEqual(rent.getRentReturnDate())) {
 				
-				throw new BusinessException(BusinessMessages.CAR_IS_CURRENTLY_RENTED);
+				throw new CarIsCurrentlyRentedException(BusinessMessages.CAR_IS_CURRENTLY_RENTED);
 			}
 		}
 	}
@@ -168,7 +170,7 @@ public class RentManager implements RentService {
 		
 		if(!this.rentDao.existsById(id)) {
 			
-			throw new BusinessException(BusinessMessages.RENT_NOT_FOUND);
+			throw new RentNotFoundException(BusinessMessages.RENT_NOT_FOUND);
 		}
 	}
 	
@@ -195,7 +197,9 @@ public class RentManager implements RentService {
 	}
 
 	@Override
-	public Rent bringRentById(int rentId) {
+	public Rent bringRentById(int rentId) throws BusinessException{
+		
+		checkIfRentIdExists(rentId);
 		
 		return this.rentDao.getById(rentId);
 	}
@@ -207,7 +211,7 @@ public class RentManager implements RentService {
 			
 			double extraPrice = calculateExtraDaysPrice(rent.getRentId());
 			
-			throw new BusinessException(BusinessMessages.NEED_EXTRA_PAYMENT + extraPrice);
+			throw new RentReturnDateDelayedException(BusinessMessages.NEED_EXTRA_PAYMENT + extraPrice);
 		}
 	}
 	

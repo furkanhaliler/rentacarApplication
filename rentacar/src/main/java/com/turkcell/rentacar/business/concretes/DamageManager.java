@@ -6,14 +6,16 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.DamageService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetDamageDto;
 import com.turkcell.rentacar.business.dtos.lists.DamageListDto;
-import com.turkcell.rentacar.business.requests.Damage.CreateDamageRequest;
-import com.turkcell.rentacar.business.requests.Damage.DeleteDamageRequest;
-import com.turkcell.rentacar.business.requests.Damage.UpdateDamageRequest;
+import com.turkcell.rentacar.business.requests.damage.CreateDamageRequest;
+import com.turkcell.rentacar.business.requests.damage.DeleteDamageRequest;
+import com.turkcell.rentacar.business.requests.damage.UpdateDamageRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.damage.DamageNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -27,18 +29,21 @@ public class DamageManager implements DamageService {
 
 	private DamageDao damageDao;
 	private ModelMapperService modelMapperService;
+	private CarService carService;
 	
 	@Autowired
-	public DamageManager(DamageDao damageDao, ModelMapperService modelMapperService) {
+	public DamageManager(DamageDao damageDao, ModelMapperService modelMapperService, CarService carService) {
 		
 		this.damageDao = damageDao;
 		this.modelMapperService = modelMapperService;
+		this.carService = carService;
 	}
 
 	@Override
-	public Result add(CreateDamageRequest createDamageRequest) throws BusinessException {
+	public Result add(CreateDamageRequest createDamageRequest){
 		
 		Damage damage = this.modelMapperService.forRequest().map(createDamageRequest, Damage.class);
+		
 		damage.setDamageId(0);
 		
 		this.damageDao.save(damage);
@@ -47,7 +52,7 @@ public class DamageManager implements DamageService {
 	}
 
 	@Override
-	public DataResult<List<DamageListDto>> getAll() throws BusinessException {
+	public DataResult<List<DamageListDto>> getAll(){
 		
 		List<Damage> result = this.damageDao.findAll();
 		
@@ -94,6 +99,8 @@ public class DamageManager implements DamageService {
 	@Override
 	public DataResult<List<DamageListDto>> getByCarId(Integer carId) throws BusinessException {
 		
+		this.carService.checkIfCarIdExists(carId);
+		
 		List<Damage> result = this.damageDao.findByCarId(carId);
 		
 		List<DamageListDto> response = result.stream().map(damage-> this.modelMapperService
@@ -107,7 +114,7 @@ public class DamageManager implements DamageService {
 		
 		if(!this.damageDao.existsById(id)) {
 			
-			throw new BusinessException(BusinessMessages.DAMAGE_NOT_FOUND);
+			throw new DamageNotFoundException(BusinessMessages.DAMAGE_NOT_FOUND);
 		}
 
 	}

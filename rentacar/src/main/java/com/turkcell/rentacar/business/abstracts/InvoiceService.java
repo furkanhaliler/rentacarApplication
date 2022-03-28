@@ -15,7 +15,7 @@ import com.turkcell.rentacar.entities.concretes.Invoice;
 
 public interface InvoiceService {
 
-	DataResult<List<InvoiceListDto>> getAll() throws BusinessException;
+	DataResult<List<InvoiceListDto>> getAll();
 
 	DataResult<Invoice> add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException;
 	
@@ -27,17 +27,17 @@ public interface InvoiceService {
 
 	Result delete(DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException;
 		
-	DataResult<List<InvoiceListDto>> getByCustomerUserId(Integer id);
+	DataResult<List<InvoiceListDto>> getByCustomerUserId(Integer id) throws BusinessException;
 	
-	DataResult<List<InvoiceListDto>> getByRentId(Integer id);
+	DataResult<List<InvoiceListDto>> getByRentId(Integer id) throws BusinessException;
 	
 	DataResult<List<InvoiceListDto>> findByCreationDateBetween(LocalDate startDate, LocalDate endDate);
 	
 	void checkIfInvoiceIdExists (Integer id) throws BusinessException;
 	
-	double calculateTotalPrice (int rentId);
+	double calculateTotalPrice (int rentId) throws BusinessException;
 	
-	void setInvoiceFields (int rentId, Invoice invoice);
+	void setInvoiceFields (int rentId, Invoice invoice) throws BusinessException;
 
 	
 }

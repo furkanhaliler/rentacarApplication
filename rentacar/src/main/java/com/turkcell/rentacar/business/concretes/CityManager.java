@@ -10,10 +10,12 @@ import com.turkcell.rentacar.business.abstracts.CityService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCityDto;
 import com.turkcell.rentacar.business.dtos.lists.CityListDto;
-import com.turkcell.rentacar.business.requests.City.CreateCityRequest;
-import com.turkcell.rentacar.business.requests.City.DeleteCityRequest;
-import com.turkcell.rentacar.business.requests.City.UpdateCityRequest;
+import com.turkcell.rentacar.business.requests.city.CreateCityRequest;
+import com.turkcell.rentacar.business.requests.city.DeleteCityRequest;
+import com.turkcell.rentacar.business.requests.city.UpdateCityRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.city.CityNameAlreadyExistsException;
+import com.turkcell.rentacar.core.exceptions.city.CityNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -36,7 +38,7 @@ public class CityManager implements CityService {
 	}
 
 	@Override
-	public DataResult<List<CityListDto>> getAll() throws BusinessException {
+	public DataResult<List<CityListDto>> getAll(){
 		
 		List<City> result = this.cityDao.findAll();
 		
@@ -98,7 +100,7 @@ public class CityManager implements CityService {
 		
 		if(this.cityDao.existsCityByCityName(cityName)) {
 			
-			throw new BusinessException(BusinessMessages.CITY_NAME_EXISTS);
+			throw new CityNameAlreadyExistsException(BusinessMessages.CITY_NAME_EXISTS);
 		}
 	}
 
@@ -107,7 +109,7 @@ public class CityManager implements CityService {
 	
 		if(!this.cityDao.existsById(id)) {
 			
-			throw new BusinessException(BusinessMessages.CITY_NOT_FOUND);
+			throw new CityNotFoundException(BusinessMessages.CITY_NOT_FOUND);
 		}
 	}
 

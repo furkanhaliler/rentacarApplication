@@ -10,12 +10,12 @@ import com.turkcell.rentacar.business.abstracts.BrandService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetBrandDto;
 import com.turkcell.rentacar.business.dtos.lists.BrandListDto;
-import com.turkcell.rentacar.business.requests.Brand.CreateBrandRequest;
-import com.turkcell.rentacar.business.requests.Brand.DeleteBrandRequest;
-import com.turkcell.rentacar.business.requests.Brand.UpdateBrandRequest;
-import com.turkcell.rentacar.core.exceptions.BrandAlreadyExistsException;
-import com.turkcell.rentacar.core.exceptions.BrandNotFoundException;
+import com.turkcell.rentacar.business.requests.brand.CreateBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.DeleteBrandRequest;
+import com.turkcell.rentacar.business.requests.brand.UpdateBrandRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.brand.BrandAlreadyExistsException;
+import com.turkcell.rentacar.core.exceptions.brand.BrandNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -38,7 +38,7 @@ public class BrandManager implements BrandService {
 	}
 
 	@Override
-	public DataResult<List<BrandListDto>> getAll() throws BusinessException {
+	public DataResult<List<BrandListDto>> getAll() {
 
 		List<Brand> result = this.brandDao.findAll();
 

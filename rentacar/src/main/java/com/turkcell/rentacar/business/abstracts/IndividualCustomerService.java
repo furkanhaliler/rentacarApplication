@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.gets.GetIndividualCustomerDto;
 import com.turkcell.rentacar.business.dtos.lists.IndividualCustomerListDto;
-import com.turkcell.rentacar.business.requests.IndividualCustomer.CreateIndividualCustomerRequest;
-import com.turkcell.rentacar.business.requests.IndividualCustomer.DeleteIndividualCustomerRequest;
-import com.turkcell.rentacar.business.requests.IndividualCustomer.UpdateIndividualCustomerRequest;
+import com.turkcell.rentacar.business.requests.individualCustomer.CreateIndividualCustomerRequest;
+import com.turkcell.rentacar.business.requests.individualCustomer.DeleteIndividualCustomerRequest;
+import com.turkcell.rentacar.business.requests.individualCustomer.UpdateIndividualCustomerRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -14,7 +14,7 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 public interface IndividualCustomerService {
 
 
-	DataResult<List<IndividualCustomerListDto>> getAll() throws BusinessException;
+	DataResult<List<IndividualCustomerListDto>> getAll();
 
 	Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest) throws BusinessException;
 
@@ -25,4 +25,6 @@ public interface IndividualCustomerService {
 	Result delete(DeleteIndividualCustomerRequest deleteIndividualCustomerRequest) throws BusinessException;
 	 
 	void checkIfIndividualCustomerIdExists (Integer id) throws BusinessException;
+	
+	void checkIfNationalIdentityAlreadyExists(String nationalIdentity) throws BusinessException;
 }

@@ -13,10 +13,11 @@ import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetOrderedServiceDto;
 import com.turkcell.rentacar.business.dtos.lists.OrderedServiceListDto;
-import com.turkcell.rentacar.business.requests.OrderedService.CreateOrderedServiceRequest;
-import com.turkcell.rentacar.business.requests.OrderedService.DeleteOrderedServiceRequest;
-import com.turkcell.rentacar.business.requests.OrderedService.UpdateOrderedServiceRequest;
+import com.turkcell.rentacar.business.requests.orderedService.CreateOrderedServiceRequest;
+import com.turkcell.rentacar.business.requests.orderedService.DeleteOrderedServiceRequest;
+import com.turkcell.rentacar.business.requests.orderedService.UpdateOrderedServiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.orderedService.OrderedServiceNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -46,7 +47,7 @@ public class OrderedServiceManager implements OrderedServiceService {
 	}
 
 	@Override
-	public DataResult<List<OrderedServiceListDto>> getAll() throws BusinessException {
+	public DataResult<List<OrderedServiceListDto>> getAll(){
 		
 		List<OrderedService> result = this.orderedServiceDao.findAll();
 		
@@ -57,7 +58,7 @@ public class OrderedServiceManager implements OrderedServiceService {
 	}
 
 	@Override
-	public Result add(CreateOrderedServiceRequest createOrderedServiceRequest) throws BusinessException {
+	public Result add(CreateOrderedServiceRequest createOrderedServiceRequest){
 		
 		OrderedService orderedService = this.modelMapperService.forRequest().map(createOrderedServiceRequest, OrderedService.class);
 		
@@ -103,7 +104,9 @@ public class OrderedServiceManager implements OrderedServiceService {
 	}
 
 	@Override
-	public DataResult<List<OrderedServiceListDto>> getByRentId(Integer id) {
+	public DataResult<List<OrderedServiceListDto>> getByRentId(Integer id) throws BusinessException{
+		
+		this.rentService.checkIfRentIdExists(id);
 		
 		List<OrderedService> result = this.orderedServiceDao.findOrderedServicesByRent_RentId(id);
 		
@@ -118,12 +121,12 @@ public class OrderedServiceManager implements OrderedServiceService {
 		
 		if(!this.orderedServiceDao.existsById(id)) {
 			
-			throw new BusinessException(BusinessMessages.ORDERED_SERVICE_NOT_FOUND);
+			throw new OrderedServiceNotFoundException(BusinessMessages.ORDERED_SERVICE_NOT_FOUND);
 		}
 	}
 	
 	@Override
-	public double calculateOrderedServicePrice(int rentId) {
+	public double calculateOrderedServicePrice(int rentId) throws BusinessException{
 		
 		List<OrderedService> result = this.orderedServiceDao.findOrderedServicesByRent_RentId(rentId);
 		

@@ -26,7 +26,7 @@ public class CustomersController {
 	}
 	
 	@GetMapping("/getAll")
-	DataResult<List<CustomerListDto>> getAll() throws BusinessException{
+	DataResult<List<CustomerListDto>> getAll(){
 		
 		return this.customerService.getAll();
 	}

@@ -2,9 +2,9 @@ package com.turkcell.rentacar.business.abstracts;
 
 import com.turkcell.rentacar.business.dtos.gets.GetCarDto;
 import com.turkcell.rentacar.business.dtos.lists.CarListDto;
-import com.turkcell.rentacar.business.requests.Car.CreateCarRequest;
-import com.turkcell.rentacar.business.requests.Car.DeleteCarRequest;
-import com.turkcell.rentacar.business.requests.Car.UpdateCarRequest;
+import com.turkcell.rentacar.business.requests.car.CreateCarRequest;
+import com.turkcell.rentacar.business.requests.car.DeleteCarRequest;
+import com.turkcell.rentacar.business.requests.car.UpdateCarRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -14,11 +14,11 @@ import java.util.List;
 
 public interface CarService {
 
-	Result add(CreateCarRequest createCarRequest) throws BusinessException;
+	Result add(CreateCarRequest createCarRequest);
 
 	DataResult<GetCarDto> getByCarId(int id) throws BusinessException;
 
-	DataResult<List<CarListDto>> getAll() throws BusinessException;
+	DataResult<List<CarListDto>> getAll();
 
 	Result update(UpdateCarRequest updateCarRequest) throws BusinessException;
 
@@ -32,7 +32,7 @@ public interface CarService {
 
 	DataResult<List<CarListDto>> findByDailyPriceGreaterThan(double requestedPrice);
 
-	DataResult<List<CarListDto>> findByDailyPriceBetween(double minValue, double maxValue) throws BusinessException;
+	DataResult<List<CarListDto>> findByDailyPriceBetween(double minValue, double maxValue);
 
 	void checkIfCarIdExists (Integer id) throws BusinessException;
 

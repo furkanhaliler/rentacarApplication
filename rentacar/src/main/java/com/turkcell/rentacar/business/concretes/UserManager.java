@@ -11,6 +11,7 @@ import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetUserDto;
 import com.turkcell.rentacar.business.dtos.lists.UserListDto;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.user.UserNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
@@ -31,7 +32,7 @@ public class UserManager implements UserService {
 	}
 
 	@Override
-	public DataResult<List<UserListDto>> getAll() throws BusinessException {
+	public DataResult<List<UserListDto>> getAll(){
 		
 		List<User> result = this.userDao.findAll();
 		
@@ -58,7 +59,7 @@ public class UserManager implements UserService {
 		
 		if(!this.userDao.existsById(id)) {
 			
-			throw new BusinessException(BusinessMessages.USER_NOT_FOUND);
+			throw new UserNotFoundException(BusinessMessages.USER_NOT_FOUND);
 		}
 	}
 

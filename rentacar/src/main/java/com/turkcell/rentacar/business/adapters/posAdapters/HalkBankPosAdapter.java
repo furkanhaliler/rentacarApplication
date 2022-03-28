@@ -4,8 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.PosService;
 import com.turkcell.rentacar.business.outServices.HalkBankPosManager;
-import com.turkcell.rentacar.business.outServices.IsBankPosManager;
-import com.turkcell.rentacar.business.requests.Pos.CreatePosRequest;
+import com.turkcell.rentacar.business.requests.pos.CreatePosRequest;
 
 @Service
 public class HalkBankPosAdapter implements PosService {

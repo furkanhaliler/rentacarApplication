@@ -9,10 +9,12 @@ import com.turkcell.rentacar.business.abstracts.IndividualCustomerService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetIndividualCustomerDto;
 import com.turkcell.rentacar.business.dtos.lists.IndividualCustomerListDto;
-import com.turkcell.rentacar.business.requests.IndividualCustomer.CreateIndividualCustomerRequest;
-import com.turkcell.rentacar.business.requests.IndividualCustomer.DeleteIndividualCustomerRequest;
-import com.turkcell.rentacar.business.requests.IndividualCustomer.UpdateIndividualCustomerRequest;
+import com.turkcell.rentacar.business.requests.individualCustomer.CreateIndividualCustomerRequest;
+import com.turkcell.rentacar.business.requests.individualCustomer.DeleteIndividualCustomerRequest;
+import com.turkcell.rentacar.business.requests.individualCustomer.UpdateIndividualCustomerRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.individualCustomer.IndividualCustomerNotFoundException;
+import com.turkcell.rentacar.core.exceptions.individualCustomer.NationalIdentityNumberAlreadyExistsException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -34,7 +36,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	}
 
 	@Override
-	public DataResult<List<IndividualCustomerListDto>> getAll() throws BusinessException {
+	public DataResult<List<IndividualCustomerListDto>> getAll(){
 	
 		List<IndividualCustomer> result = this.individualCustomerDao.findAll();
 		
@@ -46,6 +48,8 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
 	@Override
 	public Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest) throws BusinessException {
+		
+		checkIfNationalIdentityAlreadyExists(createIndividualCustomerRequest.getNationalIdentity());
 		
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(createIndividualCustomerRequest, IndividualCustomer.class);
 		
@@ -93,8 +97,17 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	
 		if(!this.individualCustomerDao.existsById(id)) {
 			
-			throw new BusinessException(BusinessMessages.INDIVIDUAL_CUSTOMER_NOT_FOUND);
+			throw new IndividualCustomerNotFoundException(BusinessMessages.INDIVIDUAL_CUSTOMER_NOT_FOUND);
 		}
+	}
+
+	@Override
+	public void checkIfNationalIdentityAlreadyExists(String nationalIdentity) throws BusinessException {
+		
+		if(this.individualCustomerDao.existsIndividualCustomerByNationalIdentity(nationalIdentity)) {
+			
+			throw new NationalIdentityNumberAlreadyExistsException(BusinessMessages.NATIONAL_IDENTITY_EXISTS);
+		}	
 	}
 
 }

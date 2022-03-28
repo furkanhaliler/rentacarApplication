@@ -5,16 +5,16 @@ import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.gets.GetCarMaintenanceDto;
 import com.turkcell.rentacar.business.dtos.lists.CarMaintenanceListDto;
-import com.turkcell.rentacar.business.requests.CarMaintenance.CreateCarMaintenanceRequest;
-import com.turkcell.rentacar.business.requests.CarMaintenance.DeleteCarMaintenanceRequest;
-import com.turkcell.rentacar.business.requests.CarMaintenance.UpdateCarMaintenanceRequest;
+import com.turkcell.rentacar.business.requests.carMaintenance.CreateCarMaintenanceRequest;
+import com.turkcell.rentacar.business.requests.carMaintenance.DeleteCarMaintenanceRequest;
+import com.turkcell.rentacar.business.requests.carMaintenance.UpdateCarMaintenanceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
 public interface CarMaintenanceService {
 
-	DataResult<List<CarMaintenanceListDto>> getAll() throws BusinessException;
+	DataResult<List<CarMaintenanceListDto>> getAll();
 
 	Result add(CreateCarMaintenanceRequest createCarMaintenanceRequest) throws BusinessException;
 

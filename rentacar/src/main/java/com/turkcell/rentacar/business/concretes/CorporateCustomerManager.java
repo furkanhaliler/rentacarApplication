@@ -10,10 +10,12 @@ import com.turkcell.rentacar.business.abstracts.CorporateCustomerService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCorporateCustomerDto;
 import com.turkcell.rentacar.business.dtos.lists.CorporateCustomerListDto;
-import com.turkcell.rentacar.business.requests.CorporateCustomer.CreateCorporateCustomerRequest;
-import com.turkcell.rentacar.business.requests.CorporateCustomer.DeleteCorporateCustomerRequest;
-import com.turkcell.rentacar.business.requests.CorporateCustomer.UpdateCorporateCustomerRequest;
+import com.turkcell.rentacar.business.requests.corporateCustomer.CreateCorporateCustomerRequest;
+import com.turkcell.rentacar.business.requests.corporateCustomer.DeleteCorporateCustomerRequest;
+import com.turkcell.rentacar.business.requests.corporateCustomer.UpdateCorporateCustomerRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.corporateCustomer.CorporateCustomerNotFoundException;
+import com.turkcell.rentacar.core.exceptions.corporateCustomer.TaxNumberAlreadyExistsException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -36,7 +38,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 	}
 
 	@Override
-	public DataResult<List<CorporateCustomerListDto>> getAll() throws BusinessException {
+	public DataResult<List<CorporateCustomerListDto>> getAll(){
 	
 		List<CorporateCustomer> result = this.corporateCustomerDao.findAll();
 		
@@ -48,6 +50,8 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 
 	@Override
 	public Result add(CreateCorporateCustomerRequest createCorporateCustomerRequest) throws BusinessException {
+		
+		checkIfTaxNumberAlreadyExists(createCorporateCustomerRequest.getTaxNumber());
 		
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(createCorporateCustomerRequest, CorporateCustomer.class);
 		
@@ -95,8 +99,17 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 	
 		if(!this.corporateCustomerDao.existsById(id)) {
 			
-			throw new BusinessException(BusinessMessages.CORPORATE_CUSTOMER_NOT_FOUND);
+			throw new CorporateCustomerNotFoundException(BusinessMessages.CORPORATE_CUSTOMER_NOT_FOUND);
 		}
+	}
+
+	@Override
+	public void checkIfTaxNumberAlreadyExists(String taxNumber) throws BusinessException {
+		
+		if(this.corporateCustomerDao.existsCorporateCustomerByTaxNumber(taxNumber)) {
+			
+			throw new TaxNumberAlreadyExistsException(BusinessMessages.TAX_NUMBER_EXISTS);
+		}		
 	}
 
 }

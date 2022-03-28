@@ -1,7 +1,5 @@
 package com.turkcell.rentacar.business.dtos.lists;
 
-import com.turkcell.rentacar.business.dtos.gets.GetCreditCardDto;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +10,6 @@ import lombok.NoArgsConstructor;
 public class CreditCardListDto {
 
 	private int creditCardId;
-
-	private String creditCardDescription;
 
 	private int customerUserId;
 

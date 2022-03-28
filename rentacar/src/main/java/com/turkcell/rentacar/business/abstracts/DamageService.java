@@ -4,18 +4,18 @@ import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.gets.GetDamageDto;
 import com.turkcell.rentacar.business.dtos.lists.DamageListDto;
-import com.turkcell.rentacar.business.requests.Damage.CreateDamageRequest;
-import com.turkcell.rentacar.business.requests.Damage.DeleteDamageRequest;
-import com.turkcell.rentacar.business.requests.Damage.UpdateDamageRequest;
+import com.turkcell.rentacar.business.requests.damage.CreateDamageRequest;
+import com.turkcell.rentacar.business.requests.damage.DeleteDamageRequest;
+import com.turkcell.rentacar.business.requests.damage.UpdateDamageRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
 public interface DamageService {
 	
-	Result add(CreateDamageRequest createDamageRequest) throws BusinessException;
+	Result add(CreateDamageRequest createDamageRequest);
 
-	DataResult<List<DamageListDto>> getAll() throws BusinessException;
+	DataResult<List<DamageListDto>> getAll();
 
 	DataResult<GetDamageDto> getById(Integer id) throws BusinessException;
 

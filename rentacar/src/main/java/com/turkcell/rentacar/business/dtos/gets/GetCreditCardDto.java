@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 public class GetCreditCardDto {
 
 	private int creditCardId;
-	
-	private String creditCardDescription;
 
 	private int customerUserId;
 

@@ -5,14 +5,9 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.turkcell.rentacar.business.requests.AdditionalService.CreateAdditionalServiceRequest;
-import com.turkcell.rentacar.business.requests.Invoice.CreateInvoiceRequest;
-import com.turkcell.rentacar.business.requests.OrderedService.CreateOrderedServiceRequest;
-import com.turkcell.rentacar.business.requests.Payment.CreatePaymentRequest;
-import com.turkcell.rentacar.business.requests.Pos.CreatePosRequest;
-import com.turkcell.rentacar.business.requests.Rent.CreateRentRequest;
+import com.turkcell.rentacar.business.requests.orderedService.CreateOrderedServiceRequest;
+import com.turkcell.rentacar.business.requests.payment.CreatePaymentRequest;
+import com.turkcell.rentacar.business.requests.rent.CreateRentRequest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,13 +19,18 @@ import lombok.NoArgsConstructor;
 public class CreateRentModel {
 
 	@NotNull
+	@Valid
 	private CreateRentRequest createRentRequest;
 	
 	@NotNull
+	@Valid
 	private List<CreateOrderedServiceRequest> createOrderedServiceRequests;
 	
 	@NotNull
 	@Valid
 	private CreatePaymentRequest createPaymentRequest;
+	
+	@NotNull
+	private EnumSaveCreditCard enumSaveCreditCard;
 	
 }

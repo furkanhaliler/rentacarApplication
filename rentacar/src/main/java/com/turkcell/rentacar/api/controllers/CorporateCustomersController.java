@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.turkcell.rentacar.business.abstracts.CorporateCustomerService;
 import com.turkcell.rentacar.business.dtos.gets.GetCorporateCustomerDto;
 import com.turkcell.rentacar.business.dtos.lists.CorporateCustomerListDto;
-import com.turkcell.rentacar.business.requests.CorporateCustomer.CreateCorporateCustomerRequest;
-import com.turkcell.rentacar.business.requests.CorporateCustomer.DeleteCorporateCustomerRequest;
-import com.turkcell.rentacar.business.requests.CorporateCustomer.UpdateCorporateCustomerRequest;
+import com.turkcell.rentacar.business.requests.corporateCustomer.CreateCorporateCustomerRequest;
+import com.turkcell.rentacar.business.requests.corporateCustomer.DeleteCorporateCustomerRequest;
+import com.turkcell.rentacar.business.requests.corporateCustomer.UpdateCorporateCustomerRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -38,7 +38,7 @@ public class CorporateCustomersController {
 	}
 	
 	@GetMapping("/getAll")
-	DataResult<List<CorporateCustomerListDto>> getAll() throws BusinessException{
+	DataResult<List<CorporateCustomerListDto>> getAll(){
 		
 		return this.corporateCustomerService.getAll();
 	}

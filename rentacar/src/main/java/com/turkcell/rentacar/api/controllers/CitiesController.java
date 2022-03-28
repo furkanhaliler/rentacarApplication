@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.turkcell.rentacar.business.abstracts.CityService;
 import com.turkcell.rentacar.business.dtos.gets.GetCityDto;
 import com.turkcell.rentacar.business.dtos.lists.CityListDto;
-import com.turkcell.rentacar.business.requests.City.CreateCityRequest;
-import com.turkcell.rentacar.business.requests.City.DeleteCityRequest;
-import com.turkcell.rentacar.business.requests.City.UpdateCityRequest;
+import com.turkcell.rentacar.business.requests.city.CreateCityRequest;
+import com.turkcell.rentacar.business.requests.city.DeleteCityRequest;
+import com.turkcell.rentacar.business.requests.city.UpdateCityRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -37,7 +37,7 @@ public class CitiesController {
 	}
 
 	@GetMapping("/getAll")
-	DataResult<List<CityListDto>> getAll() throws BusinessException{
+	DataResult<List<CityListDto>> getAll(){
 		
 		return this.cityService.getAll();
 	}

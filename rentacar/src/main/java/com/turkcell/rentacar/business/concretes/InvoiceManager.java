@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.turkcell.rentacar.business.abstracts.CustomerService;
 import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
 import com.turkcell.rentacar.business.abstracts.RentService;
@@ -19,6 +20,7 @@ import com.turkcell.rentacar.business.requests.Invoice.CreateInvoiceRequest;
 import com.turkcell.rentacar.business.requests.Invoice.DeleteInvoiceRequest;
 import com.turkcell.rentacar.business.requests.Invoice.UpdateInvoiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.invoice.InvoiceNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -35,19 +37,21 @@ public class InvoiceManager implements InvoiceService {
 	private ModelMapperService modelMapperService;
 	private RentService rentService;
 	private OrderedServiceService orderedServiceService;
+	private CustomerService customerService;
 
 	@Autowired
 	public InvoiceManager(InvoiceDao invoiceDao, ModelMapperService modelMapperService, RentService rentService,
-			OrderedServiceService orderedServiceService) {
+			OrderedServiceService orderedServiceService, CustomerService customerService) {
 
 		this.invoiceDao = invoiceDao;
 		this.modelMapperService = modelMapperService;
 		this.rentService = rentService;
 		this.orderedServiceService = orderedServiceService;
+		this.customerService = customerService;
 	}
 
 	@Override
-	public DataResult<List<InvoiceListDto>> getAll() throws BusinessException {
+	public DataResult<List<InvoiceListDto>> getAll(){
 
 		List<Invoice> result = this.invoiceDao.findAll();
 
@@ -59,7 +63,7 @@ public class InvoiceManager implements InvoiceService {
 	}
 
 	@Override
-	public DataResult<Invoice> add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException {
+	public DataResult<Invoice> add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException{
 
 		Invoice invoice = this.modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);
 		
@@ -73,7 +77,7 @@ public class InvoiceManager implements InvoiceService {
 	}
 	
 	@Override
-	public DataResult<Invoice> addExtraInvoice(int rentId, double totalPrice) throws BusinessException {
+	public DataResult<Invoice> addExtraInvoice(int rentId, double totalPrice) throws BusinessException{
 
 		CreateInvoiceRequest createInvoiceRequest = new CreateInvoiceRequest();
 		
@@ -129,7 +133,9 @@ public class InvoiceManager implements InvoiceService {
 	}
 
 	@Override
-	public DataResult<List<InvoiceListDto>> getByCustomerUserId(Integer id) {
+	public DataResult<List<InvoiceListDto>> getByCustomerUserId(Integer id) throws BusinessException{
+		
+		this.customerService.checkIfCustomerIdExists(id);
 
 		List<Invoice> result = this.invoiceDao.findByCustomerUserId(id);
 
@@ -141,7 +147,9 @@ public class InvoiceManager implements InvoiceService {
 	}
 	
 	@Override
-	public DataResult<List<InvoiceListDto>> getByRentId(Integer id) {
+	public DataResult<List<InvoiceListDto>> getByRentId(Integer id) throws BusinessException{
+		
+		this.rentService.checkIfRentIdExists(id);
 		
 		List<Invoice> result = this.invoiceDao.findByRentRentId(id);
 		
@@ -169,13 +177,13 @@ public class InvoiceManager implements InvoiceService {
 
 		if (!this.invoiceDao.existsById(id)) {
 
-			throw new BusinessException(BusinessMessages.INVOICE_NOT_FOUND);
+			throw new InvoiceNotFoundException(BusinessMessages.INVOICE_NOT_FOUND);
 		}
 	}
 
 
 	@Override
-	public double calculateTotalPrice(int rentId) {
+	public double calculateTotalPrice(int rentId) throws BusinessException{
 
 		double rentPrice = this.rentService.calculateRentPrice(rentId);
 
@@ -187,7 +195,7 @@ public class InvoiceManager implements InvoiceService {
 	}
 
 	@Override
-	public void setInvoiceFields(int rentId, Invoice invoice) {
+	public void setInvoiceFields(int rentId, Invoice invoice) throws BusinessException{
 
 		Rent rent = this.rentService.bringRentById(rentId);
 		

@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
 import com.turkcell.rentacar.business.dtos.gets.GetOrderedServiceDto;
 import com.turkcell.rentacar.business.dtos.lists.OrderedServiceListDto;
-import com.turkcell.rentacar.business.requests.OrderedService.CreateOrderedServiceRequest;
-import com.turkcell.rentacar.business.requests.OrderedService.DeleteOrderedServiceRequest;
-import com.turkcell.rentacar.business.requests.OrderedService.UpdateOrderedServiceRequest;
+import com.turkcell.rentacar.business.requests.orderedService.DeleteOrderedServiceRequest;
+import com.turkcell.rentacar.business.requests.orderedService.UpdateOrderedServiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -37,16 +35,16 @@ public class OrderedServicesController {
 	}
 	
 	@GetMapping("/getAll")
-	DataResult<List<OrderedServiceListDto>> getAll() throws BusinessException{
+	DataResult<List<OrderedServiceListDto>> getAll(){
 		
 		return this.orderedServiceService.getAll();
 	}
 
-	@PostMapping("/add")
-	Result add(@RequestBody @Valid CreateOrderedServiceRequest createOrderedServiceRequest) throws BusinessException{
-		
-		return this.orderedServiceService.add(createOrderedServiceRequest);
-	}
+//	@PostMapping("/add")
+//	Result add(@RequestBody @Valid CreateOrderedServiceRequest createOrderedServiceRequest){
+//		
+//		return this.orderedServiceService.add(createOrderedServiceRequest);
+//	}
 
 	@GetMapping("/getByOrderedServiceId/{orderedServiceId}")
 	DataResult<GetOrderedServiceDto> getByOrderedServiceId(@RequestParam("orderedServiceId") Integer id) throws BusinessException{
@@ -67,7 +65,7 @@ public class OrderedServicesController {
 	}
 	
 	@GetMapping("/getByRentId/{rentId}")
-	DataResult<List<OrderedServiceListDto>> getByRentId(@RequestParam("rentId") Integer id){
+	DataResult<List<OrderedServiceListDto>> getByRentId(@RequestParam("rentId") Integer id) throws BusinessException{
 		
 		return this.orderedServiceService.getByRentId(id);
 	}

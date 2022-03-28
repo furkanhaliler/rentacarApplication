@@ -7,5 +7,5 @@ import com.turkcell.rentacar.entities.concretes.CorporateCustomer;
 @Repository
 public interface CorporateCustomerDao extends UserDao<CorporateCustomer> {
 
-	
+	 boolean existsCorporateCustomerByTaxNumber(String taxNumber);
 }

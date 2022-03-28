@@ -27,7 +27,7 @@ public class UsersController {
 	}
 
 	@GetMapping("/getAll")
-	DataResult<List<UserListDto>> getAll() throws BusinessException{
+	DataResult<List<UserListDto>> getAll(){
 		
 		return this.userService.getAll();
 	}

@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
 import com.turkcell.rentacar.business.dtos.gets.GetAdditionalServiceDto;
 import com.turkcell.rentacar.business.dtos.lists.AdditionalServiceListDto;
-import com.turkcell.rentacar.business.requests.AdditionalService.CreateAdditionalServiceRequest;
-import com.turkcell.rentacar.business.requests.AdditionalService.DeleteAdditionalServiceRequest;
-import com.turkcell.rentacar.business.requests.AdditionalService.UpdateAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.additionalService.CreateAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.additionalService.DeleteAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.additionalService.UpdateAdditionalServiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -37,7 +37,7 @@ public class AdditionalServicesController {
 	}
 
 	@GetMapping("/getAll")
-	DataResult<List<AdditionalServiceListDto>> getAll() throws BusinessException{
+	DataResult<List<AdditionalServiceListDto>> getAll(){
 		
 		return this.additionalServiceService.getAll();
 	}

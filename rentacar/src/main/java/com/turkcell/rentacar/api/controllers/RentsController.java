@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
 import com.turkcell.rentacar.business.dtos.lists.RentListDto;
-import com.turkcell.rentacar.business.requests.Rent.CreateRentRequest;
-import com.turkcell.rentacar.business.requests.Rent.DeleteRentRequest;
-import com.turkcell.rentacar.business.requests.Rent.EndRentRequest;
-import com.turkcell.rentacar.business.requests.Rent.UpdateRentRequest;
+import com.turkcell.rentacar.business.requests.rent.DeleteRentRequest;
+import com.turkcell.rentacar.business.requests.rent.EndRentRequest;
+import com.turkcell.rentacar.business.requests.rent.UpdateRentRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -36,10 +35,10 @@ public class RentsController {
 		this.rentService = rentService;
 	}
 
-	@PostMapping("/add")
-	Result add(@RequestBody @Valid CreateRentRequest createRentRequest) throws BusinessException {
+	@GetMapping("/getall")
+	DataResult<List<RentListDto>> getAll(){
 
-		return this.rentService.add(createRentRequest);
+		return this.rentService.getAll();
 	}
 
 	@PutMapping("/update")
@@ -52,12 +51,6 @@ public class RentsController {
 	Result delete(@RequestBody @Valid DeleteRentRequest deleteRentRequest) throws BusinessException {
 
 		return this.rentService.delete(deleteRentRequest);
-	}
-
-	@GetMapping("/getall")
-	DataResult<List<RentListDto>> getAll() throws BusinessException {
-
-		return this.rentService.getAll();
 	}
 
 	@GetMapping("/getByCarId")

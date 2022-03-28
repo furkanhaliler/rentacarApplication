@@ -11,6 +11,7 @@ import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCustomerDto;
 import com.turkcell.rentacar.business.dtos.lists.CustomerListDto;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.customer.CustomerNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
@@ -31,7 +32,7 @@ public class CustomerManager implements CustomerService {
 	}
 
 	@Override
-	public DataResult<List<CustomerListDto>> getAll() throws BusinessException {
+	public DataResult<List<CustomerListDto>> getAll(){
 	
 		List<Customer> result = this.customerDao.findAll();
 		
@@ -58,7 +59,7 @@ public class CustomerManager implements CustomerService {
 		
 		if(!this.customerDao.existsById(id)) {
 			
-			throw new BusinessException(BusinessMessages.CUSTOMER_NOT_FOUND);
+			throw new CustomerNotFoundException(BusinessMessages.CUSTOMER_NOT_FOUND);
 		}
 	}
 

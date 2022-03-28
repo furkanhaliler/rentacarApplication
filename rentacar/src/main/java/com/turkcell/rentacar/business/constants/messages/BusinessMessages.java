@@ -51,7 +51,7 @@ public class BusinessMessages {
 	
 	public static final String CAR_MAINTENANCE_DELETED = "Car maintenance is deleted successfully.";
 	
-	public static final String CAR_IS_UNDER_MAINTENANCE = "This car is in maintenance right now.";
+	public static final String CAR_IS_UNDER_MAINTENANCE = "This car is under maintenance right now.";
 	
 	public static final String CAR_MAINTENANCE_NOT_FOUND = "No car maintenance registered with this ID were found.";
 	
@@ -89,7 +89,7 @@ public class BusinessMessages {
 	
 	public static final String CITY_DELETED = "City is deleted successfully.";
 	
-	public static final String CITY_NAME_EXISTS = "City name already exists. Please change the name and try again. ";
+	public static final String CITY_NAME_EXISTS = "City name already exists. Please change the name and try again.";
 	
 	public static final String CITY_NOT_FOUND = "No city registered with this ID were found.";
 		
@@ -124,6 +124,8 @@ public class BusinessMessages {
 	public static final String CORPORATE_CUSTOMER_DELETED = "Corporate customer is deleted successfully.";
 	
 	public static final String CORPORATE_CUSTOMER_NOT_FOUND = "No corporate customer registered with this ID were found.";
+	
+	public static final String TAX_NUMBER_EXISTS = "Tax number already exists. Please change the number and try again.";
 	
 	
 	/******** CREDIT CARD ********/
@@ -180,6 +182,8 @@ public class BusinessMessages {
 	public static final String INDIVIDUAL_CUSTOMER_DELETED = "Individual customer is deleted successfully.";
 	
 	public static final String INDIVIDUAL_CUSTOMER_NOT_FOUND = "No individual customer registered with this ID were found.";
+	
+	public static final String NATIONAL_IDENTITY_EXISTS = "National identity number already exists. Please change the number and try again.";
 	
 	
 	/******** INVOICE ********/

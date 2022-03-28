@@ -15,25 +15,21 @@ import com.turkcell.rentacar.business.adapters.posAdapters.IsBankPosAdapter;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetPaymentDto;
 import com.turkcell.rentacar.business.dtos.lists.PaymentListDto;
-import com.turkcell.rentacar.business.outServices.HalkBankPosManager;
-import com.turkcell.rentacar.business.outServices.IsBankPosManager;
-import com.turkcell.rentacar.business.requests.Payment.CreatePaymentRequest;
-import com.turkcell.rentacar.business.requests.Pos.CreatePosRequest;
+import com.turkcell.rentacar.business.requests.payment.CreatePaymentRequest;
+import com.turkcell.rentacar.business.requests.pos.CreatePosRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
+import com.turkcell.rentacar.core.exceptions.payment.PaymentNotFoundException;
+import com.turkcell.rentacar.core.exceptions.payment.PaymentUnsuccessfullException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
-import com.turkcell.rentacar.core.utilities.results.ErrorResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.PaymentDao;
 import com.turkcell.rentacar.entities.concretes.Payment;
-import com.turkcell.rentacar.entities.concretes.Rent;
 
 @Service
 public class PaymentManager implements PaymentService {
-
-	
 	
 	private PaymentDao paymentDao;
 	private ModelMapperService modelMapperService;
@@ -58,23 +54,18 @@ public class PaymentManager implements PaymentService {
 	@Override
 	public Result add(CreatePaymentRequest createPaymentRequest) throws BusinessException {
 		
-		PosService posService2 = new IsBankPosAdapter();
-		
-		if(posService2.pay(createPaymentRequest.getCreatePosRequest())) {
-		
+		makePayment(createPaymentRequest.getCreatePosRequest());
+			
 		Payment payment = this.modelMapperService.forRequest().map(createPaymentRequest, Payment.class);
 		
 		this.paymentDao.save(payment);
 		
-		return new SuccessResult(BusinessMessages.PAYMENT_SUCCESSFULL);
+		return new SuccessResult(BusinessMessages.PAYMENT_SUCCESSFULL);		
 		
-		}
-		
-		throw new BusinessException(BusinessMessages.PAYMENT_UNSUCCESSFULL);
 	}
 
 	@Override
-	public DataResult<List<PaymentListDto>> getAll() throws BusinessException {
+	public DataResult<List<PaymentListDto>> getAll(){
 		
 		List<Payment> result = this.paymentDao.findAll();
 		
@@ -133,17 +124,27 @@ public class PaymentManager implements PaymentService {
 		
 		return new SuccessDataResult<List<PaymentListDto>>(response, BusinessMessages.PAYMENT_FOUND_BY_RENT_ID);
 	}
-
-
-
+	
+	@Override
+	public void makePayment(CreatePosRequest createPosRequest) throws BusinessException {
+		
+		PosService posService = new IsBankPosAdapter();
+		
+		if(!posService.pay(createPosRequest)) {
+			
+			throw new PaymentUnsuccessfullException(BusinessMessages.PAYMENT_UNSUCCESSFULL);
+		}			
+	}
+	
 	@Override
 	public void checkIfPaymentIdExists(int paymentId) throws BusinessException {
 		
 		if(!this.paymentDao.existsById(paymentId)) {
 			
-			throw new BusinessException(BusinessMessages.PAYMENT_NOT_FOUND);
+			throw new PaymentNotFoundException(BusinessMessages.PAYMENT_NOT_FOUND);
 		}
 	}
+
 
 }
 
