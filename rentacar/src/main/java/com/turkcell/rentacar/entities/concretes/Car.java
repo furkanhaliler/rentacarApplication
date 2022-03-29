@@ -44,6 +44,12 @@ public class Car {
     @JoinColumn(name = "city_id")
     private City baseCity;
     
+    @Column(name = "rent_status")
+    private boolean rentStatus;
+    
+    @Column(name = "maintenance_status")
+    private boolean maintenanceStatus;
+    
     @OneToMany(mappedBy = "car")
 	private List<CarMaintenance> carMaintenances;
     

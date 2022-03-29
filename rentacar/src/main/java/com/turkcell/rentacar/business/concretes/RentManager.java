@@ -77,6 +77,8 @@ public class RentManager implements RentService {
 		
 		Rent savedRent = this.rentDao.save(rent);
 		
+		this.carService.updateRentStatus(rent.getCar().getId(), true);
+		
 		return new SuccessDataResult<Rent>(savedRent, BusinessMessages.RENT_ADDED);
 	}
 
@@ -145,23 +147,20 @@ public class RentManager implements RentService {
 		
 		this.rentDao.save(rent);
 		
-		carService.setCarKilometer(rent.getCar().getId(), endRentRequest.getEndKilometer());
+		this.carService.setCarKilometer(rent.getCar().getId(), endRentRequest.getEndKilometer());
+		this.carService.updateRentStatus(rent.getCar().getId(), false);
 		
-		return new SuccessResult(BusinessMessages.RENT_ENDED);
-		
+		return new SuccessResult(BusinessMessages.RENT_ENDED);		
 	}
 
 	@Override
 	public void checkIfCarIsRented(int id) throws BusinessException {
 
-		List<Rent> result = this.rentDao.getAllByCarId(id);
-
-		for (Rent rent : result) {
-			if (rent.getRentReturnDate() == null || LocalDate.now().isBefore(rent.getRentReturnDate())
-					|| LocalDate.now().isEqual(rent.getRentReturnDate())) {
-				
-				throw new CarIsCurrentlyRentedException(BusinessMessages.CAR_IS_CURRENTLY_RENTED);
-			}
+		Car car = this.carService.getCarByCarId(id);
+		
+		if(car.isRentStatus()) {
+			
+			throw new CarIsCurrentlyRentedException(BusinessMessages.CAR_IS_CURRENTLY_RENTED);
 		}
 	}
 

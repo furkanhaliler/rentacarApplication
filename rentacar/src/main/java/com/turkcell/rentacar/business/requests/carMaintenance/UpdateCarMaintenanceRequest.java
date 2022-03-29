@@ -29,4 +29,7 @@ public class UpdateCarMaintenanceRequest {
 	@NotNull
 	@Min(1)
     private int carId;
+	
+	@NotNull
+	private boolean maintenanceStatus;
 }

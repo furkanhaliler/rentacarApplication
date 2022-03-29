@@ -20,12 +20,14 @@ import com.turkcell.rentacar.business.requests.carMaintenance.UpdateCarMaintenan
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.exceptions.carMaintenance.CarIsUnderMaintenanceException;
 import com.turkcell.rentacar.core.exceptions.carMaintenance.CarMaintenanceNotFoundException;
+import com.turkcell.rentacar.core.exceptions.rent.CarIsCurrentlyRentedException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.core.utilities.results.SuccessDataResult;
 import com.turkcell.rentacar.core.utilities.results.SuccessResult;
 import com.turkcell.rentacar.dataAccess.abstracts.CarMaintenanceDao;
+import com.turkcell.rentacar.entities.concretes.Car;
 import com.turkcell.rentacar.entities.concretes.CarMaintenance;
 
 @Service
@@ -59,16 +61,18 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 	@Override
 	public Result add(CreateCarMaintenanceRequest createCarMaintenanceRequest) throws BusinessException {
+		
+		this.rentService.checkIfCarIsRented(createCarMaintenanceRequest.getCarId());
+		
+		checkIfCarIsInMaintenance(createCarMaintenanceRequest.getCarId());
 
 		CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createCarMaintenanceRequest, CarMaintenance.class);
 		
 		carMaintenance.setMaintenanceId(0);
 		
-		this.rentService.checkIfCarIsRented(createCarMaintenanceRequest.getCarId());
-		
-		checkIfCarIsInMaintenance(createCarMaintenanceRequest.getCarId());
-		
 		this.carMaintenanceDao.save(carMaintenance);
+		
+		this.carService.updateMaintenanceStatus(carMaintenance.getCar().getId(), true);
 
 		return new SuccessResult(BusinessMessages.CAR_MAINTENANCE_ADDED);
 	}
@@ -107,6 +111,8 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 		
 		this.carMaintenanceDao.save(carMaintenance);
 		
+		this.carService.updateMaintenanceStatus(carMaintenance.getCar().getId(), updateCarMaintenanceRequest.isMaintenanceStatus());
+		
 		return new SuccessResult(BusinessMessages.CAR_MAINTENANCE_UPDATED);
 	}
 
@@ -123,18 +129,11 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	@Override
 	public void checkIfCarIsInMaintenance(int id) throws BusinessException {
 
-		List<CarMaintenance> result = this.carMaintenanceDao.getAllByCarId(id);
-
-		List<CarMaintenanceListDto> response = result.stream().map(
-				carMaintenance -> this.modelMapperService.forDto().map(carMaintenance, CarMaintenanceListDto.class))
-				.collect(Collectors.toList());
-
-		for (CarMaintenanceListDto carMaintenance : response) {
-			if ((carMaintenance.getReturnDate() == null) || LocalDate.now().isBefore(carMaintenance.getReturnDate())
-					|| LocalDate.now().isEqual(carMaintenance.getReturnDate())) {
-
-				throw new CarIsUnderMaintenanceException(BusinessMessages.CAR_IS_UNDER_MAINTENANCE);
-			}
+		Car car = this.carService.getCarByCarId(id);
+		
+		if(car.isMaintenanceStatus()) {
+			
+			throw new CarIsUnderMaintenanceException(BusinessMessages.CAR_IS_UNDER_MAINTENANCE);
 		}
 	}
 

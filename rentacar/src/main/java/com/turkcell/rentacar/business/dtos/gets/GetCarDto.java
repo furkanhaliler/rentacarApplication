@@ -19,5 +19,7 @@ public class GetCarDto {
     private String brandName;
     private String colorName;
     private String baseCityName;
+	private boolean rentStatus;
+	private boolean maintenanceStatus;
     private List<GetDamageDto> damages;
 }
