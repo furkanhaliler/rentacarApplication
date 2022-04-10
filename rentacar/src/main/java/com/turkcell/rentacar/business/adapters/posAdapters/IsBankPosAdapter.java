@@ -12,12 +12,13 @@ import com.turkcell.rentacar.business.requests.pos.CreatePosRequest;
 public class IsBankPosAdapter implements PosService{
 
 	@Override
-	public boolean pay(CreatePosRequest createPosServiceRequest) {
+	public boolean pay(CreatePosRequest createPosServiceRequest, double paymentAmount) {
 		
 		IsBankPosManager isBankPosManager = new IsBankPosManager();
 		
-		boolean posResult =  isBankPosManager.makePayment(createPosServiceRequest.getCreditCardNo(), createPosServiceRequest.getCreditCardHolder()
-				, createPosServiceRequest.getCvv(), createPosServiceRequest.getExpirationMonth(), createPosServiceRequest.getExpirationYear(), 0);
+		boolean posResult =  isBankPosManager.makePayment(createPosServiceRequest.getCreditCardNo(), 
+				createPosServiceRequest.getCreditCardHolder(), createPosServiceRequest.getCvv(), 
+				createPosServiceRequest.getExpirationMonth(), createPosServiceRequest.getExpirationYear(), paymentAmount);
 		
 		return posResult;
 	}

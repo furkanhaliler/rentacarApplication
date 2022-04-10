@@ -1,4 +1,4 @@
-package com.turkcell.rentacar.api.model;
+package com.turkcell.rentacar.api.models;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -22,5 +22,8 @@ public class EndRentWithExtraPaymentModel {
 	@NotNull
 	@Valid
 	private CreatePaymentRequest createPaymentRequest;
+	
+	@NotNull
+	private EnumSaveCreditCard enumSaveCreditCard;
 
 }

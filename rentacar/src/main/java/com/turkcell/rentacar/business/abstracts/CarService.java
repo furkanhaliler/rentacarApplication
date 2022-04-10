@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface CarService {
 
-	Result add(CreateCarRequest createCarRequest);
+	Result add(CreateCarRequest createCarRequest) throws BusinessException;
 
 	DataResult<GetCarDto> getByCarId(int id) throws BusinessException;
 

@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.abstracts;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
@@ -39,6 +40,10 @@ public interface RentService {
 	
 	public void checkIfReturnDateDelayed (Rent rent) throws BusinessException;
 
-	double calculateExtraDaysPrice(int rentId) throws BusinessException;
+	double calculateExtraDaysPrice(int rentId, LocalDate date) throws BusinessException;
+
+	void checkIfRentAlreadyEnded(Integer id) throws BusinessException;
+	
+	void checkIfDatesAreCorrect(LocalDate rentDate, LocalDate returnDate, int key) throws BusinessException;
 	
 }

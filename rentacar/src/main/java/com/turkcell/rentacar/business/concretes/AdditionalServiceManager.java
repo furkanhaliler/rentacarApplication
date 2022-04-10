@@ -13,6 +13,7 @@ import com.turkcell.rentacar.business.dtos.lists.AdditionalServiceListDto;
 import com.turkcell.rentacar.business.requests.additionalService.CreateAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.additionalService.DeleteAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.additionalService.UpdateAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.orderedService.CreateOrderedServiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.exceptions.additionalService.AdditionalServiceNameAlreadyExistsException;
 import com.turkcell.rentacar.core.exceptions.additionalService.AdditionalServiceNotFoundException;
@@ -112,6 +113,19 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 		if(!this.additionalServiceDao.existsById(id)) {
 			
 			throw new AdditionalServiceNotFoundException(BusinessMessages.ADDITIONAL_SERVICE_NOT_FOUND);
+		}
+	}
+	
+	@Override
+	public void checkIfAdditionalServiceIdExistsOnOrderedServiceList(List<CreateOrderedServiceRequest> listOfCreateOrderedServiceRequests) 
+			throws BusinessException {
+		
+		for (CreateOrderedServiceRequest createOrderedServiceRequest : listOfCreateOrderedServiceRequests) {
+			
+			if(!this.additionalServiceDao.existsById(createOrderedServiceRequest.getAdditionalServiceId())) {
+				
+				throw new AdditionalServiceNotFoundException(BusinessMessages.ADDITIONAL_SERVICE_NOT_FOUND);
+			}
 		}
 	}
 

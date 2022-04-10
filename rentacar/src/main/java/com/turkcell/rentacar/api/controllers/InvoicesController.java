@@ -49,12 +49,6 @@ public class InvoicesController {
 		return this.invoiceService.getById(id);
 	}
 
-	@PutMapping("/update")
-	Result update(@RequestBody @Valid UpdateInvoiceRequest updateInvoiceRequest) throws BusinessException{
-		
-		return this.invoiceService.update(updateInvoiceRequest);
-	}
-
 	@DeleteMapping("/delete")
 	Result delete(@RequestBody @Valid DeleteInvoiceRequest deleteInvoiceRequest) throws BusinessException{
 		

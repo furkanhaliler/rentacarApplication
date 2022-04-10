@@ -1,6 +1,5 @@
 package com.turkcell.rentacar.business.concretes;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +19,6 @@ import com.turkcell.rentacar.business.requests.carMaintenance.UpdateCarMaintenan
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.exceptions.carMaintenance.CarIsUnderMaintenanceException;
 import com.turkcell.rentacar.core.exceptions.carMaintenance.CarMaintenanceNotFoundException;
-import com.turkcell.rentacar.core.exceptions.rent.CarIsCurrentlyRentedException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;

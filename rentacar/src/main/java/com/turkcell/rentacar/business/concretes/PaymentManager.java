@@ -54,7 +54,7 @@ public class PaymentManager implements PaymentService {
 	@Override
 	public Result add(CreatePaymentRequest createPaymentRequest) throws BusinessException {
 		
-		makePayment(createPaymentRequest.getCreatePosRequest());
+		makePayment(createPaymentRequest.getCreatePosRequest(), createPaymentRequest.getPaymentAmount());
 			
 		Payment payment = this.modelMapperService.forRequest().map(createPaymentRequest, Payment.class);
 		
@@ -126,11 +126,11 @@ public class PaymentManager implements PaymentService {
 	}
 	
 	@Override
-	public void makePayment(CreatePosRequest createPosRequest) throws BusinessException {
+	public void makePayment(CreatePosRequest createPosRequest, double paymentAmount) throws BusinessException {
 		
 		PosService posService = new IsBankPosAdapter();
 		
-		if(!posService.pay(createPosRequest)) {
+		if(!posService.pay(createPosRequest, paymentAmount)) {
 			
 			throw new PaymentUnsuccessfullException(BusinessMessages.PAYMENT_UNSUCCESSFULL);
 		}			

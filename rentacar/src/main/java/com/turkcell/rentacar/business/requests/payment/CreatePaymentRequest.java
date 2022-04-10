@@ -27,4 +27,7 @@ public class CreatePaymentRequest {
 	
 	@JsonIgnore
 	private int customerUserId;
+	
+	@JsonIgnore
+	private double paymentAmount;
 }

@@ -7,6 +7,7 @@ import com.turkcell.rentacar.business.dtos.lists.AdditionalServiceListDto;
 import com.turkcell.rentacar.business.requests.additionalService.CreateAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.additionalService.DeleteAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.additionalService.UpdateAdditionalServiceRequest;
+import com.turkcell.rentacar.business.requests.orderedService.CreateOrderedServiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -29,4 +30,6 @@ public interface AdditionalServiceService {
 	void checkIfAdditionalServiceIdExists (Integer id) throws BusinessException;
 	
 	AdditionalService getById(int id);
+
+	void checkIfAdditionalServiceIdExistsOnOrderedServiceList(List<CreateOrderedServiceRequest> list) throws BusinessException;
 }

@@ -10,13 +10,13 @@ import com.turkcell.rentacar.business.requests.pos.CreatePosRequest;
 public class HalkBankPosAdapter implements PosService {
 
 	@Override
-	public boolean pay(CreatePosRequest createPosServiceRequest) {
+	public boolean pay(CreatePosRequest createPosServiceRequest, double paymentAmount) {
 
 		HalkBankPosManager halkBankPosManager = new HalkBankPosManager();
 
 		boolean posResult = halkBankPosManager.makePayment(createPosServiceRequest.getCreditCardNo(),
 				createPosServiceRequest.getCreditCardHolder(), createPosServiceRequest.getCvv(),
-				createPosServiceRequest.getExpirationMonth(), createPosServiceRequest.getExpirationYear(), 0);
+				createPosServiceRequest.getExpirationMonth(), createPosServiceRequest.getExpirationYear(), paymentAmount);
 
 		return posResult;
 	}

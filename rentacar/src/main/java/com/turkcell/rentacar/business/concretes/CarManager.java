@@ -9,7 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.turkcell.rentacar.business.abstracts.BrandService;
 import com.turkcell.rentacar.business.abstracts.CarService;
+import com.turkcell.rentacar.business.abstracts.CityService;
+import com.turkcell.rentacar.business.abstracts.ColorService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetCarDto;
 import com.turkcell.rentacar.business.dtos.lists.CarListDto;
@@ -31,19 +34,32 @@ public class CarManager implements CarService {
 
 	private CarDao carDao;
 	private ModelMapperService modelMapperService;
+	private BrandService brandService;
+	private ColorService colorService;
+	private CityService cityService;
 
 
 	@Autowired
-	public CarManager(CarDao carDao, ModelMapperService modelMapperService) {
+	public CarManager(CarDao carDao, ModelMapperService modelMapperService, BrandService brandService,
+			ColorService colorService, CityService cityService) {
 		
 		this.carDao = carDao;
 		this.modelMapperService = modelMapperService;
+		this.brandService = brandService;
+		this.colorService = colorService;
+		this.cityService = cityService;
 	}
 
 	@Override
-	public Result add(CreateCarRequest createCarRequest) {
+	public Result add(CreateCarRequest createCarRequest) throws BusinessException {
+		
+		this.brandService.checkIfBrandIdExists(createCarRequest.getBrandId());
+		this.colorService.checkIfColorIdExists(createCarRequest.getColorId());
+		this.cityService.checkIfCityIdExists(createCarRequest.getBaseCityId());
 
 		Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
+		
+		car.setId(0);
 		
 		this.carDao.save(car);
 		

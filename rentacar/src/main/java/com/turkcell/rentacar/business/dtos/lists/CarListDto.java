@@ -2,8 +2,6 @@ package com.turkcell.rentacar.business.dtos.lists;
 
 import java.util.List;
 
-import javax.persistence.Column;
-
 import com.turkcell.rentacar.business.dtos.gets.GetDamageDto;
 
 import lombok.AllArgsConstructor;

@@ -40,22 +40,10 @@ public class OrderedServicesController {
 		return this.orderedServiceService.getAll();
 	}
 
-//	@PostMapping("/add")
-//	Result add(@RequestBody @Valid CreateOrderedServiceRequest createOrderedServiceRequest){
-//		
-//		return this.orderedServiceService.add(createOrderedServiceRequest);
-//	}
-
 	@GetMapping("/getByOrderedServiceId/{orderedServiceId}")
 	DataResult<GetOrderedServiceDto> getByOrderedServiceId(@RequestParam("orderedServiceId") Integer id) throws BusinessException{
 		
 		return this.orderedServiceService.getByOrderedServiceId(id);
-	}
-
-	@PutMapping("/update")
-	Result update(@RequestBody @Valid UpdateOrderedServiceRequest updateOrderedServiceRequest) throws BusinessException{
-		
-		return this.orderedServiceService.update(updateOrderedServiceRequest);
 	}
 
 	@DeleteMapping("/delete")

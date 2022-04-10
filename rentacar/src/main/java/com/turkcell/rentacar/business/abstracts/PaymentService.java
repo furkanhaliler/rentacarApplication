@@ -24,7 +24,7 @@ public interface PaymentService {
 	
 	DataResult<List<PaymentListDto>> getByRentId(int rentId) throws BusinessException;
 	
-	void makePayment(CreatePosRequest createPosRequest) throws BusinessException;
+	void makePayment(CreatePosRequest createPosRequest, double paymentAmount) throws BusinessException;
 	
 	void checkIfPaymentIdExists(int paymentId) throws BusinessException;
 	

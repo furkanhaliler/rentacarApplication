@@ -41,12 +41,6 @@ public class RentsController {
 		return this.rentService.getAll();
 	}
 
-	@PutMapping("/update")
-	Result update(@RequestBody @Valid UpdateRentRequest updateRentRequest) throws BusinessException{
-
-		return this.rentService.update(updateRentRequest);
-	}
-
 	@DeleteMapping("/delete")
 	Result delete(@RequestBody @Valid DeleteRentRequest deleteRentRequest) throws BusinessException {
 

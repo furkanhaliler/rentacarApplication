@@ -6,13 +6,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
 import com.turkcell.rentacar.business.abstracts.CarService;
+import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
+import com.turkcell.rentacar.business.dtos.lists.OrderedServiceListDto;
 import com.turkcell.rentacar.business.dtos.lists.RentListDto;
 import com.turkcell.rentacar.business.requests.rent.CreateRentRequest;
 import com.turkcell.rentacar.business.requests.rent.DeleteRentRequest;
@@ -38,17 +41,18 @@ public class RentManager implements RentService {
 	private ModelMapperService modelMapperService;
 	private CarMaintenanceService carMaintenanceService;
 	private CarService carService;
+	private OrderedServiceService orderedServiceService;
 
 
 	@Autowired
 	public RentManager(RentDao rentDao, ModelMapperService modelMapperService,
-			CarMaintenanceService carMaintenanceService, CarService carService) {
+			CarMaintenanceService carMaintenanceService, CarService carService,@Lazy OrderedServiceService orderedServiceService) {
 
 		this.rentDao = rentDao;
 		this.modelMapperService = modelMapperService;
 		this.carMaintenanceService = carMaintenanceService;
 		this.carService = carService;
-
+		this.orderedServiceService = orderedServiceService;
 	}
 
 	@Override
@@ -68,6 +72,7 @@ public class RentManager implements RentService {
 		this.carMaintenanceService.checkIfCarIsInMaintenance(createRentRequest.getCarId());
 		
 		checkIfCarIsRented(createRentRequest.getCarId());
+		checkIfDatesAreCorrect(createRentRequest.getRentStartDate(), createRentRequest.getRentReturnDate(), 0);
 
 		Rent rent = this.modelMapperService.forRequest().map(createRentRequest, Rent.class);
 		
@@ -101,7 +106,11 @@ public class RentManager implements RentService {
 
 		checkIfRentIdExists(updateRentRequest.getRentId());
 		
-		Rent rent = this.modelMapperService.forRequest().map(updateRentRequest, Rent.class);
+		Rent rent = this.rentDao.getById(updateRentRequest.getRentId());
+		
+		checkIfDatesAreCorrect(rent.getRentStartDate(), updateRentRequest.getRentReturnDate(), 1);
+		
+		rent.setRentReturnDate(updateRentRequest.getRentReturnDate());
 
 		this.rentDao.save(rent);
 		
@@ -140,6 +149,7 @@ public class RentManager implements RentService {
 		
 		Rent rent = this.rentDao.getById(endRentRequest.getRentId());
 		
+		checkIfRentAlreadyEnded(rent.getCar().getId());
 		checkIfReturnDateDelayed(rent);
 		
 		rent.setRentReturnDate(LocalDate.now());
@@ -161,6 +171,17 @@ public class RentManager implements RentService {
 		if(car.isRentStatus()) {
 			
 			throw new CarIsCurrentlyRentedException(BusinessMessages.CAR_IS_CURRENTLY_RENTED);
+		}
+	}
+	
+	@Override
+	public void checkIfRentAlreadyEnded (Integer id) throws BusinessException {
+		
+		Car car = this.carService.getCarByCarId(id);
+		
+		if(!car.isRentStatus()) {
+			
+			throw new CarIsCurrentlyRentedException(BusinessMessages.RENT_ALREADY_ENDED);
 		}
 	}
 
@@ -208,26 +229,53 @@ public class RentManager implements RentService {
 		
 		if(LocalDate.now().isAfter(rent.getRentReturnDate())){
 			
-			double extraPrice = calculateExtraDaysPrice(rent.getRentId());
+			double extraPrice = calculateExtraDaysPrice(rent.getRentId(), LocalDate.now());
 			
 			throw new RentReturnDateDelayedException(BusinessMessages.NEED_EXTRA_PAYMENT + extraPrice);
 		}
 	}
 	
 	@Override
-	public double calculateExtraDaysPrice (int rentId) {
+	public double calculateExtraDaysPrice (int rentId, LocalDate date) throws BusinessException {
 		
 		Rent rent = this.rentDao.getById(rentId);
 		
-		long daysBetween = (ChronoUnit.DAYS.between(rent.getRentReturnDate(), LocalDate.now()));
+		long daysBetween = (ChronoUnit.DAYS.between(rent.getRentReturnDate(), date));
 		
 		Car car = this.carService.getCarByCarId(rent.getCar().getId());
 		
 		double dailyPrice = car.getDailyPrice();
 		
-		double extraPrice = daysBetween * dailyPrice;
+		double extraDaysPrice = daysBetween * dailyPrice;
+		
+		List<OrderedServiceListDto> orderedServices = this.orderedServiceService.getByRentId(rentId).getData();
+		
+		double extraOrderedServicesPrice = 0;
+		
+		for (OrderedServiceListDto orderedServiceListDto : orderedServices) {
+			
+			extraOrderedServicesPrice += orderedServiceListDto.getAdditionalServiceDailyPrice() * orderedServiceListDto.getOrderedServiceAmount();
+		}
+		
+		extraOrderedServicesPrice *=daysBetween;
+		
+		double extraPrice = extraDaysPrice + extraOrderedServicesPrice;
 		
 		return extraPrice;
+	}
+
+	@Override
+	public void checkIfDatesAreCorrect(LocalDate rentDate, LocalDate returnDate, int key) throws BusinessException {			
+		
+		if(key == 0 && (rentDate.isBefore(LocalDate.now()) || returnDate.isBefore(LocalDate.now()))) {
+			
+			throw new BusinessException(BusinessMessages.RENT_DATES_NOT_CORRECT);
+		}
+		
+		if(key == 1 && returnDate.isBefore(LocalDate.now())) {
+			
+			throw new BusinessException(BusinessMessages.RENT_DATES_NOT_CORRECT);
+		}
 	}
 	
 	

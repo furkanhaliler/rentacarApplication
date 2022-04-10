@@ -8,6 +8,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
 
+import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class CreatePosRequest {
 
 	@NotNull
-	@CreditCardNumber
+	@CreditCardNumber(message = BusinessMessages.INVALID_CARD_NUMBER)
 	private String creditCardNo;
 	
 	@NotNull
@@ -37,7 +39,7 @@ public class CreatePosRequest {
 	
 	@NotNull
 	@Size(min = 3, max = 3)
-	@Pattern(regexp = "[0-9\\d]{3}")
+	@Pattern(regexp = "[0-9\\d]{3}", message = BusinessMessages.INVALID_CVV)
 	private String cvv;
 	
 

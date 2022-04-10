@@ -142,6 +142,8 @@ public class BusinessMessages {
 	
 	public static final String CREDIT_CARD_NOT_FOUND = "No credit card registered with this ID were found.";
 	
+	public static final String INVALID_PARAM_YES_NO = "Please write a valid parameter. YES or NO.";
+	
 	
 	/******** CUSTOMER ********/
 	
@@ -251,7 +253,7 @@ public class BusinessMessages {
 	
 	public static final String RENT_FOUND_BY_ID = "Rent is found by ID.";
 	
-	public static final String RENT_UPDATED = "Rent is updated successfully.";
+	public static final String RENT_UPDATED = "Rent is updated successfully. Paid amount: ";
 	
 	public static final String RENT_DELETED = "Rent is deleted successfully.";
 	
@@ -259,11 +261,17 @@ public class BusinessMessages {
 	
 	public static final String RENT_ENDED = "Rent is ended successfully.";
 	
+	public static final String RENT_ENDED_WITH_PAYMENT = "Rent is ended successfully. Paid amount: ";
+	
 	public static final String CAR_IS_CURRENTLY_RENTED = "This car is currently rented.";
 	
 	public static final String RENT_NOT_FOUND = "No rent registered with this ID were found.";
 	
 	public static final String NEED_EXTRA_PAYMENT = "Since the return date is delayed, the following payment has to be made: ";
+	
+	public static final String RENT_ALREADY_ENDED = "This rent has already been ended.";
+	
+	public static final String RENT_DATES_NOT_CORRECT = "Rental or return dates are not correct. Please try again.";
 	
 	
 	/******** USER ********/
@@ -277,13 +285,21 @@ public class BusinessMessages {
 	public static final String WRONG_EMAIL_FORMAT = "Please make sure you enter a correct email address.";
 
 	
-	/******** RENT MODEL TRANSACTİON ********/
+	/******** RENT MODEL TRANSACTION ********/
 	
-	public static final String RENT_MODEL_SUCCESSFULL = "Rent model created successfully.";
+	public static final String RENT_MODEL_SUCCESSFULL = "Rent model created successfully. Paid amount: ";
+	
+	public static final String NO_NEED_FOR_EXTRA_PAYMENT = "There is no need for an extra payment.";
 	
 	
+	/******** POS ********/
 	
+	public static final String INVALID_CVV = "CVV must be a three-digit number.";
+	
+	public static final String INVALID_CARD_NUMBER = "Invalid credit card number was entered. Please try again.";
 }
+
+
 //CAR_NOT_FOUND yerelleştirme, dil desteği, property dosyası
 // magic string. eleştirilir magic stringlerden kurtulunuz-- rent saved
 // successfully tarzı
