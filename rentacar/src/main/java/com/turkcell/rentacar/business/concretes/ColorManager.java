@@ -2,8 +2,8 @@ package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.ColorService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetColorDto;
-import com.turkcell.rentacar.business.dtos.lists.ColorListDto;
+import com.turkcell.rentacar.business.dtos.color.ColorListDto;
+import com.turkcell.rentacar.business.dtos.color.GetColorDto;
 import com.turkcell.rentacar.business.requests.color.CreateColorRequest;
 import com.turkcell.rentacar.business.requests.color.DeleteColorRequest;
 import com.turkcell.rentacar.business.requests.color.UpdateColorRequest;

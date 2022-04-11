@@ -3,6 +3,8 @@ package com.turkcell.rentacar.business.requests.individualCustomer;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.turkcell.rentacar.business.constants.messages.ValidationMessages;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,6 @@ import lombok.NoArgsConstructor;
 public class DeleteIndividualCustomerRequest {
 
 	@NotNull
-	@Min(1)
+	@Min(value = 1, message = ValidationMessages.INDIVIDUAL_CUSTOMER_ID_RULE)
 	private int userId;
 }

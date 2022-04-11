@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.CorporateCustomerService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetCorporateCustomerDto;
-import com.turkcell.rentacar.business.dtos.lists.CorporateCustomerListDto;
+import com.turkcell.rentacar.business.dtos.corporateCustomer.CorporateCustomerListDto;
+import com.turkcell.rentacar.business.dtos.corporateCustomer.GetCorporateCustomerDto;
 import com.turkcell.rentacar.business.requests.corporateCustomer.CreateCorporateCustomerRequest;
 import com.turkcell.rentacar.business.requests.corporateCustomer.DeleteCorporateCustomerRequest;
 import com.turkcell.rentacar.business.requests.corporateCustomer.UpdateCorporateCustomerRequest;
@@ -76,6 +76,7 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 	public Result update(UpdateCorporateCustomerRequest updateCorporateCustomerRequest) throws BusinessException {
 		
 		checkIfCorporateCustomerIdExists(updateCorporateCustomerRequest.getUserId());
+		checkIfTaxNumberAlreadyExists(updateCorporateCustomerRequest.getTaxNumber());
 		
 		CorporateCustomer corporateCustomer = this.modelMapperService.forRequest().map(updateCorporateCustomerRequest, CorporateCustomer.class);
 		

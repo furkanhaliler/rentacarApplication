@@ -4,6 +4,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.turkcell.rentacar.business.constants.messages.ValidationMessages;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,14 +16,14 @@ import lombok.NoArgsConstructor;
 public class UpdateAdditionalServiceRequest {
 
 	@NotNull
-	@Min(1)
+	@Min(value = 1, message = ValidationMessages.ADDITIONAL_SERVICE_ID_RULE)
 	private int additionalServiceId;
 	
 	@NotNull
-	@Size(min = 3, max = 50)
+	@Size(min = 3, max = 50, message = ValidationMessages.ADDITIONAL_SERVICE_NAME_RULE)
 	private String additionalServiceName;
 	
 	@NotNull
-	@Min(1)
+	@Min(value = 1, message = ValidationMessages.ADDITIONAL_SERVICE_DAILY_PRICE_RULE)
 	private double dailyPrice;
 }

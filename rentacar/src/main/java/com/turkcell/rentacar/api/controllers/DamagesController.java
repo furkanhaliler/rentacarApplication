@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentacar.business.abstracts.DamageService;
-import com.turkcell.rentacar.business.dtos.gets.GetDamageDto;
-import com.turkcell.rentacar.business.dtos.lists.DamageListDto;
+import com.turkcell.rentacar.business.dtos.damage.DamageListDto;
+import com.turkcell.rentacar.business.dtos.damage.GetDamageDto;
 import com.turkcell.rentacar.business.requests.damage.CreateDamageRequest;
 import com.turkcell.rentacar.business.requests.damage.DeleteDamageRequest;
 import com.turkcell.rentacar.business.requests.damage.UpdateDamageRequest;
@@ -37,7 +37,7 @@ public class DamagesController {
 	}
 	
 	@PostMapping("/add")
-	Result add(@RequestBody @Valid CreateDamageRequest createDamageRequest){
+	Result add(@RequestBody @Valid CreateDamageRequest createDamageRequest) throws BusinessException{
 		
 		return this.damageService.add(createDamageRequest);
 	}

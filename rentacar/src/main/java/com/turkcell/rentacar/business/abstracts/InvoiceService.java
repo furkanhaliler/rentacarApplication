@@ -3,8 +3,8 @@ package com.turkcell.rentacar.business.abstracts;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.turkcell.rentacar.business.dtos.gets.GetInvoiceDto;
-import com.turkcell.rentacar.business.dtos.lists.InvoiceListDto;
+import com.turkcell.rentacar.business.dtos.invoice.GetInvoiceDto;
+import com.turkcell.rentacar.business.dtos.invoice.InvoiceListDto;
 import com.turkcell.rentacar.business.requests.Invoice.CreateInvoiceRequest;
 import com.turkcell.rentacar.business.requests.Invoice.DeleteInvoiceRequest;
 import com.turkcell.rentacar.business.requests.Invoice.UpdateInvoiceRequest;
@@ -17,7 +17,9 @@ public interface InvoiceService {
 
 	DataResult<List<InvoiceListDto>> getAll();
 
-	DataResult<Invoice> add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException;
+	DataResult<Invoice> addForIndividualCustomers(CreateInvoiceRequest createInvoiceRequest) throws BusinessException;
+	
+	DataResult<Invoice> addForCorporateCustomers(CreateInvoiceRequest createInvoiceRequest) throws BusinessException;
 	
 	DataResult<Invoice> addExtraInvoice(int rentId, double totalPrice) throws BusinessException;
 
@@ -35,7 +37,9 @@ public interface InvoiceService {
 	
 	void checkIfInvoiceIdExists (Integer id) throws BusinessException;
 	
-	double calculateTotalPrice (int rentId) throws BusinessException;
+	double calculateTotalPriceForIndividualCustomers (int rentId) throws BusinessException;
+	
+	double calculateTotalPriceForCorporateCustomers (int rentId) throws BusinessException;
 	
 	void setInvoiceFields (int rentId, Invoice invoice) throws BusinessException;
 

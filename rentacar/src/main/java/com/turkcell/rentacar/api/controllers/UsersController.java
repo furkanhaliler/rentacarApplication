@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentacar.business.abstracts.UserService;
-import com.turkcell.rentacar.business.dtos.gets.GetUserDto;
-import com.turkcell.rentacar.business.dtos.lists.UserListDto;
+import com.turkcell.rentacar.business.dtos.user.GetUserDto;
+import com.turkcell.rentacar.business.dtos.user.UserListDto;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 

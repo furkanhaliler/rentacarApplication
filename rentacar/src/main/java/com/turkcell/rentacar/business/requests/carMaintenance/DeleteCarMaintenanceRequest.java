@@ -4,6 +4,8 @@ package com.turkcell.rentacar.business.requests.carMaintenance;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.turkcell.rentacar.business.constants.messages.ValidationMessages;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
@@ -14,6 +16,6 @@ import lombok.Data;
 public class DeleteCarMaintenanceRequest {
 
 	@NotNull
-	@Min(1)
-	private int MaintenanceId;
+	@Min(value = 1, message = ValidationMessages.CAR_MAINTENANCE_ID_RULE)
+	private int maintenanceId;
 }

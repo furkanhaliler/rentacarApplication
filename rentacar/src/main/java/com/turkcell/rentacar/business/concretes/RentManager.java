@@ -14,17 +14,20 @@ import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
-import com.turkcell.rentacar.business.dtos.lists.OrderedServiceListDto;
-import com.turkcell.rentacar.business.dtos.lists.RentListDto;
+import com.turkcell.rentacar.business.dtos.orderedService.OrderedServiceListDto;
+import com.turkcell.rentacar.business.dtos.rent.GetRentDto;
+import com.turkcell.rentacar.business.dtos.rent.RentListDto;
 import com.turkcell.rentacar.business.requests.rent.CreateRentRequest;
 import com.turkcell.rentacar.business.requests.rent.DeleteRentRequest;
 import com.turkcell.rentacar.business.requests.rent.EndRentRequest;
 import com.turkcell.rentacar.business.requests.rent.UpdateRentRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.exceptions.rent.CarIsCurrentlyRentedException;
+import com.turkcell.rentacar.core.exceptions.rent.RentDatesNotCorrectException;
+import com.turkcell.rentacar.core.exceptions.rent.RentEndKilometerNotCorrectException;
 import com.turkcell.rentacar.core.exceptions.rent.RentNotFoundException;
 import com.turkcell.rentacar.core.exceptions.rent.RentReturnDateDelayedException;
+import com.turkcell.rentacar.core.exceptions.rent.RentReturnDateNotCorrectException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
@@ -108,7 +111,7 @@ public class RentManager implements RentService {
 		
 		Rent rent = this.rentDao.getById(updateRentRequest.getRentId());
 		
-		checkIfDatesAreCorrect(rent.getRentStartDate(), updateRentRequest.getRentReturnDate(), 1);
+		checkIfDatesAreCorrect(rent.getRentReturnDate(), updateRentRequest.getRentReturnDate(), 1);
 		
 		rent.setRentReturnDate(updateRentRequest.getRentReturnDate());
 
@@ -149,8 +152,9 @@ public class RentManager implements RentService {
 		
 		Rent rent = this.rentDao.getById(endRentRequest.getRentId());
 		
-		checkIfRentAlreadyEnded(rent.getCar().getId());
+		checkIfRentAlreadyEnded(rent);
 		checkIfReturnDateDelayed(rent);
+		checkIfEndKilometerIsCorrect(rent.getStartKilometer(), endRentRequest.getEndKilometer());
 		
 		rent.setRentReturnDate(LocalDate.now());
 		rent.setEndKilometer(endRentRequest.getEndKilometer());
@@ -175,11 +179,11 @@ public class RentManager implements RentService {
 	}
 	
 	@Override
-	public void checkIfRentAlreadyEnded (Integer id) throws BusinessException {
+	public void checkIfRentAlreadyEnded (Rent rent) throws BusinessException {
 		
-		Car car = this.carService.getCarByCarId(id);
+		Car car = this.carService.getCarByCarId(rent.getCar().getId());
 		
-		if(!car.isRentStatus()) {
+		if(!car.isRentStatus() || rent.getEndKilometer()!= null) {
 			
 			throw new CarIsCurrentlyRentedException(BusinessMessages.RENT_ALREADY_ENDED);
 		}
@@ -267,15 +271,26 @@ public class RentManager implements RentService {
 	@Override
 	public void checkIfDatesAreCorrect(LocalDate rentDate, LocalDate returnDate, int key) throws BusinessException {			
 		
-		if(key == 0 && (rentDate.isBefore(LocalDate.now()) || returnDate.isBefore(LocalDate.now()))) {
+		if(key == 0 && (rentDate.isBefore(LocalDate.now()) || returnDate.isBefore(LocalDate.now())
+				|| returnDate.isBefore(rentDate))) {
 			
-			throw new BusinessException(BusinessMessages.RENT_DATES_NOT_CORRECT);
+			throw new RentDatesNotCorrectException(BusinessMessages.RENT_DATES_NOT_CORRECT);
 		}
 		
-		if(key == 1 && returnDate.isBefore(LocalDate.now())) {
+		if(key == 1 && (returnDate.isBefore(rentDate))) {
 			
-			throw new BusinessException(BusinessMessages.RENT_DATES_NOT_CORRECT);
+			throw new RentReturnDateNotCorrectException(BusinessMessages.RETURN_DATE_NOT_CORRECT);
 		}
+	}
+
+	@Override
+	public void checkIfEndKilometerIsCorrect(double startKilometer, double endKilometer) throws BusinessException {
+		
+		if(startKilometer > endKilometer) {
+			
+			throw new RentEndKilometerNotCorrectException(BusinessMessages.END_KILOMETER_NOT_CORRECT);
+		}
+		
 	}
 	
 	

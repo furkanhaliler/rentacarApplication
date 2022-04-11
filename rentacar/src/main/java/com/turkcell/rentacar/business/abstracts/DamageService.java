@@ -2,8 +2,8 @@ package com.turkcell.rentacar.business.abstracts;
 
 import java.util.List;
 
-import com.turkcell.rentacar.business.dtos.gets.GetDamageDto;
-import com.turkcell.rentacar.business.dtos.lists.DamageListDto;
+import com.turkcell.rentacar.business.dtos.damage.DamageListDto;
+import com.turkcell.rentacar.business.dtos.damage.GetDamageDto;
 import com.turkcell.rentacar.business.requests.damage.CreateDamageRequest;
 import com.turkcell.rentacar.business.requests.damage.DeleteDamageRequest;
 import com.turkcell.rentacar.business.requests.damage.UpdateDamageRequest;
@@ -13,7 +13,7 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 
 public interface DamageService {
 	
-	Result add(CreateDamageRequest createDamageRequest);
+	Result add(CreateDamageRequest createDamageRequest) throws BusinessException;
 
 	DataResult<List<DamageListDto>> getAll();
 

@@ -14,8 +14,8 @@ import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetInvoiceDto;
-import com.turkcell.rentacar.business.dtos.lists.InvoiceListDto;
+import com.turkcell.rentacar.business.dtos.invoice.GetInvoiceDto;
+import com.turkcell.rentacar.business.dtos.invoice.InvoiceListDto;
 import com.turkcell.rentacar.business.requests.Invoice.CreateInvoiceRequest;
 import com.turkcell.rentacar.business.requests.Invoice.DeleteInvoiceRequest;
 import com.turkcell.rentacar.business.requests.Invoice.UpdateInvoiceRequest;
@@ -63,13 +63,29 @@ public class InvoiceManager implements InvoiceService {
 	}
 
 	@Override
-	public DataResult<Invoice> add(CreateInvoiceRequest createInvoiceRequest) throws BusinessException{
+	public DataResult<Invoice> addForIndividualCustomers(CreateInvoiceRequest createInvoiceRequest) throws BusinessException{
 
 		Invoice invoice = this.modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);
 		
 		invoice.setInvoiceId(0);
 
 		setInvoiceFields(createInvoiceRequest.getRentRentId(), invoice);
+		invoice.setTotalPrice(calculateTotalPriceForIndividualCustomers(createInvoiceRequest.getRentRentId()));
+
+		this.invoiceDao.save(invoice);
+
+		return new SuccessDataResult<Invoice>(invoice, BusinessMessages.INVOICE_ADDED);
+	}
+	
+	@Override
+	public DataResult<Invoice> addForCorporateCustomers(CreateInvoiceRequest createInvoiceRequest) throws BusinessException{
+
+		Invoice invoice = this.modelMapperService.forRequest().map(createInvoiceRequest, Invoice.class);
+		
+		invoice.setInvoiceId(0);
+
+		setInvoiceFields(createInvoiceRequest.getRentRentId(), invoice);
+		invoice.setTotalPrice(calculateTotalPriceForCorporateCustomers(createInvoiceRequest.getRentRentId()));
 
 		this.invoiceDao.save(invoice);
 
@@ -181,9 +197,20 @@ public class InvoiceManager implements InvoiceService {
 		}
 	}
 
-
 	@Override
-	public double calculateTotalPrice(int rentId) throws BusinessException{
+	public double calculateTotalPriceForIndividualCustomers(int rentId) throws BusinessException{
+
+		double rentPrice = this.rentService.calculateRentPrice(rentId);
+
+		double orderedServicePrice = this.orderedServiceService.calculateOrderedServicePrice(rentId);
+
+		double totalInvoicePrice = rentPrice + orderedServicePrice;
+
+		return totalInvoicePrice;
+	}
+	
+	@Override
+	public double calculateTotalPriceForCorporateCustomers(int rentId) throws BusinessException{
 
 		double rentPrice = this.rentService.calculateRentPrice(rentId);
 
@@ -199,10 +226,6 @@ public class InvoiceManager implements InvoiceService {
 
 		Rent rent = this.rentService.bringRentById(rentId);
 		
-		double totalPrice = calculateTotalPrice(rentId);
-		
-		invoice.setTotalPrice(totalPrice);
-		
 		invoice.setCreationDate(LocalDate.now());	
 
 		invoice.setRentStartDate(rent.getRentStartDate());
@@ -215,8 +238,6 @@ public class InvoiceManager implements InvoiceService {
 
 		invoice.setInvoiceNumber(UUID.randomUUID().toString());	
 	}
-
-
 
 
 }

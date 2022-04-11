@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.UserService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetUserDto;
-import com.turkcell.rentacar.business.dtos.lists.UserListDto;
+import com.turkcell.rentacar.business.dtos.user.GetUserDto;
+import com.turkcell.rentacar.business.dtos.user.UserListDto;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.exceptions.user.UserNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;

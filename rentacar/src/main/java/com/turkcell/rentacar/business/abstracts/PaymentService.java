@@ -2,8 +2,8 @@ package com.turkcell.rentacar.business.abstracts;
 
 import java.util.List;
 
-import com.turkcell.rentacar.business.dtos.gets.GetPaymentDto;
-import com.turkcell.rentacar.business.dtos.lists.PaymentListDto;
+import com.turkcell.rentacar.business.dtos.payment.GetPaymentDto;
+import com.turkcell.rentacar.business.dtos.payment.PaymentListDto;
 import com.turkcell.rentacar.business.requests.payment.CreatePaymentRequest;
 import com.turkcell.rentacar.business.requests.pos.CreatePosRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;

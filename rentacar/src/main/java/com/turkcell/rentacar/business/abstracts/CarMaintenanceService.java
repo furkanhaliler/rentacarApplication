@@ -3,8 +3,8 @@ package com.turkcell.rentacar.business.abstracts;
 
 import java.util.List;
 
-import com.turkcell.rentacar.business.dtos.gets.GetCarMaintenanceDto;
-import com.turkcell.rentacar.business.dtos.lists.CarMaintenanceListDto;
+import com.turkcell.rentacar.business.dtos.carMaintenance.CarMaintenanceListDto;
+import com.turkcell.rentacar.business.dtos.carMaintenance.GetCarMaintenanceDto;
 import com.turkcell.rentacar.business.requests.carMaintenance.CreateCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.carMaintenance.DeleteCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.carMaintenance.UpdateCarMaintenanceRequest;

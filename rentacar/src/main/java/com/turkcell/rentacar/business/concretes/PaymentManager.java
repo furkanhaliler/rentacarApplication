@@ -13,8 +13,8 @@ import com.turkcell.rentacar.business.abstracts.PosService;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.adapters.posAdapters.IsBankPosAdapter;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetPaymentDto;
-import com.turkcell.rentacar.business.dtos.lists.PaymentListDto;
+import com.turkcell.rentacar.business.dtos.payment.GetPaymentDto;
+import com.turkcell.rentacar.business.dtos.payment.PaymentListDto;
 import com.turkcell.rentacar.business.requests.payment.CreatePaymentRequest;
 import com.turkcell.rentacar.business.requests.pos.CreatePosRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
@@ -33,19 +33,17 @@ public class PaymentManager implements PaymentService {
 	
 	private PaymentDao paymentDao;
 	private ModelMapperService modelMapperService;
-	private PosService posService;
 	private RentService rentService;
 	private CustomerService customerService;
 	private InvoiceService invoiceService;
 	
 	
 	@Autowired
-	public PaymentManager(PaymentDao paymentDao, ModelMapperService modelMapperService, PosService posService, RentService rentService,
+	public PaymentManager(PaymentDao paymentDao, ModelMapperService modelMapperService, RentService rentService,
 			CustomerService customerService, InvoiceService invoiceService) {
 
 		this.paymentDao = paymentDao;
 		this.modelMapperService = modelMapperService;
-		this.posService = posService;
 		this.rentService = rentService;	
 		this.customerService = customerService;
 		this.invoiceService = invoiceService;

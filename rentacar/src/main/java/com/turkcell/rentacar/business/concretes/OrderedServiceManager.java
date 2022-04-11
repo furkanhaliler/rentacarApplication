@@ -11,11 +11,9 @@ import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
 import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetOrderedServiceDto;
-import com.turkcell.rentacar.business.dtos.lists.OrderedServiceListDto;
+import com.turkcell.rentacar.business.dtos.orderedService.GetOrderedServiceDto;
+import com.turkcell.rentacar.business.dtos.orderedService.OrderedServiceListDto;
 import com.turkcell.rentacar.business.requests.orderedService.CreateOrderedServiceRequest;
-import com.turkcell.rentacar.business.requests.orderedService.DeleteOrderedServiceRequest;
-import com.turkcell.rentacar.business.requests.orderedService.UpdateOrderedServiceRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.exceptions.orderedService.OrderedServiceNotFoundException;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
@@ -79,28 +77,6 @@ public class OrderedServiceManager implements OrderedServiceService {
 		GetOrderedServiceDto response = this.modelMapperService.forDto().map(orderedService, GetOrderedServiceDto.class);
 		
 		return new SuccessDataResult<GetOrderedServiceDto>(response, BusinessMessages.ORDERED_SERVICE_FOUND_BY_ID);
-	}
-
-	@Override
-	public Result update(UpdateOrderedServiceRequest updateOrderedServiceRequest) throws BusinessException {
-		
-		checkIfOrderedServiceIdExists(updateOrderedServiceRequest.getId());
-		
-		OrderedService orderedService = this.modelMapperService.forRequest().map(updateOrderedServiceRequest, OrderedService.class);
-		
-		this.orderedServiceDao.save(orderedService);
-	
-		return new SuccessResult(BusinessMessages.ORDERED_SERVICE_UPDATED);
-	}
-
-	@Override
-	public Result delete(DeleteOrderedServiceRequest deleteOrderedServiceRequest) throws BusinessException {
-	
-		checkIfOrderedServiceIdExists(deleteOrderedServiceRequest.getOrderedServiceId());
-		
-		this.orderedServiceDao.deleteById(deleteOrderedServiceRequest.getOrderedServiceId());
-		
-		return new SuccessResult(BusinessMessages.ORDERED_SERVICE_DELETED);
 	}
 
 	@Override

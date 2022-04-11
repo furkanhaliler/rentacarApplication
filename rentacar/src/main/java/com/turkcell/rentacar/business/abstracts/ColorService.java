@@ -1,7 +1,7 @@
 package com.turkcell.rentacar.business.abstracts;
 
-import com.turkcell.rentacar.business.dtos.gets.GetColorDto;
-import com.turkcell.rentacar.business.dtos.lists.ColorListDto;
+import com.turkcell.rentacar.business.dtos.color.ColorListDto;
+import com.turkcell.rentacar.business.dtos.color.GetColorDto;
 import com.turkcell.rentacar.business.requests.color.CreateColorRequest;
 import com.turkcell.rentacar.business.requests.color.DeleteColorRequest;
 import com.turkcell.rentacar.business.requests.color.UpdateColorRequest;

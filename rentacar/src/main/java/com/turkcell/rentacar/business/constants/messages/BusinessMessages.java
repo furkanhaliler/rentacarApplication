@@ -49,7 +49,7 @@ public class BusinessMessages {
 	
 	public static final String CAR_MAINTENANCE_UPDATED = "Car maintenance is updated successfully.";
 	
-	public static final String CAR_MAINTENANCE_DELETED = "Car maintenance is deleted successfully.";
+	public static final String CAR_MAINTENANCE_DELETED = "Car maintenance is deleted successfully. Car maintenance status of the car is updated to false.";
 	
 	public static final String CAR_IS_UNDER_MAINTENANCE = "This car is under maintenance right now.";
 	
@@ -71,6 +71,8 @@ public class BusinessMessages {
 	public static final String CARS_PAGED = "Cars are paged successfully.";
 	
 	public static final String CARS_SORTED = "Cars are sorted successfully.";
+	
+	public static final String INVALID_PAGE_PARAM = "Paging failed. Please write valid parameters. Page no and page size must be greater than 0.";
 	
 	public static final String INVALID_SORT_PARAM = "Sorting failed. Please write a valid parameter.";
 	
@@ -217,10 +219,6 @@ public class BusinessMessages {
 	
 	public static final String ORDERED_SERVICE_FOUND_BY_ID = "Ordered service is found by ID.";
 	
-	public static final String ORDERED_SERVICE_UPDATED = "Ordered service is updated successfully.";
-	
-	public static final String ORDERED_SERVICE_DELETED = "Ordered service is deleted successfully.";
-	
 	public static final String ORDERED_SERVICES_LISTED_BY_RENT_ID = "Ordered services are listed by rent ID.";
 	
 	public static final String ORDERED_SERVICE_NOT_FOUND = "No ordered service registered with this ID were found.";
@@ -273,6 +271,10 @@ public class BusinessMessages {
 	
 	public static final String RENT_DATES_NOT_CORRECT = "Rental or return dates are not correct. Please try again.";
 	
+	public static final String RETURN_DATE_NOT_CORRECT = "New return date can not be before current return date on this version.";
+	
+	public static final String END_KILOMETER_NOT_CORRECT = "Rent end kilometer can not be less than rent start kilometer.";
+	
 	
 	/******** USER ********/
 	
@@ -281,8 +283,6 @@ public class BusinessMessages {
 	public static final String USER_FOUND_BY_ID = "User is found by ID.";
 
 	public static final String USER_NOT_FOUND = "No user registered with this ID were found.";
-	
-	public static final String WRONG_EMAIL_FORMAT = "Please make sure you enter a correct email address.";
 
 	
 	/******** RENT MODEL TRANSACTION ********/
@@ -292,16 +292,11 @@ public class BusinessMessages {
 	public static final String NO_NEED_FOR_EXTRA_PAYMENT = "There is no need for an extra payment.";
 	
 	
-	/******** POS ********/
+	/******** GLOBALEXCEPTIONHANDLER ********/
 	
-	public static final String INVALID_CVV = "CVV must be a three-digit number.";
+	public static final String DATA_INTEGRITY_VIOLATION_EXCEPTION = "This operation cannot be performed because it breaks the data integrity between tables.";
 	
-	public static final String INVALID_CARD_NUMBER = "Invalid credit card number was entered. Please try again.";
+	public static final String TIME_FORMAT_EXCEPTION = "Invalid date format was entered. Please try again. Format must be like 'yyyy-MM-dd'.";
 }
 
 
-//CAR_NOT_FOUND yerelleştirme, dil desteği, property dosyası
-// magic string. eleştirilir magic stringlerden kurtulunuz-- rent saved
-// successfully tarzı
-
-// rent diye gruplama yapabiliriz

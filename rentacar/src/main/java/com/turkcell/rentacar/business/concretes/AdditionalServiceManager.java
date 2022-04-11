@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetAdditionalServiceDto;
-import com.turkcell.rentacar.business.dtos.lists.AdditionalServiceListDto;
+import com.turkcell.rentacar.business.dtos.additionalService.AdditionalServiceListDto;
+import com.turkcell.rentacar.business.dtos.additionalService.GetAdditionalServiceDto;
 import com.turkcell.rentacar.business.requests.additionalService.CreateAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.additionalService.DeleteAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.additionalService.UpdateAdditionalServiceRequest;
@@ -119,6 +119,11 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	@Override
 	public void checkIfAdditionalServiceIdExistsOnOrderedServiceList(List<CreateOrderedServiceRequest> listOfCreateOrderedServiceRequests) 
 			throws BusinessException {
+		
+		if(listOfCreateOrderedServiceRequests == null) {
+			
+			return;
+		}
 		
 		for (CreateOrderedServiceRequest createOrderedServiceRequest : listOfCreateOrderedServiceRequests) {
 			

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentacar.business.abstracts.CreditCardService;
-import com.turkcell.rentacar.business.dtos.gets.GetCreditCardDto;
-import com.turkcell.rentacar.business.dtos.lists.CreditCardListDto;
+import com.turkcell.rentacar.business.dtos.creditCard.CreditCardListDto;
+import com.turkcell.rentacar.business.dtos.creditCard.GetCreditCardDto;
 import com.turkcell.rentacar.business.requests.creditCard.CreateCreditCardRequest;
 import com.turkcell.rentacar.business.requests.creditCard.DeleteCreditCardRequest;
 import com.turkcell.rentacar.core.exceptions.BusinessException;

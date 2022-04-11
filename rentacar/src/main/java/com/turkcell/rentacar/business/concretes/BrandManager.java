@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.BrandService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetBrandDto;
-import com.turkcell.rentacar.business.dtos.lists.BrandListDto;
+import com.turkcell.rentacar.business.dtos.brand.BrandListDto;
+import com.turkcell.rentacar.business.dtos.brand.GetBrandDto;
 import com.turkcell.rentacar.business.requests.brand.CreateBrandRequest;
 import com.turkcell.rentacar.business.requests.brand.DeleteBrandRequest;
 import com.turkcell.rentacar.business.requests.brand.UpdateBrandRequest;

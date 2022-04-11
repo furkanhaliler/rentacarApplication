@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkcell.rentacar.business.abstracts.AdditionalServiceService;
-import com.turkcell.rentacar.business.dtos.gets.GetAdditionalServiceDto;
-import com.turkcell.rentacar.business.dtos.lists.AdditionalServiceListDto;
+import com.turkcell.rentacar.business.dtos.additionalService.AdditionalServiceListDto;
+import com.turkcell.rentacar.business.dtos.additionalService.GetAdditionalServiceDto;
 import com.turkcell.rentacar.business.requests.additionalService.CreateAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.additionalService.DeleteAdditionalServiceRequest;
 import com.turkcell.rentacar.business.requests.additionalService.UpdateAdditionalServiceRequest;

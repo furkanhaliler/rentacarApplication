@@ -11,8 +11,8 @@ import com.turkcell.rentacar.business.abstracts.CarMaintenanceService;
 import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.RentService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetCarMaintenanceDto;
-import com.turkcell.rentacar.business.dtos.lists.CarMaintenanceListDto;
+import com.turkcell.rentacar.business.dtos.carMaintenance.CarMaintenanceListDto;
+import com.turkcell.rentacar.business.dtos.carMaintenance.GetCarMaintenanceDto;
 import com.turkcell.rentacar.business.requests.carMaintenance.CreateCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.carMaintenance.DeleteCarMaintenanceRequest;
 import com.turkcell.rentacar.business.requests.carMaintenance.UpdateCarMaintenanceRequest;
@@ -60,8 +60,8 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	@Override
 	public Result add(CreateCarMaintenanceRequest createCarMaintenanceRequest) throws BusinessException {
 		
+		this.carService.checkIfCarIdExists(createCarMaintenanceRequest.getCarId());
 		this.rentService.checkIfCarIsRented(createCarMaintenanceRequest.getCarId());
-		
 		checkIfCarIsInMaintenance(createCarMaintenanceRequest.getCarId());
 
 		CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(createCarMaintenanceRequest, CarMaintenance.class);
@@ -105,7 +105,10 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 
 		checkIfCarMaintenanceIdExists(updateCarMaintenanceRequest.getMaintenanceId());
 
-		CarMaintenance carMaintenance = this.modelMapperService.forRequest().map(updateCarMaintenanceRequest, CarMaintenance.class);
+		CarMaintenance carMaintenance = this.carMaintenanceDao.getById(updateCarMaintenanceRequest.getMaintenanceId());
+		
+		carMaintenance.setMaintenanceDescription(updateCarMaintenanceRequest.getMaintenanceDescription());
+		carMaintenance.setReturnDate(updateCarMaintenanceRequest.getReturnDate());
 		
 		this.carMaintenanceDao.save(carMaintenance);
 		
@@ -118,6 +121,10 @@ public class CarMaintenanceManager implements CarMaintenanceService {
 	public Result delete(DeleteCarMaintenanceRequest deleteCarMaintenanceRequest) throws BusinessException {
 
 		checkIfCarMaintenanceIdExists(deleteCarMaintenanceRequest.getMaintenanceId());
+		
+		CarMaintenance carMaintenance = this.carMaintenanceDao.getById(deleteCarMaintenanceRequest.getMaintenanceId());
+		
+		this.carService.updateMaintenanceStatus(carMaintenance.getCar().getId(), false);
 	
 		this.carMaintenanceDao.deleteById(deleteCarMaintenanceRequest.getMaintenanceId());
 		

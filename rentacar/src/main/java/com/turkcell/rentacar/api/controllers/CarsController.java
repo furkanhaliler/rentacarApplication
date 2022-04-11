@@ -1,8 +1,8 @@
 package com.turkcell.rentacar.api.controllers;
 
 import com.turkcell.rentacar.business.abstracts.CarService;
-import com.turkcell.rentacar.business.dtos.gets.GetCarDto;
-import com.turkcell.rentacar.business.dtos.lists.CarListDto;
+import com.turkcell.rentacar.business.dtos.car.CarListDto;
+import com.turkcell.rentacar.business.dtos.car.GetCarDto;
 import com.turkcell.rentacar.business.requests.car.CreateCarRequest;
 import com.turkcell.rentacar.business.requests.car.DeleteCarRequest;
 import com.turkcell.rentacar.business.requests.car.UpdateCarRequest;
@@ -60,7 +60,8 @@ public class CarsController {
 	}
 
 	@GetMapping("/getAllPaged/{pageNumber}/{pageSize}")
-	public DataResult<List<CarListDto>> getAllPaged(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize) {
+	public DataResult<List<CarListDto>> getAllPaged(@PathVariable("pageNumber") int pageNumber, @PathVariable("pageSize") int pageSize)
+								throws BusinessException{
 
 		return this.carService.getAllPaged(pageNumber, pageSize);
 	}

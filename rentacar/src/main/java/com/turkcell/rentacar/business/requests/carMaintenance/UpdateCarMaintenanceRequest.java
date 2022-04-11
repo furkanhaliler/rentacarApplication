@@ -6,6 +6,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.turkcell.rentacar.business.constants.messages.ValidationMessages;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,19 +19,15 @@ import lombok.NoArgsConstructor;
 public class UpdateCarMaintenanceRequest {
 
 	@NotNull
-	@Min(1)
+	@Min(value = 1, message = ValidationMessages.CAR_MAINTENANCE_ID_RULE)
 	private int maintenanceId;
 	
 	@NotNull
-	@Size(min = 2, max = 50)
+	@Size(min = 2, max = 50, message = ValidationMessages.CAR_MAINTENANCE_DESCRIPTION_RULE)
 	private String maintenanceDescription;
 	
 	private LocalDate returnDate;
-	
-	@NotNull
-	@Min(1)
-    private int carId;
-	
+		
 	@NotNull
 	private boolean maintenanceStatus;
 }

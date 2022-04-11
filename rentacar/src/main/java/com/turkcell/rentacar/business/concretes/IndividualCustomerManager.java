@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.turkcell.rentacar.business.abstracts.IndividualCustomerService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetIndividualCustomerDto;
-import com.turkcell.rentacar.business.dtos.lists.IndividualCustomerListDto;
+import com.turkcell.rentacar.business.dtos.individualCustomer.GetIndividualCustomerDto;
+import com.turkcell.rentacar.business.dtos.individualCustomer.IndividualCustomerListDto;
 import com.turkcell.rentacar.business.requests.individualCustomer.CreateIndividualCustomerRequest;
 import com.turkcell.rentacar.business.requests.individualCustomer.DeleteIndividualCustomerRequest;
 import com.turkcell.rentacar.business.requests.individualCustomer.UpdateIndividualCustomerRequest;
@@ -74,6 +74,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 	public Result update(UpdateIndividualCustomerRequest updateIndividualCustomerRequest) throws BusinessException {
 		
 		checkIfIndividualCustomerIdExists(updateIndividualCustomerRequest.getUserId());
+		checkIfNationalIdentityAlreadyExists(updateIndividualCustomerRequest.getNationalIdentity());
 		
 		IndividualCustomer individualCustomer = this.modelMapperService.forRequest().map(updateIndividualCustomerRequest, IndividualCustomer.class);
 		

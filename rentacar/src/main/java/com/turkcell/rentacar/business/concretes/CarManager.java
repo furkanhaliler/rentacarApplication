@@ -14,8 +14,8 @@ import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.CityService;
 import com.turkcell.rentacar.business.abstracts.ColorService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetCarDto;
-import com.turkcell.rentacar.business.dtos.lists.CarListDto;
+import com.turkcell.rentacar.business.dtos.car.CarListDto;
+import com.turkcell.rentacar.business.dtos.car.GetCarDto;
 import com.turkcell.rentacar.business.requests.car.CreateCarRequest;
 import com.turkcell.rentacar.business.requests.car.DeleteCarRequest;
 import com.turkcell.rentacar.business.requests.car.UpdateCarRequest;
@@ -94,10 +94,19 @@ public class CarManager implements CarService {
 	public Result update(UpdateCarRequest updateCarRequest) throws BusinessException {
 
 		checkIfCarIdExists(updateCarRequest.getId());
-
-		Car car = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
+		this.brandService.checkIfBrandIdExists(updateCarRequest.getBrandId());
+		this.colorService.checkIfColorIdExists(updateCarRequest.getColorId());
+		this.cityService.checkIfCityIdExists(updateCarRequest.getBaseCityId());
 		
-		this.carDao.save(car);
+		Car car = this.carDao.getById(updateCarRequest.getId());
+		
+		Car updatedCar = this.modelMapperService.forRequest().map(updateCarRequest, Car.class);
+		
+		updatedCar.setMaintenanceStatus(car.isMaintenanceStatus());
+		updatedCar.setRentStatus(car.isRentStatus());
+		updatedCar.setKilometer(car.getKilometer());
+		
+		this.carDao.save(updatedCar);
 
 		return new SuccessResult(BusinessMessages.CAR_UPDATED);
 	}
@@ -113,8 +122,13 @@ public class CarManager implements CarService {
 	}
 
 	@Override
-	public DataResult<List<CarListDto>> getAllPaged(int pageNo, int pageSize) {
+	public DataResult<List<CarListDto>> getAllPaged(int pageNo, int pageSize) throws BusinessException {
 
+		if(pageNo < 1 || pageSize < 1) {
+			
+			throw new BusinessException(BusinessMessages.INVALID_PAGE_PARAM);
+		}
+		
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
 
 		List<Car> result = this.carDao.findAll(pageable).getContent();

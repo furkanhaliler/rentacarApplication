@@ -3,8 +3,8 @@ package com.turkcell.rentacar.business.abstracts;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.turkcell.rentacar.business.dtos.gets.GetRentDto;
-import com.turkcell.rentacar.business.dtos.lists.RentListDto;
+import com.turkcell.rentacar.business.dtos.rent.GetRentDto;
+import com.turkcell.rentacar.business.dtos.rent.RentListDto;
 import com.turkcell.rentacar.business.requests.rent.CreateRentRequest;
 import com.turkcell.rentacar.business.requests.rent.DeleteRentRequest;
 import com.turkcell.rentacar.business.requests.rent.EndRentRequest;
@@ -42,8 +42,10 @@ public interface RentService {
 
 	double calculateExtraDaysPrice(int rentId, LocalDate date) throws BusinessException;
 
-	void checkIfRentAlreadyEnded(Integer id) throws BusinessException;
+	void checkIfRentAlreadyEnded(Rent rent) throws BusinessException;
 	
 	void checkIfDatesAreCorrect(LocalDate rentDate, LocalDate returnDate, int key) throws BusinessException;
+	
+	void checkIfEndKilometerIsCorrect(double startKilometer, double endKilometer) throws BusinessException;
 	
 }

@@ -2,7 +2,8 @@ package com.turkcell.rentacar.business.abstracts;
 
 import java.util.List;
 
-import com.turkcell.rentacar.api.models.CreateRentModel;
+import com.turkcell.rentacar.api.models.CreateRentModelForCorporateCustomers;
+import com.turkcell.rentacar.api.models.CreateRentModelForIndividualCustomers;
 import com.turkcell.rentacar.api.models.EndRentWithExtraPaymentModel;
 import com.turkcell.rentacar.api.models.EnumSaveCreditCard;
 import com.turkcell.rentacar.api.models.UpdateRentModel;
@@ -15,7 +16,9 @@ import com.turkcell.rentacar.entities.concretes.Rent;
 
 public interface TransactionalRentService {
 
-	Result createRent(CreateRentModel createRentModel) throws BusinessException;
+	Result createRentForIndividualCustomers(CreateRentModelForIndividualCustomers createRentModelForIndividualCustomers) throws BusinessException;
+	
+	Result createRentForCorporateCustomers(CreateRentModelForCorporateCustomers createRentModelForCorporateCustomers) throws BusinessException;
 	
 	Result endRentWithExtraPayment(EndRentWithExtraPaymentModel endRentWithExtraPaymentModel) throws BusinessException;
 	
@@ -28,5 +31,6 @@ public interface TransactionalRentService {
 	void checkIfExtraPaymentNeeded(double price) throws BusinessException;
 	
 	void setCreatePaymentRequestFields(CreatePaymentRequest createPaymentRequest, Rent rent, Invoice invoice);
+	
 	
 }

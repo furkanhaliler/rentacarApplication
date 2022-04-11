@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.turkcell.rentacar.business.abstracts.CarService;
 import com.turkcell.rentacar.business.abstracts.DamageService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
-import com.turkcell.rentacar.business.dtos.gets.GetDamageDto;
-import com.turkcell.rentacar.business.dtos.lists.DamageListDto;
+import com.turkcell.rentacar.business.dtos.damage.DamageListDto;
+import com.turkcell.rentacar.business.dtos.damage.GetDamageDto;
 import com.turkcell.rentacar.business.requests.damage.CreateDamageRequest;
 import com.turkcell.rentacar.business.requests.damage.DeleteDamageRequest;
 import com.turkcell.rentacar.business.requests.damage.UpdateDamageRequest;
@@ -40,7 +40,9 @@ public class DamageManager implements DamageService {
 	}
 
 	@Override
-	public Result add(CreateDamageRequest createDamageRequest){
+	public Result add(CreateDamageRequest createDamageRequest) throws BusinessException{
+		
+		this.carService.checkIfCarIdExists(createDamageRequest.getCarCarId());
 		
 		Damage damage = this.modelMapperService.forRequest().map(createDamageRequest, Damage.class);
 		
@@ -79,9 +81,13 @@ public class DamageManager implements DamageService {
 		
 		checkIfDamageIdExists(updateDamageRequest.getDamageId());
 		
-		Damage damage = this.modelMapperService.forRequest().map(updateDamageRequest, Damage.class);
+		Damage damage = this.damageDao.getById(updateDamageRequest.getDamageId());
 		
-		this.damageDao.save(damage);
+		Damage updatedDamage = this.modelMapperService.forRequest().map(updateDamageRequest, Damage.class);
+		
+		updatedDamage.setCar(damage.getCar());
+		
+		this.damageDao.save(updatedDamage);
 		
 		return new SuccessResult(BusinessMessages.DAMAGE_UPDATED);
 	}
