@@ -297,6 +297,8 @@ public class BusinessMessages {
 	public static final String DATA_INTEGRITY_VIOLATION_EXCEPTION = "This operation cannot be performed because it breaks the data integrity between tables.";
 	
 	public static final String TIME_FORMAT_EXCEPTION = "Invalid date format was entered. Please try again. Format must be like 'yyyy-MM-dd'.";
+	
+	public static final String HTTP_MESSAGE_NOT_READABLE_EXCEPTION = "An issue about http message occurred.";
 }
 
 
