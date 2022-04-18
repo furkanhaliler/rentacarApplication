@@ -110,5 +110,4 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 			throw new NationalIdentityNumberAlreadyExistsException(BusinessMessages.NATIONAL_IDENTITY_EXISTS);
 		}	
 	}
-
 }

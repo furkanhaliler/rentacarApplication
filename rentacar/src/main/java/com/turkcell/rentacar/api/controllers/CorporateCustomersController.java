@@ -65,7 +65,5 @@ public class CorporateCustomersController {
 	Result delete(@RequestBody @Valid DeleteCorporateCustomerRequest deleteCorporateCustomerRequest) throws BusinessException{
 		
 		return this.corporateCustomerService.delete(deleteCorporateCustomerRequest);
-	}
-
-	
+	}	
 }

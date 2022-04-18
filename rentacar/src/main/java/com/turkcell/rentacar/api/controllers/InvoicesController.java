@@ -73,8 +73,4 @@ public class InvoicesController {
 		
 		return this.invoiceService.findByCreationDateBetween(startDate, endDate);
 	}
-	
-	
-	
-	
 }

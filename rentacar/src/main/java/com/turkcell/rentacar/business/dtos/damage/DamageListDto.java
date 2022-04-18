@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 public class DamageListDto {
 
 	private int damageId;
-	
 	private String description;
-	
 	private int carCarId;
 }

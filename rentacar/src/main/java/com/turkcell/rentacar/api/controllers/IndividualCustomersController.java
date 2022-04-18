@@ -65,5 +65,4 @@ public class IndividualCustomersController {
 		
 		return this.individualCustomerService.delete(deleteIndividualCustomerRequest);
 	}
-
 }

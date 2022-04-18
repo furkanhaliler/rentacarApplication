@@ -101,7 +101,7 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 	@Override
 	public void checkIfAdditionalServiceNameExists(String additionalServiceName) throws BusinessException {
 		
-		if(this.additionalServiceDao.existsAdditionalServiceByAdditionalServiceName(additionalServiceName)) {
+		if(this.additionalServiceDao.existsAdditionalServiceByAdditionalServiceNameIgnoreCase(additionalServiceName)) {
 			
 			throw new AdditionalServiceNameAlreadyExistsException(BusinessMessages.ADDITIONAL_SERVICE_NAME_EXISTS);
 		}
@@ -139,5 +139,4 @@ public class AdditionalServiceManager implements AdditionalServiceService {
 
 		return this.additionalServiceDao.getById(id);
 	}
-
 }

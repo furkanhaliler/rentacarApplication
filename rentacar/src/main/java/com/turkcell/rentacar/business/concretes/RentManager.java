@@ -103,7 +103,6 @@ public class RentManager implements RentService {
 		return new SuccessDataResult<GetRentDto>(response, BusinessMessages.RENT_FOUND_BY_ID);
 	}
 	
-	
 	@Override
 	public Result update(UpdateRentRequest updateRentRequest) throws BusinessException {
 
@@ -289,10 +288,6 @@ public class RentManager implements RentService {
 		if(startKilometer > endKilometer) {
 			
 			throw new RentEndKilometerNotCorrectException(BusinessMessages.END_KILOMETER_NOT_CORRECT);
-		}
-		
-	}
-	
-	
-	
+		}	
+	}			
 }

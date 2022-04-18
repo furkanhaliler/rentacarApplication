@@ -42,8 +42,6 @@ public class OrderedServicesController {
 	DataResult<List<OrderedServiceListDto>> getByRentId(@RequestParam("rentId") Integer id) throws BusinessException{
 		
 		return this.orderedServiceService.getByRentId(id);
-	}
-	
-	
+	}	
 }
 

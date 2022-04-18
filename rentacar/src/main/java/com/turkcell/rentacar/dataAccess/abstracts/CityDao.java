@@ -8,5 +8,5 @@ import com.turkcell.rentacar.entities.concretes.City;
 @Repository
 public interface CityDao extends JpaRepository<City, Integer>{
 
-	boolean existsCityByCityName(String name);
+	boolean existsCityByCityNameIgnoreCase(String name);
 }

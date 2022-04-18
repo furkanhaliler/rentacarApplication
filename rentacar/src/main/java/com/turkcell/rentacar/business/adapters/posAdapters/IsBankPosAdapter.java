@@ -22,5 +22,4 @@ public class IsBankPosAdapter implements PosService{
 		
 		return posResult;
 	}
-
 }

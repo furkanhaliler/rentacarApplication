@@ -98,7 +98,7 @@ public class CityManager implements CityService {
 	@Override
 	public void checkIfCityNameExists(String cityName) throws BusinessException {
 		
-		if(this.cityDao.existsCityByCityName(cityName)) {
+		if(this.cityDao.existsCityByCityNameIgnoreCase(cityName)) {
 			
 			throw new CityNameAlreadyExistsException(BusinessMessages.CITY_NAME_EXISTS);
 		}
@@ -112,5 +112,4 @@ public class CityManager implements CityService {
 			throw new CityNotFoundException(BusinessMessages.CITY_NOT_FOUND);
 		}
 	}
-
 }

@@ -62,5 +62,4 @@ public class CustomerManager implements CustomerService {
 			throw new CustomerNotFoundException(BusinessMessages.CUSTOMER_NOT_FOUND);
 		}
 	}
-
 }

@@ -13,7 +13,6 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 
 public interface IndividualCustomerService {
 
-
 	DataResult<List<IndividualCustomerListDto>> getAll();
 
 	Result add(CreateIndividualCustomerRequest createIndividualCustomerRequest) throws BusinessException;

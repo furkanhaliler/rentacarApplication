@@ -20,5 +20,4 @@ public class HalkBankPosAdapter implements PosService {
 
 		return posResult;
 	}
-
 }

@@ -65,5 +65,4 @@ public class CitiesController {
 		
 		return this.cityService.delete(deleteCityRequest);
 	}
-
 }

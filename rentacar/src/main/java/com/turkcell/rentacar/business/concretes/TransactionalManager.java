@@ -22,7 +22,7 @@ import com.turkcell.rentacar.business.abstracts.InvoiceService;
 import com.turkcell.rentacar.business.abstracts.OrderedServiceService;
 import com.turkcell.rentacar.business.abstracts.PaymentService;
 import com.turkcell.rentacar.business.abstracts.RentService;
-import com.turkcell.rentacar.business.abstracts.TransactionalRentService;
+import com.turkcell.rentacar.business.abstracts.TransactionalService;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.business.requests.Invoice.CreateInvoiceRequest;
 import com.turkcell.rentacar.business.requests.creditCard.CreateCreditCardRequest;
@@ -35,7 +35,7 @@ import com.turkcell.rentacar.entities.concretes.Invoice;
 import com.turkcell.rentacar.entities.concretes.Rent;
 
 @Service
-public class TransactionalRentManager implements TransactionalRentService{
+public class TransactionalManager implements TransactionalService{
 	
 	private RentService rentService;
 	private OrderedServiceService orderedServiceService;
@@ -49,7 +49,7 @@ public class TransactionalRentManager implements TransactionalRentService{
 	private CorporateCustomerService corporateCustomerService;
 	
 	@Autowired
-	public TransactionalRentManager(RentService rentService, OrderedServiceService orderedServiceService, 
+	public TransactionalManager(RentService rentService, OrderedServiceService orderedServiceService, 
 			InvoiceService invoiceService, PaymentService paymentService, CreditCardService creditCardService,
 			CarService carService, CityService cityService, AdditionalServiceService additionalServiceService, 
 			IndividualCustomerService individualCustomerService, CorporateCustomerService corporateCustomerService) {
@@ -183,8 +183,7 @@ public class TransactionalRentManager implements TransactionalRentService{
 		
 		checkIfUserWantsToSaveCreditCard(updateRentModel.getEnumSaveCreditCard(), updateRentModel.getCreatePaymentRequest());
 		
-		return new SuccessResult(BusinessMessages.RENT_UPDATED + totalPrice);
-		
+		return new SuccessResult(BusinessMessages.RENT_UPDATED + totalPrice);	
 	}
 
 	@Override

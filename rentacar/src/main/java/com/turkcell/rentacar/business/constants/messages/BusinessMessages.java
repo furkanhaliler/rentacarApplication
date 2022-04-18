@@ -298,7 +298,7 @@ public class BusinessMessages {
 	
 	public static final String TIME_FORMAT_EXCEPTION = "Invalid date format was entered. Please try again. Format must be like 'yyyy-MM-dd'.";
 	
-	public static final String HTTP_MESSAGE_NOT_READABLE_EXCEPTION = "An issue about http message occurred.";
+	public static final String HTTP_MESSAGE_NOT_READABLE_EXCEPTION = "Invalid format was entered. Please try again.";
 }
 
 

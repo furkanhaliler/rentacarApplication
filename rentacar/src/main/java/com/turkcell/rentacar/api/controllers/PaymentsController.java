@@ -55,5 +55,4 @@ public class PaymentsController {
 		
 		return this.paymentService.getByRentId(rentId);
 	}
-
 }

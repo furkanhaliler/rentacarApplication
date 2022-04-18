@@ -58,8 +58,7 @@ public class PaymentManager implements PaymentService {
 		
 		this.paymentDao.save(payment);
 		
-		return new SuccessResult(BusinessMessages.PAYMENT_SUCCESSFULL);		
-		
+		return new SuccessResult(BusinessMessages.PAYMENT_SUCCESSFULL);			
 	}
 
 	@Override
@@ -142,8 +141,6 @@ public class PaymentManager implements PaymentService {
 			throw new PaymentNotFoundException(BusinessMessages.PAYMENT_NOT_FOUND);
 		}
 	}
-
-
 }
 
 

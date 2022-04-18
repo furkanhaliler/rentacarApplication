@@ -37,7 +37,4 @@ public class UsersController {
 		
 		return this.userService.getByUserId(id);
 	}
-	
-	
-	
 }

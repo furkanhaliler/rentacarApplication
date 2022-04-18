@@ -98,7 +98,7 @@ public class BrandManager implements BrandService {
 	@Override
 	public void checkIfBrandNameExists(String brandName) throws BusinessException {
 
-		if (this.brandDao.existsBrandByBrandName(brandName)) {
+		if (this.brandDao.existsBrandByBrandNameIgnoreCase(brandName)) {
 
 			throw new BrandAlreadyExistsException(BusinessMessages.BRAND_NAME_EXISTS);
 		}
@@ -112,5 +112,4 @@ public class BrandManager implements BrandService {
 			throw new BrandNotFoundException(BusinessMessages.BRAND_NOT_FOUND);
 		}
 	}
-
 }

@@ -14,7 +14,7 @@ import com.turkcell.rentacar.core.utilities.results.Result;
 import com.turkcell.rentacar.entities.concretes.Invoice;
 import com.turkcell.rentacar.entities.concretes.Rent;
 
-public interface TransactionalRentService {
+public interface TransactionalService {
 
 	Result createRentForIndividualCustomers(CreateRentModelForIndividualCustomers createRentModelForIndividualCustomers) throws BusinessException;
 	

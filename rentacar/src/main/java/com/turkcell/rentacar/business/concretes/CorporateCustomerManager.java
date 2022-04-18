@@ -112,5 +112,4 @@ public class CorporateCustomerManager implements CorporateCustomerService {
 			throw new TaxNumberAlreadyExistsException(BusinessMessages.TAX_NUMBER_EXISTS);
 		}		
 	}
-
 }

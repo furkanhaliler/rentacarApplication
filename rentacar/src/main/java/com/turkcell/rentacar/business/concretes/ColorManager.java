@@ -97,7 +97,7 @@ public class ColorManager implements ColorService {
 	@Override
 	public void checkIfColorNameExists(String colorName) throws BusinessException {
 
-		if (this.colorDao.existsColorByColorName(colorName)) {
+		if (this.colorDao.existsByColorNameIgnoreCase(colorName)) {
 			throw new ColorAlreadyExistsException(BusinessMessages.COLOR_NAME_EXISTS);
 		}
 	}

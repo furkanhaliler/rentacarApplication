@@ -35,8 +35,5 @@ public class CustomersController {
 	DataResult<GetCustomerDto> getByUserId(@RequestParam("userId") Integer id) throws BusinessException{
 		
 		return this.customerService.getByUserId(id);
-	}
-	
-	
-	
+	}			
 }

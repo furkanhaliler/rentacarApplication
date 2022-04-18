@@ -175,7 +175,6 @@ public class InvoiceManager implements InvoiceService {
 		return new SuccessDataResult<List<InvoiceListDto>>(response, BusinessMessages.INVOICES_LISTED_BY_RENT_ID);
 	}
 
-
 	@Override
 	public DataResult<List<InvoiceListDto>> findByCreationDateBetween(LocalDate startDate, LocalDate endDate) {
 
@@ -238,6 +237,4 @@ public class InvoiceManager implements InvoiceService {
 
 		invoice.setInvoiceNumber(UUID.randomUUID().toString());	
 	}
-
-
 }

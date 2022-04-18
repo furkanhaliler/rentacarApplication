@@ -6,13 +6,13 @@ import java.util.Map;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.turkcell.rentacar.business.constants.messages.BusinessMessages;
 import com.turkcell.rentacar.core.utilities.results.ErrorDataResult;
 
@@ -66,14 +66,14 @@ public class GlobalExceptionHandler {
 		return errorDataResult;
 	}
 	
-	@ExceptionHandler({HttpMessageNotReadableException.class})
+	@ExceptionHandler({InvalidFormatException.class})
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	public ErrorDataResult<Object> handleDataException (HttpMessageNotReadableException httpMessageNotReadableException){
+	public ErrorDataResult<Object> handleDataException (InvalidFormatException invalidFormatException){
 			
 		Map<String, String> validationErrors = new HashMap<String, String>();
-		validationErrors.put(BusinessMessages.HTTP_MESSAGE_NOT_READABLE_EXCEPTION, "Http message not readable");
+		validationErrors.put(BusinessMessages.HTTP_MESSAGE_NOT_READABLE_EXCEPTION, "Invalid format");
 
-		ErrorDataResult<Object> errorDataResult = new ErrorDataResult<Object>(validationErrors, "Http message not readable");
+		ErrorDataResult<Object> errorDataResult = new ErrorDataResult<Object>(validationErrors, "Invalid format");
 		return errorDataResult;
 	}
 	

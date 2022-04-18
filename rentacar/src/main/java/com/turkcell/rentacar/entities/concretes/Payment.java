@@ -38,9 +38,4 @@ public class Payment {
 	@JoinColumn(name = "user_id")
 	private Customer customer;
 	
-	
-	
-	
-	
-	
 }

@@ -70,7 +70,5 @@ public class CarMaintenancesController {
 	DataResult<GetCarMaintenanceDto> getByCarMaintenanceId (Integer id) throws BusinessException{
 		
 		return this.carMaintenanceService.getByCarMaintenanceId(id);
-	}
-	
-	
+	}		
 }

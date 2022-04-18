@@ -122,7 +122,5 @@ public class DamageManager implements DamageService {
 			
 			throw new DamageNotFoundException(BusinessMessages.DAMAGE_NOT_FOUND);
 		}
-
 	}
-
 }

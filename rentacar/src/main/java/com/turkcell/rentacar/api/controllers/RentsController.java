@@ -58,9 +58,8 @@ public class RentsController {
 	}
 	
 	@PostMapping("/endRent")
-	Result endRent(EndRentRequest endRentRequest) throws BusinessException{
+	Result endRent(@RequestBody @Valid EndRentRequest endRentRequest) throws BusinessException{
 		
 		return this.rentService.endRent(endRentRequest);
 	}
-
 }

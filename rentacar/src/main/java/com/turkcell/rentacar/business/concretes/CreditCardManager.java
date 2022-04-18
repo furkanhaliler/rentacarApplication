@@ -70,8 +70,7 @@ public class CreditCardManager implements CreditCardService {
 		
 		GetCreditCardDto getCreditCardDto = this.modelMapperService.forDto().map(creditCard, GetCreditCardDto.class);
 		
-		return new SuccessDataResult<GetCreditCardDto>(getCreditCardDto, BusinessMessages.CREDIT_CARD_FOUND_BY_ID);
-			
+		return new SuccessDataResult<GetCreditCardDto>(getCreditCardDto, BusinessMessages.CREDIT_CARD_FOUND_BY_ID);		
 	}
 
 	@Override
@@ -105,5 +104,4 @@ public class CreditCardManager implements CreditCardService {
 			throw new CreditCardNotFoundException(BusinessMessages.CREDIT_CARD_NOT_FOUND);
 		}
 	}
-
 }

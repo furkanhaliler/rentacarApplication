@@ -22,8 +22,6 @@ import com.turkcell.rentacar.core.exceptions.BusinessException;
 import com.turkcell.rentacar.core.utilities.results.DataResult;
 import com.turkcell.rentacar.core.utilities.results.Result;
 
-
-
 @RestController
 @RequestMapping("/api/creditCards")
 public class CreditCardsController {
@@ -65,7 +63,5 @@ public class CreditCardsController {
 	DataResult<List<CreditCardListDto>> getByCustomerUserId (@RequestParam("customerUserId") int customerUserId) throws BusinessException{
 		
 		return this.creditCardService.getByCustomerUserId(customerUserId);
-	}
-	
-	
+	}		
 }

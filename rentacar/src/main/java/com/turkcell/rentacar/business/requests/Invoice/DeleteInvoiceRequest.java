@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DeleteInvoiceRequest {
 
-
 	@NotNull
 	@Min(value = 1, message = ValidationMessages.INVOICE_ID_RULE)
 	private int invoiceId;

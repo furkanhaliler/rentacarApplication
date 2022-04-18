@@ -70,8 +70,5 @@ public class DamagesController {
 	DataResult<List<DamageListDto>> getByCarId(@RequestParam("carId") Integer carId) throws BusinessException{
 		
 		return this.damageService.getByCarId(carId);
-	}
-	
-	
-
+	}	
 }

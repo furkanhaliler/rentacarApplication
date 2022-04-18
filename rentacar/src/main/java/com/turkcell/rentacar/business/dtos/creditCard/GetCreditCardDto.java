@@ -10,16 +10,10 @@ import lombok.NoArgsConstructor;
 public class GetCreditCardDto {
 
 	private int creditCardId;
-
 	private int customerUserId;
-
 	private String creditCarNo;
-
 	private String creditCardHolder;
-
 	private int expirationMonth;
-
 	private int expirationYear;
-
 	private String cvv;
 }

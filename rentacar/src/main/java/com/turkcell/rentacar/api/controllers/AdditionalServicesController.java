@@ -65,5 +65,4 @@ public class AdditionalServicesController {
 		
 		return this.additionalServiceService.delete(deleteAdditionalServiceRequest);
 	}
-
 }
