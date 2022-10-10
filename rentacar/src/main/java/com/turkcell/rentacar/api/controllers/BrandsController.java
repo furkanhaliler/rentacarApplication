@@ -42,7 +42,7 @@ public class BrandsController {
 	}
 
 	@GetMapping("/getByBrandId/{brandId}")
-	public DataResult<GetBrandDto> getByBrandId(@RequestParam("brandId") int brandId) throws BusinessException {
+	public DataResult<GetBrandDto> getByBrandId(@PathVariable("brandId") int brandId) throws BusinessException {
 		
 		return this.brandService.getByBrandId(brandId);
 	}
